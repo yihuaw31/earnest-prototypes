@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paths, by Earnest — See your life before you live it</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sage:       #6d9b68;
+      --sage-light: #a8c8a3;
+      --sage-pale:  #e4efe3;
+      --warm-white: #faf8f5;
+      --cream:      #f2ece4;
+      --slate:      #3a4747;
+      --slate-mid:  #566060;
+      --slate-light:#8a9898;
+      --ink:        #17201f;
+      --amber:      #c4844a;
+      --rose:       #c4726a;
+      --radius:     18px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--ink);
+      color: var(--warm-white);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity:0; transform:translateY(24px); transition: opacity .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .rd1{transition-delay:.07s} .rd2{transition-delay:.16s} .rd3{transition-delay:.25s} .rd4{transition-delay:.34s}
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:20px 48px;
+      background:transparent;
+      transition: background .4s, backdrop-filter .4s;
+    }
+    nav.scrolled {
+      background:rgba(23,32,31,.82);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav-logo { display:flex; align-items:center; gap:9px; font-size:.95rem; font-weight:700; color:white; letter-spacing:-.02em; }
+    .nav-dot { width:7px; height:7px; border-radius:50%; background:var(--sage); display:inline-block; }
+    .nav-by { font-weight:400; color:rgba(255,255,255,.45); font-size:.88rem; }
+    .nav-cta {
+      font-size:.85rem; font-weight:700;
+      padding:10px 22px;
+      background:rgba(255,255,255,.1); color:white;
+      border:1px solid rgba(255,255,255,.15); border-radius:40px;
+      text-decoration:none; transition:background .2s, border-color .2s;
+    }
+    .nav-cta:hover { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.28); }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    #hero {
+      min-height:100svh;
+      display:flex; flex-direction:column; justify-content:center;
+      padding:120px 48px 80px;
+      position:relative; overflow:hidden;
+    }
+
+    /* animated gradient orbs */
+    .orb {
+      position:absolute; border-radius:50%;
+      filter:blur(80px); pointer-events:none;
+      animation: orbFloat 14s ease-in-out infinite alternate;
+    }
+    .orb-1 { width:700px; height:600px; top:-160px; left:-120px;
+      background:radial-gradient(circle, rgba(196,130,74,.38) 0%, transparent 70%);
+      animation-delay:0s; }
+    .orb-2 { width:600px; height:500px; top:10%; right:-140px;
+      background:radial-gradient(circle, rgba(196,114,106,.3) 0%, transparent 70%);
+      animation-delay:-4s; animation-duration:18s; }
+    .orb-3 { width:500px; height:400px; bottom:-100px; left:30%;
+      background:radial-gradient(circle, rgba(109,155,104,.22) 0%, transparent 70%);
+      animation-delay:-8s; animation-duration:22s; }
+    @keyframes orbFloat {
+      from { transform:translate(0,0) scale(1); }
+      to   { transform:translate(40px,30px) scale(1.08); }
+    }
+
+    /* noise overlay for texture */
+    #hero::after {
+      content:''; position:absolute; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.35; pointer-events:none;
+    }
+
+    .hero-inner { position:relative; z-index:1; max-width:1020px; margin:0 auto; width:100%; }
+
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+      color:rgba(255,255,255,.5); margin-bottom:32px;
+    }
+    .eyebrow-line { width:24px; height:1px; background:rgba(255,255,255,.3); }
+
+    .hero-q {
+      font-size:clamp(2rem, 4.5vw, 3.4rem);
+      font-weight:800; line-height:1.12; letter-spacing:-.04em;
+      color:white; margin-bottom:48px;
+    }
+    .hero-q span { color:rgba(255,255,255,.45); }
+
+    /* scenario cards */
+    .scenario-grid {
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:14px;
+      margin-bottom:40px;
+    }
+    .sc-card {
+      background:rgba(255,255,255,.06);
+      border:1.5px solid rgba(255,255,255,.1);
+      border-radius:20px;
+      padding:26px 22px;
+      cursor:pointer;
+      transition:
+        background .22s,
+        border-color .22s,
+        transform .22s cubic-bezier(.16,1,.3,1),
+        box-shadow .22s;
+      position:relative; overflow:hidden;
+      user-select:none;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .sc-card::before {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.04) 0%, transparent 60%);
+      opacity:0; transition:opacity .22s;
+    }
+    .sc-card:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.22); transform:translateY(-3px); box-shadow:0 16px 48px rgba(0,0,0,.3); }
+    .sc-card:hover::before { opacity:1; }
+    .sc-card.active {
+      border-color:rgba(255,255,255,.55);
+      transform:translateY(-4px) scale(1.02);
+      box-shadow:0 24px 64px rgba(0,0,0,.38);
+    }
+    .sc-card.active.sc-abroad  { background:rgba(196,130,74,.22);  border-color:rgba(196,130,74,.6); }
+    .sc-card.active.sc-family  { background:rgba(109,155,104,.22); border-color:rgba(109,155,104,.6); }
+    .sc-card.active.sc-retire  { background:rgba(196,114,106,.22); border-color:rgba(196,114,106,.6); }
+    .sc-card.active.sc-custom  { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.4); }
+
+    .sc-icon { font-size:1.8rem; margin-bottom:14px; display:block; }
+    .sc-title { font-size:1rem; font-weight:700; color:white; margin-bottom:6px; }
+    .sc-sub { font-size:.8rem; color:rgba(255,255,255,.45); line-height:1.5; }
+
+    /* custom input */
+    .sc-custom-input {
+      display:none; width:100%; margin-top:12px;
+      font-family:inherit; font-size:.88rem;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2);
+      border-radius:10px; padding:10px 14px; color:white; outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .sc-custom-input::placeholder { color:rgba(255,255,255,.3); }
+    .sc-custom-input:focus { border-color:rgba(255,255,255,.5); box-shadow:0 0 0 3px rgba(255,255,255,.08); }
+    .sc-card.active .sc-custom-input { display:block; }
+
+    /* hero dynamic message */
+    .hero-message {
+      min-height:96px;
+      margin-bottom:36px;
+      transition:opacity .35s, transform .35s;
+    }
+    .hero-message.switching { opacity:0; transform:translateY(8px); }
+    .hero-msg-text {
+      font-size:clamp(1.1rem, 2.2vw, 1.5rem);
+      font-weight:500; color:rgba(255,255,255,.75);
+      line-height:1.5; max-width:560px;
+    }
+    .hero-msg-text em { color:white; font-style:normal; font-weight:700; }
+    .hero-msg-default { color:rgba(255,255,255,.35); font-size:1.1rem; font-weight:400; }
+
+    .hero-cta {
+      display:inline-flex; align-items:center; gap:10px;
+      font-size:1.05rem; font-weight:700;
+      padding:18px 38px;
+      background:white; color:var(--ink);
+      border:none; border-radius:50px; cursor:pointer;
+      text-decoration:none;
+      transition:transform .18s, box-shadow .18s, background .18s;
+      box-shadow:0 8px 32px rgba(0,0,0,.35);
+      opacity:0; transform:translateY(10px);
+      pointer-events:none;
+      transition:opacity .4s, transform .4s cubic-bezier(.16,1,.3,1), box-shadow .2s;
+    }
+    .hero-cta.visible { opacity:1; transform:translateY(0); pointer-events:all; }
+    .hero-cta:hover { transform:translateY(-2px); box-shadow:0 14px 44px rgba(0,0,0,.38); }
+    .hero-cta svg { transition:transform .2s; }
+    .hero-cta:hover svg { transform:translateX(4px); }
+
+    /* scroll hint */
+    .scroll-hint {
+      position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      color:rgba(255,255,255,.25); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase;
+      animation:scrollBob 2.4s ease-in-out infinite;
+    }
+    @keyframes scrollBob {
+      0%,100% { transform:translateX(-50%) translateY(0); }
+      50%      { transform:translateX(-50%) translateY(6px); }
+    }
+
+    /* ══════════════════════════════
+       VIZ SECTION
+    ══════════════════════════════ */
+    #viz-section {
+      background: var(--ink);
+      padding:100px 48px;
+      position:relative; overflow:hidden;
+    }
+    #viz-section::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(196,130,74,.05) 0%, transparent 50%);
+      pointer-events:none;
+    }
+    .viz-inner { max-width:1020px; margin:0 auto; position:relative; z-index:1; }
+
+    .section-label {
+      font-size:.7rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+      color:var(--sage-light); display:block; margin-bottom:18px;
+    }
+    .viz-header { margin-bottom:48px; }
+    .viz-header h2 { font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-.035em; color:white; line-height:1.15; }
+    .viz-header p { font-size:1rem; color:rgba(255,255,255,.4); margin-top:12px; max-width:480px; line-height:1.7; }
+
+    /* ── VERDICT CARD ── */
+    .verdict-card {
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.1);
+      margin-bottom:20px;
+      overflow:hidden;
+      transition:border-color .4s;
+    }
+    .verdict-idle {
+      padding:48px 40px; text-align:center;
+      color:rgba(255,255,255,.3); font-size:1rem;
+      background:rgba(255,255,255,.03);
+    }
+    .verdict-idle svg { display:block; margin:0 auto 16px; opacity:.2; }
+    .verdict-active { display:none; }
+    .verdict-active.shown { display:block; }
+
+    .verdict-top-bar {
+      padding:24px 36px;
+      display:flex; align-items:center; gap:14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .verdict-badge {
+      font-size:.7rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+      padding:5px 13px; border-radius:20px;
+      white-space:nowrap;
+    }
+    .badge-green  { background:rgba(109,155,104,.25); color:#8dc98a; border:1px solid rgba(109,155,104,.3); }
+    .badge-amber  { background:rgba(196,130,74,.25);  color:#dba870; border:1px solid rgba(196,130,74,.3); }
+    .badge-neutral{ background:rgba(255,255,255,.1);  color:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.1); }
+
+    .verdict-readiness-wrap { display:flex; align-items:center; gap:10px; margin-left:auto; }
+    .verdict-readiness-label { font-size:.72rem; color:rgba(255,255,255,.35); white-space:nowrap; }
+    .verdict-meter { width:100px; height:5px; background:rgba(255,255,255,.1); border-radius:3px; overflow:hidden; }
+    .verdict-meter-fill { height:100%; border-radius:3px; transition:width .8s cubic-bezier(.16,1,.3,1) .2s; width:0; }
+    .fill-green { background:linear-gradient(90deg, #6d9b68, #8dc98a); }
+    .fill-amber  { background:linear-gradient(90deg, #c4844a, #dba870); }
+    .verdict-meter-pct { font-size:.78rem; font-weight:700; color:rgba(255,255,255,.5); min-width:32px; }
+
+    .verdict-body { padding:28px 36px; background:rgba(255,255,255,.02); }
+    .verdict-statement {
+      font-size:clamp(1rem,1.8vw,1.25rem);
+      color:rgba(255,255,255,.8); line-height:1.7; max-width:720px;
+    }
+    .verdict-statement strong { color:white; }
+
+    /* ── COMPARISON COLUMNS ── */
+    .compare-cols {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:16px; margin-bottom:20px;
+    }
+    .compare-col {
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px; overflow:hidden;
+      transition:border-color .3s;
+    }
+    .compare-col.col-b { border-color:rgba(255,255,255,.1); }
+
+    .compare-col-header {
+      padding:18px 24px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex; align-items:center; gap:10px;
+    }
+    .col-a .compare-col-header { background:rgba(255,255,255,.04); }
+
+    .path-pill {
+      font-size:.65rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+      padding:3px 10px; border-radius:12px;
+    }
+    .pill-a { background:rgba(255,255,255,.12); color:rgba(255,255,255,.6); }
+    .pill-b { color:white; }
+    .pill-b-green { background:rgba(109,155,104,.35); }
+    .pill-b-amber  { background:rgba(196,130,74,.35); }
+    .pill-b-rose   { background:rgba(196,114,106,.35); }
+
+    .compare-col-name { font-size:.88rem; font-weight:600; color:rgba(255,255,255,.7); }
+
+    .compare-metrics { padding:6px 0; }
+    .cm-row {
+      display:flex; align-items:baseline; justify-content:space-between;
+      padding:16px 24px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .cm-row:last-child { border-bottom:none; }
+    .cm-left { display:flex; flex-direction:column; gap:3px; }
+    .cm-label { font-size:.7rem; color:rgba(255,255,255,.35); }
+    .cm-value { font-size:1.25rem; font-weight:800; color:white; letter-spacing:-.02em; }
+    .cm-delta {
+      font-size:.72rem; font-weight:700;
+      padding:3px 9px; border-radius:10px; white-space:nowrap;
+    }
+    .d-good    { background:rgba(109,155,104,.2); color:#8dc98a; }
+    .d-cost    { background:rgba(196,114,106,.18); color:#e09090; }
+    .d-warn    { background:rgba(196,130,74,.2);  color:#dba870; }
+    .d-neutral { background:rgba(255,255,255,.08); color:rgba(255,255,255,.4); }
+
+    /* placeholder compare state */
+    .compare-placeholder {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:16px; margin-bottom:20px;
+    }
+    .compare-placeholder-col {
+      height:240px; border-radius:20px;
+      background:rgba(255,255,255,.03); border:1px dashed rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.85rem; color:rgba(255,255,255,.2);
+    }
+
+    /* ── NET WORTH CHART ── */
+    .nw-chart-wrap {
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px; padding:28px 24px 20px;
+    }
+    .nw-chart-top {
+      display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;
+    }
+    .nw-chart-title { font-size:.82rem; font-weight:600; color:rgba(255,255,255,.5); }
+    .nw-legend { display:flex; gap:18px; }
+    .nw-leg { display:flex; align-items:center; gap:7px; font-size:.74rem; color:rgba(255,255,255,.4); }
+    .nw-leg-line { width:22px; height:2.5px; border-radius:2px; }
+    .nw-leg-line.la { background:#c4844a; }
+    .nw-leg-line.lb { background:#6d9b68; }
+
+    .nw-svg { width:100%; display:block; overflow:visible; }
+    .nw-grid-line { stroke:rgba(255,255,255,.06); stroke-dasharray:3 5; }
+    .nw-axis-label { font-size:10px; fill:rgba(255,255,255,.25); font-family:'Plus Jakarta Sans',sans-serif; }
+    .nw-path-line {
+      fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round;
+      stroke-dasharray:1200; stroke-dashoffset:1200;
+    }
+    .nw-path-line.la { stroke:#c4844a; }
+    .nw-path-line.lb { stroke:#6d9b68; }
+    .nw-path-line.drawing { animation:nwDraw 1.8s cubic-bezier(.4,0,.2,1) forwards; }
+    .nw-path-line.drawing.lb { animation-delay:.3s; }
+    @keyframes nwDraw { to { stroke-dashoffset:0; } }
+    .nw-area-a { fill:url(#nwGradA); }
+    .nw-area-b { fill:url(#nwGradB); }
+    .nw-end-dot { transition:opacity .3s; }
+    .nw-end-label { font-family:'Plus Jakarta Sans',sans-serif; font-size:11px; font-weight:700; transition:opacity .3s; }
+
+    /* ══════════════════════════════
+       PROBLEM STRIP
+    ══════════════════════════════ */
+    #problem {
+      padding:100px 48px;
+      background: #111a19;
+      position:relative; overflow:hidden;
+    }
+    #problem::before {
+      content:'';
+      position:absolute; inset:0;
+      background-image:radial-gradient(circle, rgba(109,155,104,.07) 1px, transparent 1px);
+      background-size:28px 28px;
+      pointer-events:none;
+    }
+    .problem-inner { max-width:1020px; margin:0 auto; position:relative; z-index:1; }
+    .problem-header { margin-bottom:64px; }
+    .problem-header h2 { font-size:clamp(1.8rem,3.5vw,2.7rem); font-weight:800; letter-spacing:-.035em; color:white; line-height:1.18; }
+    .problem-header p { font-size:1rem; color:rgba(255,255,255,.4); margin-top:16px; max-width:480px; line-height:1.7; }
+
+    .questions-row { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .q-card {
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+      border-radius:20px; padding:36px 30px;
+      transition:background .2s, border-color .2s, transform .25s cubic-bezier(.16,1,.3,1);
+      position:relative; overflow:hidden;
+    }
+    .q-card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, var(--sage), transparent);
+      transform:scaleX(0); transform-origin:left;
+      transition:transform .3s;
+    }
+    .q-card:hover { background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.12); transform:translateY(-4px); }
+    .q-card:hover::after { transform:scaleX(1); }
+    .q-icon-wrap {
+      width:48px; height:48px; border-radius:14px;
+      background:rgba(109,155,104,.15); border:1px solid rgba(109,155,104,.2);
+      display:flex; align-items:center; justify-content:center; margin-bottom:22px;
+    }
+    .q-card h3 { font-size:1rem; font-weight:700; color:white; line-height:1.4; margin-bottom:12px; }
+    .q-card p  { font-size:.88rem; color:rgba(255,255,255,.4); line-height:1.7; }
+
+    .problem-closer {
+      margin-top:56px; padding:36px 40px;
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      font-size:1.2rem; color:rgba(255,255,255,.6); line-height:1.75;
+      max-width:680px;
+    }
+    .problem-closer strong { color:white; }
+
+    /* ══════════════════════════════
+       HOW IT WORKS
+    ══════════════════════════════ */
+    #how {
+      padding:100px 48px;
+      background:var(--warm-white); color:var(--ink);
+    }
+    .how-inner { max-width:1020px; margin:0 auto; }
+    #how .section-label { color:var(--sage); }
+    #how h2 { font-size:clamp(1.8rem,3.5vw,2.7rem); font-weight:800; letter-spacing:-.035em; color:var(--ink); margin-bottom:64px; }
+
+    .steps-row { display:grid; grid-template-columns:repeat(3,1fr); gap:48px; }
+    .step { display:flex; flex-direction:column; align-items:flex-start; }
+    .step-num {
+      width:52px; height:52px; border-radius:14px;
+      background:var(--sage-pale); border:1.5px solid rgba(109,155,104,.3);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.95rem; font-weight:800; color:var(--sage);
+      margin-bottom:24px; flex-shrink:0;
+    }
+    .step h3 { font-size:1.1rem; font-weight:700; color:var(--ink); margin-bottom:10px; }
+    .step p  { font-size:.92rem; color:var(--slate-mid); line-height:1.75; }
+
+    /* ══════════════════════════════
+       EARNEST
+    ══════════════════════════════ */
+    #earnest {
+      padding:100px 48px;
+      background: #111a19;
+      color:white;
+    }
+    .earnest-inner { max-width:1020px; margin:0 auto; }
+    #earnest .section-label { color:var(--sage-light); }
+    .earnest-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; margin-top:48px; }
+    .earnest-copy h2 { font-size:clamp(1.8rem,3.2vw,2.6rem); font-weight:800; letter-spacing:-.035em; margin-bottom:20px; }
+    .earnest-copy p { font-size:1rem; color:rgba(255,255,255,.5); line-height:1.85; }
+    .earnest-copy p strong { color:white; }
+
+    .earnest-stats { display:flex; flex-direction:column; gap:20px; }
+    .e-stat {
+      padding:28px 32px; border-radius:20px;
+      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+    }
+    .e-stat .big { font-size:2.8rem; font-weight:800; letter-spacing:-.04em; display:block; margin-bottom:6px; }
+    .e-stat:nth-child(1) .big { color:#c4844a; }
+    .e-stat:nth-child(2) .big { color:var(--sage-light); }
+    .e-stat:nth-child(3) .big { color:rgba(255,255,255,.6); }
+    .e-stat small { font-size:.85rem; color:rgba(255,255,255,.4); }
+
+    /* ══════════════════════════════
+       WAITLIST
+    ══════════════════════════════ */
+    #waitlist {
+      padding:120px 48px;
+      background:var(--warm-white); color:var(--ink);
+      text-align:center; position:relative; overflow:hidden;
+    }
+    #waitlist::before {
+      content:''; position:absolute; top:-200px; left:50%; transform:translateX(-50%);
+      width:800px; height:600px; border-radius:50%;
+      background:radial-gradient(ellipse, rgba(109,155,104,.12) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .waitlist-inner { position:relative; z-index:1; max-width:520px; margin:0 auto; }
+    #waitlist .section-label { color:var(--sage); justify-content:center; display:flex; }
+    #waitlist h2 { font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.04em; color:var(--ink); margin-bottom:16px; }
+    .waitlist-sub { font-size:1.05rem; color:var(--slate-mid); margin-bottom:44px; line-height:1.7; }
+    .wl-form { display:flex; gap:10px; }
+    .wl-input {
+      flex:1; font-family:inherit; font-size:.95rem;
+      padding:16px 22px; border:1.5px solid rgba(61,71,71,.18);
+      border-radius:50px; outline:none; color:var(--ink);
+      background:white; box-shadow:0 2px 12px rgba(0,0,0,.06);
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .wl-input:focus { border-color:var(--sage); box-shadow:0 0 0 4px rgba(109,155,104,.12); }
+    .wl-btn {
+      font-family:inherit; font-size:.95rem; font-weight:700;
+      padding:16px 28px; border:none; border-radius:50px;
+      background:var(--ink); color:white; cursor:pointer; white-space:nowrap;
+      box-shadow:0 4px 20px rgba(0,0,0,.18);
+      transition:background .2s, transform .15s;
+    }
+    .wl-btn:hover { background:var(--slate); transform:translateY(-1px); }
+    .wl-fine { font-size:.76rem; color:var(--slate-light); margin-top:14px; }
+    .wl-confirm {
+      display:none; background:white; border:1px solid rgba(109,155,104,.3);
+      border-radius:20px; padding:32px 36px; box-shadow:0 8px 40px rgba(109,155,104,.12);
+    }
+    .wl-confirm svg { margin-bottom:14px; }
+    .wl-confirm strong { display:block; font-size:1.1rem; margin-bottom:6px; }
+    .wl-confirm p { font-size:.9rem; color:var(--slate-mid); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding:28px 48px;
+      background:var(--ink);
+      display:flex; align-items:center; justify-content:space-between;
+      font-size:.78rem; color:rgba(255,255,255,.28);
+      flex-wrap:wrap; gap:10px;
+    }
+    .footer-logo { font-weight:700; color:rgba(255,255,255,.5); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:900px) {
+      nav { padding:16px 24px; }
+      #hero, #chart-section, #problem, #how, #earnest, #waitlist { padding:88px 24px; }
+      .scenario-grid { grid-template-columns:1fr 1fr; }
+      .questions-row { grid-template-columns:1fr; gap:16px; }
+      .steps-row { grid-template-columns:1fr; gap:36px; }
+      .earnest-grid { grid-template-columns:1fr; gap:48px; }
+    }
+    @media (max-width:560px) {
+      #hero { padding:100px 20px 72px; }
+      .scenario-grid { grid-template-columns:1fr 1fr; gap:10px; }
+      .sc-card { padding:20px 16px; }
+      .hero-q { font-size:1.85rem; }
+      .wl-form { flex-direction:column; }
+      .wl-btn { width:100%; }
+      footer { flex-direction:column; align-items:flex-start; padding:24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo">
+    <span class="nav-dot"></span>
+    Paths <span class="nav-by">by Earnest</span>
+  </div>
+  <a href="#waitlist" class="nav-cta">Join the waitlist</a>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-line"></span>
+      Now in private beta
+    </div>
+
+    <h1 class="hero-q">
+      What does your<br/>
+      <span>next chapter look like?</span>
+    </h1>
+
+    <!-- Scenario cards -->
+    <div class="scenario-grid" role="group" aria-label="Choose your scenario">
+      <div class="sc-card sc-abroad" data-scenario="abroad" tabindex="0" role="button" aria-pressed="false">
+        <span class="sc-icon">🌍</span>
+        <div class="sc-title">Move abroad</div>
+        <div class="sc-sub">Lisbon, Medellín, Tokyo — see what it actually costs.</div>
+      </div>
+      <div class="sc-card sc-family" data-scenario="family" tabindex="0" role="button" aria-pressed="false">
+        <span class="sc-icon">👶</span>
+        <div class="sc-title">Start a family</div>
+        <div class="sc-sub">Kids change everything. See the real 10-year picture.</div>
+      </div>
+      <div class="sc-card sc-retire" data-scenario="retire" tabindex="0" role="button" aria-pressed="false">
+        <span class="sc-icon">✈️</span>
+        <div class="sc-title">Retire early</div>
+        <div class="sc-sub">How far are you, really? Let's find out.</div>
+      </div>
+      <div class="sc-card sc-custom" data-scenario="custom" tabindex="0" role="button" aria-pressed="false">
+        <span class="sc-icon">✏️</span>
+        <div class="sc-title">Something else</div>
+        <div class="sc-sub">Your life, your question.</div>
+        <input class="sc-custom-input" id="customInput" type="text" placeholder="Describe your scenario…" maxlength="80" />
+      </div>
+    </div>
+
+    <!-- Dynamic message -->
+    <div class="hero-message" id="heroMessage">
+      <p class="hero-msg-default">Pick a scenario to see what your future looks like.</p>
+    </div>
+
+    <!-- CTA -->
+    <a href="#viz-section" class="hero-cta" id="heroCta">
+      Show me my path
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M3 9H15M15 9L10 4M15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
+      <rect x="1" y="1" width="14" height="18" rx="7" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="8" y1="5" x2="8" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Scroll
+  </div>
+</section>
+
+<!-- ═══════════════ VIZ ═══════════════ -->
+<section id="viz-section">
+  <div class="viz-inner">
+    <div class="viz-header reveal">
+      <span class="section-label">Your two paths</span>
+      <h2>Here's what the numbers actually say.</h2>
+      <p>Pick a scenario above and see a plain-language verdict on whether it works for you.</p>
+    </div>
+
+    <!-- VERDICT CARD -->
+    <div class="verdict-card reveal rd1" id="verdictCard">
+      <div class="verdict-idle" id="verdictIdle">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="15" stroke="white" stroke-width="1.4"/>
+          <path d="M16 9v8M16 21v2" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Select a scenario above to see your verdict
+      </div>
+      <div class="verdict-active" id="verdictActive">
+        <div class="verdict-top-bar">
+          <span class="verdict-badge" id="verdictBadge">—</span>
+          <span id="verdictTitle" style="font-size:.9rem;color:rgba(255,255,255,.55);"></span>
+          <div class="verdict-readiness-wrap">
+            <span class="verdict-readiness-label">Readiness</span>
+            <div class="verdict-meter"><div class="verdict-meter-fill" id="verdictMeterFill"></div></div>
+            <span class="verdict-meter-pct" id="verdictMeterPct">—</span>
+          </div>
+        </div>
+        <div class="verdict-body">
+          <p class="verdict-statement" id="verdictStatement"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARE COLUMNS -->
+    <div class="compare-placeholder" id="comparePlaceholder">
+      <div class="compare-placeholder-col">Path A will appear here</div>
+      <div class="compare-placeholder-col">Path B will appear here</div>
+    </div>
+    <div class="compare-cols" id="compareCols" style="display:none;">
+      <!-- col A -->
+      <div class="compare-col col-a">
+        <div class="compare-col-header">
+          <span class="path-pill pill-a">Path A</span>
+          <span class="compare-col-name" id="colAName">Stay the course</span>
+        </div>
+        <div class="compare-metrics" id="metricsA"></div>
+      </div>
+      <!-- col B -->
+      <div class="compare-col col-b" id="colB">
+        <div class="compare-col-header">
+          <span class="path-pill pill-b" id="pillB">Path B</span>
+          <span class="compare-col-name" id="colBName">Make the change</span>
+        </div>
+        <div class="compare-metrics" id="metricsB"></div>
+      </div>
+    </div>
+
+    <!-- NET WORTH CHART -->
+    <div class="nw-chart-wrap reveal rd2">
+      <div class="nw-chart-top">
+        <span class="nw-chart-title">Net worth growth · 10-year projection</span>
+        <div class="nw-legend">
+          <div class="nw-leg"><div class="nw-leg-line la"></div>Path A</div>
+          <div class="nw-leg"><div class="nw-leg-line lb"></div>Path B</div>
+        </div>
+      </div>
+      <svg class="nw-svg" id="nwChart" viewBox="0 0 920 200" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="nwGradA" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c4844a" stop-opacity=".25"/>
+            <stop offset="100%" stop-color="#c4844a" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="nwGradB" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#6d9b68" stop-opacity=".2"/>
+            <stop offset="100%" stop-color="#6d9b68" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- grid -->
+        <g>
+          <line class="nw-grid-line" x1="60" y1="10"  x2="900" y2="10"/>
+          <line class="nw-grid-line" x1="60" y1="56"  x2="900" y2="56"/>
+          <line class="nw-grid-line" x1="60" y1="102" x2="900" y2="102"/>
+          <line class="nw-grid-line" x1="60" y1="148" x2="900" y2="148"/>
+        </g>
+        <!-- y labels (placeholder, overwritten by JS) -->
+        <g id="nwYLabels"></g>
+        <!-- x labels -->
+        <g>
+          <text class="nw-axis-label" x="100" y="193" text-anchor="middle">Now</text>
+          <text class="nw-axis-label" x="248" y="193" text-anchor="middle">Yr 2</text>
+          <text class="nw-axis-label" x="420" y="193" text-anchor="middle">Yr 5</text>
+          <text class="nw-axis-label" x="592" y="193" text-anchor="middle">Yr 7</text>
+          <text class="nw-axis-label" x="764" y="193" text-anchor="middle">Yr 9</text>
+          <text class="nw-axis-label" x="898" y="193" text-anchor="middle">Yr 10</text>
+        </g>
+        <!-- areas + lines -->
+        <path class="nw-area-a" id="nwAreaA" d=""/>
+        <path class="nw-area-b" id="nwAreaB" d=""/>
+        <path class="nw-path-line la" id="nwLineA" d=""/>
+        <path class="nw-path-line lb" id="nwLineB" d=""/>
+        <!-- end dots + labels -->
+        <circle class="nw-end-dot" id="nwDotA" r="5" fill="#c4844a" opacity="0"/>
+        <circle class="nw-end-dot" id="nwDotB" r="5" fill="#6d9b68" opacity="0"/>
+        <text class="nw-end-label" id="nwLabelA" fill="#c4844a" opacity="0"/>
+        <text class="nw-end-label" id="nwLabelB" fill="#6d9b68" opacity="0"/>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ PROBLEM ═══════════════ -->
+<section id="problem">
+  <div class="problem-inner">
+    <div class="problem-header reveal">
+      <span class="section-label">The problem</span>
+      <h2>You're not confused about money.<br/>You're confused about which life to choose.</h2>
+      <p>You're saving, earning well, maybe ahead of schedule. But the next questions don't have obvious answers.</p>
+    </div>
+    <div class="questions-row">
+      <div class="q-card reveal rd1">
+        <div class="q-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="11" cy="11" r="8.5" stroke="#6d9b68" stroke-width="1.6"/>
+            <path d="M11 2.5C11 2.5 8.5 6 8.5 11C8.5 16 11 19.5 11 19.5M11 2.5C11 2.5 13.5 6 13.5 11C13.5 16 11 19.5 11 19.5M2.5 11H19.5" stroke="#6d9b68" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>"Can we move abroad and still keep our home here?"</h3>
+        <p>Rental income, foreign taxes, cost of living gaps. You want the honest math before you fall in love with the idea.</p>
+      </div>
+      <div class="q-card reveal rd2">
+        <div class="q-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="11" cy="7.5" r="3" stroke="#6d9b68" stroke-width="1.6"/>
+            <path d="M4.5 19C4.5 15.96 7.46 13.5 11 13.5C14.54 13.5 17.5 15.96 17.5 19" stroke="#6d9b68" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="17.5" cy="8.5" r="2" stroke="#6d9b68" stroke-width="1.4"/>
+            <path d="M19.5 14C19.5 12.6 18.6 11.5 17.5 11.5" stroke="#6d9b68" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>"What does having a baby really do to our finances over 10 years?"</h3>
+        <p>Not just the stroller. Childcare, lost income, home size, career pauses. You want the honest number.</p>
+      </div>
+      <div class="q-card reveal rd3">
+        <div class="q-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M3 16H19M4.5 19H17.5M11 3.5V5.5M5.5 5.5L6.8 6.8M16.5 5.5L15.2 6.8M3 12H3.8M19 12H18.2" stroke="#6d9b68" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M7.5 16C7.5 13.5 9.1 11.5 11 11.5C12.9 11.5 14.5 13.5 14.5 16" stroke="#6d9b68" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>"How much more do we actually need to retire early?"</h3>
+        <p>Your situation is messier than a Reddit rule of thumb. You want a real answer based on your numbers.</p>
+      </div>
+    </div>
+    <div class="problem-closer reveal">
+      These aren't questions about discipline. They're about <strong>illegibility</strong> — you can't see how the decision unfolds, so you stay frozen. <strong>Paths makes it visible.</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW ═══════════════ -->
+<section id="how">
+  <div class="how-inner">
+    <span class="section-label reveal">How it works</span>
+    <h2 class="reveal rd1">Three steps to clarity.</h2>
+    <div class="steps-row">
+      <div class="step reveal rd1">
+        <div class="step-num">1</div>
+        <h3>Connect your financial picture</h3>
+        <p>Link income, savings, investments, real estate, and debt. Your actual numbers — not guesses.</p>
+      </div>
+      <div class="step reveal rd2">
+        <div class="step-num">2</div>
+        <h3>Describe what you're weighing</h3>
+        <p>"We're thinking about Lisbon for two years." No financial jargon. Just tell us what's on your mind.</p>
+      </div>
+      <div class="step reveal rd3">
+        <div class="step-num">3</div>
+        <h3>See your paths side by side</h3>
+        <p>10-year projections with plain-language summaries. See the tradeoffs clearly enough to commit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EARNEST ═══════════════ -->
+<section id="earnest">
+  <div class="earnest-inner">
+    <span class="section-label reveal">Why Earnest</span>
+    <div class="earnest-grid">
+      <div class="earnest-copy reveal rd1">
+        <h2>We've been here for the hard moments before.</h2>
+        <p>Earnest spent a decade helping people get clarity at a pivotal transition — paying off student debt. We built tools for people who were smart, motivated, and just needed the right frame to move forward.<br/><br/><strong>Paths is what comes next.</strong> Once the foundation is solid, we help you design the life you actually want to live. We can't predict your future. But we can help you see it clearly enough to move.</p>
+      </div>
+      <div class="earnest-stats reveal rd2">
+        <div class="e-stat"><span class="big">$20B+</span><small>in student loans refinanced</small></div>
+        <div class="e-stat"><span class="big">10 yrs</span><small>helping people get unstuck</small></div>
+        <div class="e-stat"><span class="big">1 belief</span><small>financial clarity changes lives</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ WAITLIST ═══════════════ -->
+<section id="waitlist">
+  <div class="waitlist-inner">
+    <span class="section-label reveal">Get early access</span>
+    <h2 class="reveal rd1">Be first to see your paths.</h2>
+    <p class="waitlist-sub reveal rd2">Early access is limited. No spam — just a note when we're ready.</p>
+    <div class="reveal rd3">
+      <form class="wl-form" id="wlForm" novalidate>
+        <input type="email" class="wl-input" id="wlEmail" placeholder="your@email.com" autocomplete="email" required/>
+        <button type="submit" class="wl-btn">Join waitlist</button>
+      </form>
+      <p class="wl-fine">Early access is limited. No spam.</p>
+      <div class="wl-confirm" id="wlConfirm">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="21" stroke="#6d9b68" stroke-width="1.5"/>
+          <path d="M13 22.5L19 28.5L31 15" stroke="#6d9b68" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <strong>You're on the list.</strong>
+        <p>We'll reach out when Paths is ready. Keep living your life in the meantime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Paths · by Earnest</div>
+  <div>© 2026 Earnest. All rights reserved.</div>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────────
+// Scenario data
+// netWorthK: net worth in $K at each year 0–10 (grows up)
+// metrics: rows shown in compare columns
+// ─────────────────────────────────────────────────
+var SCENARIOS = {
+  abroad: {
+    message: 'See <em>exactly what that life costs</em> — and whether you\'re already closer than you think.',
+    verdictBadge: 'You can do this',
+    verdictBadgeType: 'green',
+    verdictTitle: 'Move abroad — Lisbon for 2 years',
+    readinessPct: 82,
+    readinessType: 'green',
+    statement: 'Based on a typical dual-income profile at this stage, <strong>you can rent your SF apartment, live in Lisbon for 2 years, and return to within $100K of your stay-put net worth</strong>. The rental income nearly offsets your foreign living costs. Your retirement target moves by less than 14 months. The tradeoff is real — but surprisingly manageable.',
+    colAName: 'Stay in San Francisco',
+    colBName: 'Move to Lisbon · 2 yrs',
+    pillBClass: 'pill-b-green',
+    metricsA: [
+      { label:'Net worth at Year 10', value:'$2.46M', delta:'', deltaClass:'' },
+      { label:'Monthly savings rate',  value:'$4,200', delta:'',        deltaClass:'' },
+      { label:'Early retirement age',  value:'Age 52', delta:'On track', deltaClass:'d-good' },
+      { label:'Cash buffer (liquid)',  value:'$68K',   delta:'',        deltaClass:'' },
+    ],
+    metricsB: [
+      { label:'Net worth at Year 10', value:'$2.34M', delta:'−$120K',  deltaClass:'d-warn' },
+      { label:'Monthly savings rate',  value:'$5,800', delta:'+$1,600 saved', deltaClass:'d-good' },
+      { label:'Early retirement age',  value:'Age 53', delta:'+14 months', deltaClass:'d-warn' },
+      { label:'Cash buffer (liquid)',  value:'$195K',  delta:'+$127K',  deltaClass:'d-good' },
+    ],
+    netWorthA: [420,480,548,622,704,794,893,1001,1120,1250,1390],
+    netWorthB: [420,462,510,570,638,714,800,895, 1000,1115,1240],
+    yMax: 1500
+  },
+  family: {
+    message: 'The <em>real 10-year number</em> — not the optimistic one. Childcare, career pauses, all of it.',
+    verdictBadge: 'Manageable with planning',
+    verdictBadgeType: 'amber',
+    verdictTitle: 'Start a family — first child in Year 1',
+    readinessPct: 66,
+    readinessType: 'amber',
+    statement: 'A first child in Year 1 costs roughly <strong>$28–35K per year in the early years</strong> (childcare, lost income, larger home). At a typical dual-income level, your net worth growth slows but doesn\'t reverse — you\'re still building. <strong>The gap vs. staying childless closes significantly by Year 7</strong> as childcare costs taper. The financial case is fine. The question is readiness, not viability.',
+    colAName: 'No kids · current plan',
+    colBName: 'First child in Year 1',
+    pillBClass: 'pill-b-amber',
+    metricsA: [
+      { label:'Net worth at Year 10', value:'$2.46M', delta:'',        deltaClass:'' },
+      { label:'Childcare annual cost', value:'$0',    delta:'',        deltaClass:'' },
+      { label:'Career pause impact',  value:'None',   delta:'',        deltaClass:'' },
+      { label:'Savings rate',         value:'$4,200/mo', delta:'',    deltaClass:'' },
+    ],
+    metricsB: [
+      { label:'Net worth at Year 10', value:'$2.09M', delta:'−$370K',  deltaClass:'d-cost' },
+      { label:'Childcare annual cost', value:'$32K',  delta:'Yrs 1–6', deltaClass:'d-warn' },
+      { label:'Career pause impact',  value:'−$85K',  delta:'Over 5 yrs', deltaClass:'d-cost' },
+      { label:'Savings rate',         value:'$1,900/mo', delta:'−$2,300', deltaClass:'d-warn' },
+    ],
+    netWorthA: [420,480,548,622,704,794,893,1001,1120,1250,1390],
+    netWorthB: [420,445,468,498,536,582,638,706, 790, 894, 1010],
+    yMax: 1500
+  },
+  retire: {
+    message: '<em>How far are you, really?</em> Let\'s find the number — based on your life, not a Reddit formula.',
+    verdictBadge: 'Closer than you think',
+    verdictBadgeType: 'green',
+    verdictTitle: 'Early retirement — current pace vs. optimised',
+    readinessPct: 74,
+    readinessType: 'green',
+    statement: 'At the current savings pace, <strong>retirement at 55 is fully funded</strong>. But with a targeted 15% increase in retirement contributions and one lifestyle adjustment (housing downsize or income side), <strong>that moves to 51 — four years of your life back</strong>. You\'re not waiting on income. You\'re waiting on a decision.',
+    colAName: 'Current savings pace',
+    colBName: 'Optimised · retire at 51',
+    pillBClass: 'pill-b-green',
+    metricsA: [
+      { label:'Projected retirement age', value:'Age 55', delta:'On current pace', deltaClass:'d-neutral' },
+      { label:'Portfolio at retirement',  value:'$2.8M',  delta:'',               deltaClass:'' },
+      { label:'Monthly surplus (today)', value:'$3,400',  delta:'',               deltaClass:'' },
+      { label:'Safe withdrawal / mo',    value:'$9,300',  delta:'at 4% rule',     deltaClass:'d-neutral' },
+    ],
+    metricsB: [
+      { label:'Projected retirement age', value:'Age 51', delta:'4 yrs earlier',  deltaClass:'d-good' },
+      { label:'Portfolio at retirement',  value:'$2.6M',  delta:'−$200K',         deltaClass:'d-warn' },
+      { label:'Extra savings needed',    value:'$1,100/mo', delta:'vs. today',   deltaClass:'d-warn' },
+      { label:'Safe withdrawal / mo',    value:'$8,600',  delta:'at 4% rule',     deltaClass:'d-neutral' },
+    ],
+    netWorthA: [420,492,572,660,758,867,988,1123,1272,1437,1620],
+    netWorthB: [420,510,612,728,860,1008,1176,1368,1587,1836,2118],
+    yMax: 2200
+  },
+  custom: {
+    message: 'Tell us what\'s on your mind. <em>We\'ll model it.</em>',
+    verdictBadge: 'Needs your numbers',
+    verdictBadgeType: 'neutral',
+    verdictTitle: 'Custom scenario',
+    readinessPct: 0,
+    readinessType: 'neutral',
+    statement: 'This is where Paths earns its keep. Connect your real financial picture — income, savings, real estate, investments — and describe what you\'re weighing. <strong>We\'ll model it in plain language</strong>, no spreadsheet required. The verdict you see here will be built from your actual numbers.',
+    colAName: 'Your current path',
+    colBName: 'Your new scenario',
+    pillBClass: 'pill-b-green',
+    metricsA: [
+      { label:'Net worth (projected)', value:'Your data', delta:'', deltaClass:'' },
+      { label:'Monthly savings',      value:'Your data', delta:'', deltaClass:'' },
+      { label:'Key milestone',        value:'Your data', delta:'', deltaClass:'' },
+      { label:'Flexibility index',    value:'Your data', delta:'', deltaClass:'' },
+    ],
+    metricsB: [
+      { label:'Net worth (projected)', value:'After model', delta:'vs. Path A', deltaClass:'d-neutral' },
+      { label:'Monthly savings',      value:'After model', delta:'',            deltaClass:'' },
+      { label:'Key milestone',        value:'After model', delta:'',            deltaClass:'' },
+      { label:'Flexibility index',    value:'After model', delta:'',            deltaClass:'' },
+    ],
+    netWorthA: [420,476,540,611,690,779,879,990,1114,1251,1403],
+    netWorthB: [420,485,558,641,735,842,963,1100,1254,1427,1620],
+    yMax: 1800
+  }
+};
+
+var selected = null;
+
+// ─── chart helpers ───
+var NW_XS = [100,248,296,344,420,496,544,592,720,764,898];
+// Actually evenly space all 11 points from x=100 to x=898
+NW_XS = (function(){
+  var xs=[], start=100, end=898;
+  for(var i=0;i<11;i++) xs.push(Math.round(start + (end-start)*(i/10)));
+  return xs;
+})();
+
+function toNWSVG(vals, yMax) {
+  var YTOP=10, YBOT=168;
+  return vals.map(function(v,i){
+    var y = YBOT - ((v/yMax)*(YBOT-YTOP));
+    return [NW_XS[i], Math.max(YTOP, Math.min(YBOT, y))];
+  });
+}
+function buildLinePath(coords){
+  return coords.map(function(p,i){ return (i===0?'M':'L')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join(' ');
+}
+function buildAreaPath(coords){
+  var d = buildLinePath(coords);
+  return d+' L'+coords[coords.length-1][0].toFixed(1)+' 168 L'+coords[0][0].toFixed(1)+' 168 Z';
+}
+function fmtK(k){
+  if(k>=1000) return '$'+(k/1000).toFixed(k%1000===0?0:1)+'M';
+  return '$'+k+'K';
+}
+
+function drawNWChart(scenario) {
+  var d = SCENARIOS[scenario];
+  var cA = toNWSVG(d.netWorthA, d.yMax);
+  var cB = toNWSVG(d.netWorthB, d.yMax);
+
+  document.getElementById('nwAreaA').setAttribute('d', buildAreaPath(cA));
+  document.getElementById('nwAreaB').setAttribute('d', buildAreaPath(cB));
+
+  var la = document.getElementById('nwLineA');
+  var lb = document.getElementById('nwLineB');
+  la.setAttribute('d', buildLinePath(cA));
+  lb.setAttribute('d', buildLinePath(cB));
+  la.classList.remove('drawing'); lb.classList.remove('drawing');
+  void la.offsetWidth; void lb.offsetWidth;
+  la.classList.add('drawing'); lb.classList.add('drawing');
+
+  // end dots + labels
+  var endA = cA[cA.length-1], endB = cB[cB.length-1];
+  var dotA = document.getElementById('nwDotA'), dotB = document.getElementById('nwDotB');
+  var lblA = document.getElementById('nwLabelA'), lblB = document.getElementById('nwLabelB');
+  dotA.setAttribute('cx', endA[0]); dotA.setAttribute('cy', endA[1]);
+  dotB.setAttribute('cx', endB[0]); dotB.setAttribute('cy', endB[1]);
+  var aAbove = endA[1] < endB[1];
+  lblA.setAttribute('x', endA[0]+8); lblA.setAttribute('y', endA[1]+(aAbove?-6:14));
+  lblB.setAttribute('x', endB[0]+8); lblB.setAttribute('y', endB[1]+(aAbove?14:-6));
+  lblA.textContent = fmtK(d.netWorthA[10]);
+  lblB.textContent = fmtK(d.netWorthB[10]);
+  [dotA, dotB, lblA, lblB].forEach(function(el){ el.setAttribute('opacity','0'); });
+  setTimeout(function(){
+    [dotA, dotB, lblA, lblB].forEach(function(el){ el.setAttribute('opacity','1'); });
+  }, 2100);
+
+  // y-axis labels
+  var yg = document.getElementById('nwYLabels'); yg.innerHTML='';
+  var ticks=[0,.33,.67,1];
+  ticks.forEach(function(t){
+    var val = Math.round(d.yMax * t / 50)*50;
+    var y = 168 - t*(168-10);
+    var txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('class','nw-axis-label');
+    txt.setAttribute('x','56'); txt.setAttribute('y', y+4);
+    txt.setAttribute('text-anchor','end');
+    txt.textContent = fmtK(val);
+    yg.appendChild(txt);
+  });
+}
+
+function buildMetricsHTML(rows) {
+  return rows.map(function(r){
+    return '<div class="cm-row"><div class="cm-left"><span class="cm-label">'+r.label+'</span><span class="cm-value">'+r.value+'</span></div>'
+      + (r.delta ? '<span class="cm-delta '+r.deltaClass+'">'+r.delta+'</span>' : '')
+      + '</div>';
+  }).join('');
+}
+
+function renderVerdict(scenario) {
+  var d = SCENARIOS[scenario];
+  var idle = document.getElementById('verdictIdle');
+  var active = document.getElementById('verdictActive');
+  idle.style.display = 'none';
+  active.classList.add('shown');
+
+  var badge = document.getElementById('verdictBadge');
+  badge.textContent = d.verdictBadge;
+  badge.className = 'verdict-badge badge-'+d.verdictBadgeType;
+
+  document.getElementById('verdictTitle').textContent = d.verdictTitle;
+  document.getElementById('verdictStatement').innerHTML = d.statement;
+
+  var fill = document.getElementById('verdictMeterFill');
+  fill.className = 'verdict-meter-fill fill-'+d.readinessType;
+  fill.style.width = '0';
+  setTimeout(function(){ fill.style.width = d.readinessPct+'%'; }, 120);
+  document.getElementById('verdictMeterPct').textContent = d.readinessPct ? d.readinessPct+'%' : '—';
+}
+
+function renderCompare(scenario) {
+  var d = SCENARIOS[scenario];
+  document.getElementById('comparePlaceholder').style.display = 'none';
+  document.getElementById('compareCols').style.display = 'grid';
+  document.getElementById('colAName').textContent = d.colAName;
+  document.getElementById('colBName').textContent = d.colBName;
+  var pillB = document.getElementById('pillB');
+  pillB.className = 'path-pill pill-b '+d.pillBClass;
+  document.getElementById('metricsA').innerHTML = buildMetricsHTML(d.metricsA);
+  document.getElementById('metricsB').innerHTML = buildMetricsHTML(d.metricsB);
+}
+
+function selectScenario(card) {
+  var scenario = card.getAttribute('data-scenario');
+  if (selected === scenario) return;
+  selected = scenario;
+
+  document.querySelectorAll('.sc-card').forEach(function(c){
+    c.classList.remove('active'); c.setAttribute('aria-pressed','false');
+  });
+  card.classList.add('active'); card.setAttribute('aria-pressed','true');
+
+  if (scenario === 'custom') {
+    setTimeout(function(){ document.getElementById('customInput').focus(); }, 80);
+  }
+
+  var msgEl = document.getElementById('heroMessage');
+  msgEl.classList.add('switching');
+  var d = SCENARIOS[scenario];
+  setTimeout(function(){
+    msgEl.innerHTML = '<p class="hero-msg-text">'+d.message+'</p>';
+    msgEl.classList.remove('switching');
+  }, 200);
+
+  document.getElementById('heroCta').classList.add('visible');
+  renderVerdict(scenario);
+  renderCompare(scenario);
+  drawNWChart(scenario);
+}
+
+document.querySelectorAll('.sc-card').forEach(function(card){
+  card.addEventListener('click', function(e){
+    if (e.target.tagName === 'INPUT') return;
+    selectScenario(card);
+  });
+  card.addEventListener('keydown', function(e){
+    if (e.key==='Enter'||e.key===' '){ e.preventDefault(); selectScenario(card); }
+  });
+});
+
+window.addEventListener('scroll', function(){
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+},{passive:true});
+
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  },{threshold:.1});
+  els.forEach(function(el){ io.observe(el); });
+})();
+
+(function(){
+  var form=document.getElementById('wlForm'), conf=document.getElementById('wlConfirm'),
+      inp=document.getElementById('wlEmail'), fine=document.querySelector('.wl-fine');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=inp.value.trim();
+    if(!v||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ inp.style.borderColor='#b06060'; inp.focus(); return; }
+    form.style.display='none'; fine.style.display='none'; conf.style.display='block';
+  });
+  inp.addEventListener('input',function(){ inp.style.borderColor=''; });
+})();
+
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(this.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+</script>
+</body>
+</html>

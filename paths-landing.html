@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paths, by Earnest — See your life before you live it</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:       #8fa88a;
+      --sage-light: #c8d9c4;
+      --sage-pale:  #edf2ec;
+      --warm-white: #faf8f5;
+      --cream:      #f2ede6;
+      --slate:      #3d4a4a;
+      --slate-mid:  #5c6b6b;
+      --slate-light:#8a9898;
+      --ink:        #1e2828;
+      --amber:      #c9955a;
+      --amber-pale: #f5e8d8;
+      --radius:     14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(250, 248, 245, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(143,168,138,0.18);
+    }
+    .nav-logo {
+      font-size: 1.05rem; font-weight: 600; color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .nav-logo span { color: var(--sage); }
+    .nav-cta {
+      font-size: 0.875rem; font-weight: 600;
+      padding: 9px 22px;
+      background: var(--ink); color: var(--warm-white);
+      border: none; border-radius: 40px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--slate); transform: translateY(-1px); }
+
+    /* ── SECTIONS ── */
+    section { padding: 96px 40px; }
+    .container { max-width: 880px; margin: 0 auto; }
+    .container-wide { max-width: 1080px; margin: 0 auto; }
+
+    /* ── HERO ── */
+    #hero {
+      padding: 120px 40px 100px;
+      background: linear-gradient(160deg, var(--warm-white) 55%, var(--sage-pale) 100%);
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--sage);
+      background: var(--sage-pale); border: 1px solid var(--sage-light);
+      padding: 5px 14px; border-radius: 40px;
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700; line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 22px;
+    }
+    h1 em { font-style: normal; color: var(--sage); }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--slate-mid); max-width: 560px;
+      margin: 0 auto 40px; line-height: 1.65;
+    }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      font-size: 1rem; font-weight: 600;
+      padding: 15px 34px;
+      background: var(--ink); color: var(--warm-white);
+      border: none; border-radius: 50px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(30,40,40,0.15);
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--slate); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30,40,40,0.18); }
+    .btn-secondary {
+      font-size: 1rem; font-weight: 500;
+      padding: 15px 28px;
+      background: transparent; color: var(--slate);
+      border: 1.5px solid rgba(92,107,107,0.35); border-radius: 50px;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { border-color: var(--slate); color: var(--ink); }
+
+    .hero-fork {
+      margin-top: 68px;
+      display: flex; justify-content: center;
+    }
+    .fork-visual {
+      position: relative; width: 340px; height: 180px;
+    }
+    .fork-visual svg { width: 100%; height: 100%; }
+
+    /* ── PROBLEM ── */
+    #problem { background: var(--cream); }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: 18px;
+    }
+    h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+      font-weight: 700; line-height: 1.22;
+      letter-spacing: -0.025em; color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .section-intro {
+      font-size: 1.05rem; color: var(--slate-mid);
+      max-width: 580px; margin-bottom: 52px;
+    }
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .question-card {
+      background: var(--warm-white);
+      border-radius: var(--radius);
+      padding: 28px 26px;
+      border-left: 3px solid var(--sage);
+      box-shadow: 0 2px 12px rgba(30,40,40,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .question-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(30,40,40,0.1); }
+    .q-icon { font-size: 1.5rem; margin-bottom: 14px; }
+    .question-card p {
+      font-size: 1rem; font-weight: 500; color: var(--ink);
+      line-height: 1.5; margin-bottom: 10px;
+    }
+    .question-card small {
+      font-size: 0.85rem; color: var(--slate-mid); line-height: 1.5;
+    }
+    .problem-closer {
+      margin-top: 44px;
+      font-size: 1.1rem; color: var(--slate-mid);
+      max-width: 600px; font-style: italic; line-height: 1.7;
+    }
+    .problem-closer strong { color: var(--ink); font-style: normal; }
+
+    /* ── HOW IT WORKS ── */
+    #how { background: var(--warm-white); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 36px; margin-top: 48px; }
+    .step { position: relative; }
+    .step-number {
+      width: 44px; height: 44px;
+      background: var(--sage-pale); border: 2px solid var(--sage-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; font-weight: 700; color: var(--sage);
+      margin-bottom: 18px;
+    }
+    .step-icon {
+      font-size: 1.6rem; margin-bottom: 14px;
+    }
+    .step h3 {
+      font-size: 1.05rem; font-weight: 700; color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .step p { font-size: 0.93rem; color: var(--slate-mid); line-height: 1.65; }
+    .step-connector {
+      display: none;
+    }
+    @media (min-width: 700px) {
+      .steps { position: relative; }
+    }
+
+    /* ── SHOWCASE ── */
+    #showcase {
+      background: linear-gradient(170deg, var(--sage-pale) 0%, var(--cream) 100%);
+      padding: 96px 24px;
+    }
+    .showcase-header { text-align: center; margin-bottom: 52px; }
+    .paths-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .path-card {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 36px rgba(30,40,40,0.1);
+    }
+    .path-header {
+      padding: 18px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .path-a .path-header { background: var(--ink); color: white; }
+    .path-b .path-header { background: var(--sage); color: white; }
+    .path-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; opacity: 0.7;
+    }
+    .path-title {
+      font-size: 1rem; font-weight: 700;
+    }
+    .path-tag {
+      font-size: 0.72rem; font-weight: 600;
+      padding: 4px 10px; border-radius: 20px;
+      background: rgba(255,255,255,0.18); color: white;
+    }
+    .path-body { padding: 24px; }
+    .path-scenario {
+      font-size: 0.82rem; color: var(--slate-mid); margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .projection-bars { margin-bottom: 20px; }
+    .bar-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .bar-label {
+      font-size: 0.75rem; color: var(--slate-mid); width: 88px; flex-shrink: 0;
+    }
+    .bar-track {
+      flex: 1; height: 8px; background: var(--cream); border-radius: 4px; overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%; border-radius: 4px;
+      transition: width 1s ease;
+    }
+    .path-a .bar-fill { background: var(--ink); }
+    .path-b .bar-fill { background: var(--sage); }
+    .bar-value {
+      font-size: 0.78rem; font-weight: 600; color: var(--ink); width: 52px; text-align: right; flex-shrink: 0;
+    }
+
+    .path-stat-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
+    }
+    .path-stat {
+      background: var(--warm-white); border-radius: 10px; padding: 12px 14px;
+    }
+    .path-stat .stat-label {
+      font-size: 0.72rem; color: var(--slate-mid); margin-bottom: 4px;
+    }
+    .path-stat .stat-val {
+      font-size: 1.05rem; font-weight: 700; color: var(--ink);
+    }
+    .path-stat .stat-delta {
+      font-size: 0.72rem; font-weight: 600; margin-top: 2px;
+    }
+    .delta-pos { color: #5a9e72; }
+    .delta-neg { color: #c97070; }
+
+    .path-narrative {
+      font-size: 0.84rem; color: var(--slate-mid);
+      line-height: 1.7;
+      padding-top: 16px;
+      border-top: 1px solid var(--cream);
+    }
+    .path-narrative strong { color: var(--ink); }
+
+    .showcase-note {
+      text-align: center; margin-top: 28px;
+      font-size: 0.82rem; color: var(--slate-light);
+    }
+
+    /* ── WHY EARNEST ── */
+    #earnest { background: var(--ink); color: var(--warm-white); }
+    #earnest .section-label { color: var(--sage-light); }
+    #earnest h2 { color: var(--warm-white); }
+    .earnest-body {
+      max-width: 640px;
+      font-size: 1.05rem; color: rgba(250,248,245,0.72);
+      line-height: 1.8;
+    }
+    .earnest-body strong { color: var(--warm-white); }
+    .earnest-stat-row {
+      display: flex; gap: 40px; margin-top: 44px; flex-wrap: wrap;
+    }
+    .earnest-stat .big {
+      font-size: 2.2rem; font-weight: 700; color: var(--sage-light);
+      letter-spacing: -0.02em; display: block;
+    }
+    .earnest-stat small {
+      font-size: 0.85rem; color: rgba(250,248,245,0.55);
+    }
+
+    /* ── WAITLIST ── */
+    #waitlist {
+      background: var(--warm-white);
+      text-align: center;
+    }
+    #waitlist h2 { margin-bottom: 12px; }
+    .waitlist-sub { font-size: 1.05rem; color: var(--slate-mid); margin-bottom: 40px; }
+    .waitlist-form-wrap {
+      max-width: 460px; margin: 0 auto;
+    }
+    .waitlist-form {
+      display: flex; gap: 10px;
+    }
+    .waitlist-input {
+      flex: 1;
+      font-family: inherit; font-size: 0.95rem;
+      padding: 14px 20px;
+      border: 1.5px solid rgba(92,107,107,0.25);
+      border-radius: 50px; outline: none;
+      background: white; color: var(--ink);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .waitlist-input:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 3px rgba(143,168,138,0.15);
+    }
+    .waitlist-submit {
+      font-family: inherit; font-size: 0.95rem; font-weight: 600;
+      padding: 14px 26px;
+      background: var(--ink); color: var(--warm-white);
+      border: none; border-radius: 50px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .waitlist-submit:hover { background: var(--slate); transform: translateY(-1px); }
+    .waitlist-fine {
+      font-size: 0.78rem; color: var(--slate-light); margin-top: 14px;
+    }
+    .waitlist-confirm {
+      display: none;
+      background: var(--sage-pale); border: 1px solid var(--sage-light);
+      border-radius: var(--radius); padding: 20px 28px;
+      font-size: 0.95rem; color: var(--slate);
+    }
+    .waitlist-confirm .confirm-check {
+      font-size: 1.6rem; margin-bottom: 8px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 36px 40px;
+      background: var(--ink); color: rgba(250,248,245,0.4);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.8rem; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-weight: 600; color: rgba(250,248,245,0.6); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      section { padding: 72px 20px; }
+      #hero { padding: 80px 20px 72px; }
+      .paths-compare { grid-template-columns: 1fr; }
+      .waitlist-form { flex-direction: column; }
+      .waitlist-submit { width: 100%; }
+      .earnest-stat-row { gap: 28px; }
+      footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ── SUBTLE ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.22s; }
+    .delay-3 { animation-delay: 0.34s; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Paths <span>·</span> by Earnest</div>
+  <a href="#waitlist" class="nav-cta">Join the waitlist</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-eyebrow fade-up">Now in private beta</div>
+    <h1 class="fade-up delay-1">See your life<br/><em>before you live it.</em></h1>
+    <p class="hero-sub fade-up delay-2">
+      Paths shows you what your financial future actually looks like — across the big decisions you're afraid to make. Not a budget tracker. A life planner.
+    </p>
+    <div class="cta-row fade-up delay-3">
+      <a href="#waitlist" class="btn-primary">Join the waitlist</a>
+      <a href="#how" class="btn-secondary">See how it works</a>
+    </div>
+    <div class="hero-fork fade-up delay-3">
+      <div class="fork-visual">
+        <svg viewBox="0 0 340 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- trunk -->
+          <path d="M170 160 L170 90" stroke="#3d4a4a" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- left path -->
+          <path d="M170 90 C170 70, 100 65, 60 30" stroke="#8fa88a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3"/>
+          <!-- right path -->
+          <path d="M170 90 C170 70, 240 65, 280 30" stroke="#c9955a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3"/>
+          <!-- left node -->
+          <circle cx="60" cy="28" r="14" fill="#edf2ec" stroke="#8fa88a" stroke-width="2"/>
+          <text x="60" y="32" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#3d4a4a">A</text>
+          <!-- right node -->
+          <circle cx="280" cy="28" r="14" fill="#f5e8d8" stroke="#c9955a" stroke-width="2"/>
+          <text x="280" y="32" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="#3d4a4a">B</text>
+          <!-- labels -->
+          <text x="30" y="56" font-family="Plus Jakarta Sans, sans-serif" font-size="9.5" fill="#5c6b6b">Stay in the city</text>
+          <text x="248" y="56" font-family="Plus Jakarta Sans, sans-serif" font-size="9.5" fill="#5c6b6b">Move abroad</text>
+          <!-- base label -->
+          <text x="170" y="175" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="10" fill="#8a9898">Today</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <p class="section-label">The problem</p>
+    <h2>You're not confused about money.<br/>You're confused about which life to choose.</h2>
+    <p class="section-intro">
+      You've done the hard part — you're saving, earning well, maybe even ahead of schedule. But the next set of questions don't have obvious answers.
+    </p>
+    <div class="questions-grid">
+      <div class="question-card">
+        <div class="q-icon">🌍</div>
+        <p>"Can we actually move to another country and keep our home here?"</p>
+        <small>The spreadsheet gets complicated fast — rental income, foreign taxes, cost of living gaps. You want to know if it even makes sense before you fall in love with the idea.</small>
+      </div>
+      <div class="question-card">
+        <div class="q-icon">👶</div>
+        <p>"What does having a baby do to our finances over the next 10 years?"</p>
+        <small>Not just the stroller. Childcare, lost income, school decisions, home size, career pauses. You want the honest number, not the optimistic one.</small>
+      </div>
+      <div class="question-card">
+        <div class="q-icon">🏖️</div>
+        <p>"How much more do we need to actually retire early?"</p>
+        <small>You've heard about FIRE but your situation is messier — equity, mortgage, maybe kids. You want a real answer, not a rule of thumb from Reddit.</small>
+      </div>
+    </div>
+    <p class="problem-closer">
+      These aren't questions about discipline. They're questions about <strong>illegibility</strong> — you can't see how the decision unfolds over time, so you stay frozen. Paths makes it visible.
+    </p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <p class="section-label">How it works</p>
+    <h2>Three steps to seeing clearly.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">🔗</div>
+        <div class="step-number">1</div>
+        <h3>Connect your financial picture</h3>
+        <p>Link income, savings, investments, real estate, and any debt. Paths builds a complete model of where you stand today — not a guess, your actual numbers.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🤔</div>
+        <div class="step-number">2</div>
+        <h3>Describe the decisions you're weighing</h3>
+        <p>Tell Paths what's on your mind: "We're thinking about moving to Lisbon for two years" or "We want to have our first kid in the next 18 months." No financial jargon needed.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🛤️</div>
+        <div class="step-number">3</div>
+        <h3>See your paths side by side</h3>
+        <p>Paths models each scenario across 10 years — with plain-language summaries, not just charts. You see the tradeoffs clearly enough to actually commit to a direction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section id="showcase">
+  <div class="container-wide">
+    <div class="showcase-header">
+      <p class="section-label">Product preview</p>
+      <h2>Two futures, side by side.</h2>
+      <p style="color: var(--slate-mid); font-size: 1rem; max-width: 500px; margin: 0 auto;">
+        Here's what Paths looks like when you're deciding whether to move abroad or stay put.
+      </p>
+    </div>
+    <div class="paths-compare">
+      <!-- PATH A -->
+      <div class="path-card path-a">
+        <div class="path-header">
+          <div>
+            <div class="path-label">Path A</div>
+            <div class="path-title">Stay in San Francisco</div>
+          </div>
+          <div class="path-tag">Current plan</div>
+        </div>
+        <div class="path-body">
+          <p class="path-scenario">Keep your roles, keep your apartment, continue accelerating retirement contributions. No major disruptions.</p>
+
+          <div class="projection-bars">
+            <div class="bar-row">
+              <span class="bar-label">Net worth</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 82%"></div></div>
+              <span class="bar-value">$2.4M</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Liquid savings</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 68%"></div></div>
+              <span class="bar-value">$480K</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Home equity</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 74%"></div></div>
+              <span class="bar-value">$890K</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Retirement</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 76%"></div></div>
+              <span class="bar-value">$1.1M</span>
+            </div>
+          </div>
+          <div class="path-stat-row">
+            <div class="path-stat">
+              <div class="stat-label">Early retirement</div>
+              <div class="stat-val">Age 52</div>
+              <div class="stat-delta delta-pos">On track</div>
+            </div>
+            <div class="path-stat">
+              <div class="stat-label">Monthly runway</div>
+              <div class="stat-val">34 yrs</div>
+              <div class="stat-delta delta-pos">&#43;2 vs target</div>
+            </div>
+          </div>
+          <p class="path-narrative">
+            <strong>The picture:</strong> Stable and predictable. By 52 you've hit your retirement number with a modest buffer. Career growth is steady but the high cost of living means less flexibility for one-off decisions. You'll feel secure but structured.
+          </p>
+        </div>
+      </div>
+      <!-- PATH B -->
+      <div class="path-card path-b">
+        <div class="path-header">
+          <div>
+            <div class="path-label">Path B</div>
+            <div class="path-title">Move to Lisbon — 2 years</div>
+          </div>
+          <div class="path-tag">What if?</div>
+        </div>
+        <div class="path-body">
+          <p class="path-scenario">Rent your SF apartment, work remotely for 2 years, dramatically cut cost of living. Return to SF or reassess after year two.</p>
+
+          <div class="projection-bars">
+            <div class="bar-row">
+              <span class="bar-label">Net worth</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 80%"></div></div>
+              <span class="bar-value">$2.3M</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Liquid savings</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 88%"></div></div>
+              <span class="bar-value">$630K</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Home equity</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 74%"></div></div>
+              <span class="bar-value">$895K</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Retirement</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 68%"></div></div>
+              <span class="bar-value">$970K</span>
+            </div>
+          </div>
+          <div class="path-stat-row">
+            <div class="path-stat">
+              <div class="stat-label">Early retirement</div>
+              <div class="stat-val">Age 53</div>
+              <div class="stat-delta delta-neg">1 yr later</div>
+            </div>
+            <div class="path-stat">
+              <div class="stat-label">Monthly runway</div>
+              <div class="stat-val">32 yrs</div>
+              <div class="stat-delta delta-neg">Within range</div>
+            </div>
+          </div>
+          <p class="path-narrative">
+            <strong>The picture:</strong> Net worth lands nearly identical — the rental income offsets Lisbon costs. You retire one year later, but arrive at that point with <strong>$150K more in liquid savings</strong> and two years of life experience. The tradeoff is real but surprisingly small.
+          </p>
+        </div>
+      </div>
+    </div>
+    <p class="showcase-note">Illustrative scenarios using placeholder data. Your Paths will reflect your actual financial picture.</p>
+  </div>
+</section>
+
+<!-- WHY EARNEST -->
+<section id="earnest">
+  <div class="container">
+    <p class="section-label">Why Earnest</p>
+    <h2>We've been here for the hard money moments before.</h2>
+    <p class="earnest-body">
+      Earnest has spent a decade helping people get financial clarity at a pivotal transition — paying off student debt. We built tools for people who were smart, motivated, and just needed the right frame to move forward. <strong>Paths is what comes next:</strong> once the debt is gone and the foundation is solid, we help you design the life you actually want to live. We're not going to pretend we can predict your future. But we can help you see it clearly enough to move.
+    </p>
+    <div class="earnest-stat-row">
+      <div class="earnest-stat">
+        <span class="big">$20B+</span>
+        <small>in student loans refinanced</small>
+      </div>
+      <div class="earnest-stat">
+        <span class="big">10 yrs</span>
+        <small>helping people get unstuck</small>
+      </div>
+      <div class="earnest-stat">
+        <span class="big">1 belief</span>
+        <small>financial clarity changes lives</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section id="waitlist">
+  <div class="container">
+    <p class="section-label">Get early access</p>
+    <h2>Be first to see your paths.</h2>
+    <p class="waitlist-sub">Early access is limited. No spam, no pressure — just a note when we're ready for you.</p>
+    <div class="waitlist-form-wrap">
+      <form class="waitlist-form" id="waitlistForm" novalidate>
+        <input
+          type="email"
+          class="waitlist-input"
+          id="waitlistEmail"
+          placeholder="your@email.com"
+          autocomplete="email"
+          required
+        />
+        <button type="submit" class="waitlist-submit">Join waitlist</button>
+      </form>
+      <p class="waitlist-fine">Early access is limited. No spam.</p>
+      <div class="waitlist-confirm" id="waitlistConfirm">
+        <div class="confirm-check">✓</div>
+        <strong>You're on the list.</strong><br/>
+        We'll reach out when Paths is ready for early access. Keep living your life in the meantime.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Paths · by Earnest</div>
+  <div>© 2026 Earnest. All rights reserved.</div>
+</footer>
+
+<script>
+  // Waitlist form
+  const form = document.getElementById('waitlistForm');
+  const confirm = document.getElementById('waitlistConfirm');
+  const emailInput = document.getElementById('waitlistEmail');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const val = emailInput.value.trim();
+    if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      emailInput.style.borderColor = '#c97070';
+      emailInput.focus();
+      return;
+    }
+    form.style.display = 'none';
+    document.querySelector('.waitlist-fine').style.display = 'none';
+    confirm.style.display = 'block';
+  });
+
+  emailInput.addEventListener('input', function() {
+    emailInput.style.borderColor = '';
+  });
+
+  // Smooth scroll for nav CTA
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Animate bars when showcase enters viewport
+  const bars = document.querySelectorAll('.bar-fill');
+  const widths = [];
+  bars.forEach(function(bar) { widths.push(bar.style.width); bar.style.width = '0'; });
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        bars.forEach(function(bar, i) {
+          setTimeout(function() { bar.style.width = widths[i]; }, i * 60);
+        });
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const showcase = document.getElementById('showcase');
+  if (showcase) observer.observe(showcase);
+</script>
+</body>
+</html>

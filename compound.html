@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compound — Your 2025 in Money</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--expo:cubic-bezier(0.16,1,0.3,1)}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#000;touch-action:pan-y}
+#slideshow{display:flex;width:100%;height:100%;transition:transform 420ms var(--expo);will-change:transform}
+.card{min-width:100vw;height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:56px 40px 72px}
+.card-num{position:absolute;top:22px;right:22px;font-size:12px;color:rgba(255,255,255,0.35);z-index:10;font-family:'DM Sans',sans-serif}
+.lbl{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:14px;font-family:'DM Sans',sans-serif}
+.fade-up{opacity:0;transform:translateY(22px);transition:opacity 0.55s ease,transform 0.55s ease}
+.fade-up.in{opacity:1;transform:translateY(0)}
+
+/* nav */
+.arr{position:fixed;top:50%;transform:translateY(-50%);background:none;border:1.5px solid rgba(255,255,255,0.25);border-radius:50%;width:42px;height:42px;color:#fff;font-size:17px;cursor:pointer;z-index:200;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.arr:hover{background:rgba(255,255,255,0.1)}
+#prev{left:14px}#next{right:14px}
+#dots{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:200}
+.dot{width:7px;height:7px;border-radius:50%;background:none;border:1.5px solid rgba(255,255,255,0.5);cursor:pointer;transition:background .2s,transform .2s}
+.dot.on{background:#fff;border-color:#fff;transform:scale(1.25)}
+#abtn{position:fixed;bottom:20px;right:18px;font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,0.4);background:none;border:1px solid rgba(255,255,255,0.18);border-radius:20px;padding:4px 11px;cursor:pointer;z-index:200;letter-spacing:.07em;text-transform:uppercase;transition:color .2s,border-color .2s}
+#abtn.on{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.6)}
+
+/* ── C1 opening ── */
+#c1{background:#0a0618}
+#c1 canvas{position:absolute;inset:0;width:100%;height:100%}
+#c1 .yr{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(90px,22vw,220px);color:#fff;line-height:.85;letter-spacing:-.03em;position:relative;z-index:1}
+#c1 .sub{font-size:clamp(15px,2.2vw,20px);color:rgba(255,255,255,.8);margin-top:18px;position:relative;z-index:1}
+.shimmer{width:0;height:2px;background:linear-gradient(90deg,transparent,#f5c842,transparent);border-radius:2px;margin-top:28px;position:relative;z-index:1;animation:shim 2.2s .7s ease-out forwards}
+@keyframes shim{to{width:min(260px,55vw)}}
+
+/* ── C2 top spend ── */
+#c2{background:linear-gradient(145deg,#1a0800 0%,#7a1500 50%,#ff4500 100%)}
+#c2 .donut-wrap{position:relative;width:min(300px,70vw);height:min(300px,70vw);margin:0 auto 8px}
+#c2 .donut-wrap svg{width:100%;height:100%}
+#c2 .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#c2 .dn{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,6vw,52px);color:#fff;line-height:1}
+#c2 .dc{font-size:13px;color:rgba(255,255,255,.65);margin-top:3px}
+#c2 .cat{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(22px,4.5vw,38px);color:#fff;margin-top:6px}
+#c2 .tag{font-style:italic;color:rgba(255,255,255,.6);font-size:15px;margin-top:6px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;margin-top:12px;max-width:340px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.7)}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── C3 best month ── */
+#c3{background:linear-gradient(160deg,#001a12 0%,#003828 55%,#006644 100%)}
+#c3 .chart-area{width:100%;max-width:480px;flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+.bars-wrap{display:flex;align-items:flex-end;gap:5px;height:clamp(140px,28vh,220px);width:100%;padding:0 4px}
+.b{flex:1;border-radius:4px 4px 0 0;transform-origin:bottom;transform:scaleY(0);transition:transform .7s var(--expo);position:relative}
+.b.hi{background:#7fffd4;box-shadow:0 0 18px rgba(127,255,212,.6)}
+.b:not(.hi){background:rgba(255,255,255,.18)}
+.b.go{transform:scaleY(1)}
+.month-labels{display:flex;gap:5px;padding:6px 4px 0;width:100%}
+.ml{flex:1;font-size:8px;color:rgba(255,255,255,.35);text-align:center;font-family:'DM Sans',sans-serif}
+.ml.hi{color:#7fffd4;font-weight:700}
+#c3 .mname{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(52px,12vw,100px);color:#fff;margin-top:8px;line-height:1}
+#c3 .msaved{font-size:clamp(15px,2.2vw,19px);color:rgba(255,255,255,.85);margin-top:6px}
+#c3 .mclick{font-style:italic;color:#7fffd4;margin-top:4px;font-size:15px}
+
+/* ── C4 net worth ── */
+#c4{background:linear-gradient(145deg,#0d001a 0%,#4a0060 55%,#9b00c4 100%)}
+#c4 .chart-box{width:100%;max-width:520px;height:clamp(140px,26vh,200px);position:relative;margin:16px 0}
+#c4 .chart-box svg{width:100%;height:100%;overflow:visible}
+#c4 .axis-label{font-size:10px;fill:rgba(255,255,255,.3);font-family:'DM Sans',sans-serif}
+.line-path{fill:none;stroke:#df80ff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.line-fill{fill:url(#lineGrad);stroke:none}
+.glow-dot{fill:#df80ff;filter:drop-shadow(0 0 6px #df80ff)}
+#c4 .bign{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(52px,12vw,108px);color:#fff;line-height:1}
+#c4 .taco{font-size:clamp(15px,2.2vw,20px);color:rgba(255,255,255,.8);margin-top:8px}
+#c4 .closer{color:rgba(255,255,255,.5);font-size:14px;margin-top:5px}
+
+/* ── C5 personality ── */
+#c5{background:linear-gradient(135deg,#001428 0%,#002244 50%,#003366 100%)}
+#c5 .radar-wrap{position:relative;width:min(320px,72vw);height:min(320px,72vw);margin:0 auto}
+#c5 .radar-wrap svg{width:100%;height:100%}
+#c5 .p-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(30px,6vw,56px);color:#fff;text-align:center;line-height:1.1;margin-top:12px}
+#c5 .p-desc{font-size:clamp(13px,1.8vw,16px);color:rgba(255,255,255,.75);text-align:center;max-width:360px;line-height:1.55;margin-top:8px}
+#c5 .p-tag{font-style:italic;color:#7fffd4;font-size:14px;margin-top:6px}
+
+/* ── C6 points ── */
+#c6{background:linear-gradient(155deg,#000814 0%,#001a3d 55%,#003366 100%)}
+#c6 .map-wrap{width:100%;max-width:540px;height:clamp(160px,28vh,220px);position:relative;margin:0 auto 8px}
+#c6 .map-wrap svg{width:100%;height:100%}
+#c6 .bign{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(48px,11vw,100px);color:#fff;line-height:1}
+#c6 .tk{font-size:clamp(16px,2.5vw,22px);color:rgba(255,255,255,.85);margin-top:8px}
+#c6 .poke{font-style:italic;color:#00d4ff;margin-top:6px;font-size:17px}
+
+/* ── C7 left on table ── */
+#c7{background:linear-gradient(145deg,#1a0f00 0%,#3a2000 55%,#6b4400 100%)}
+.loss-bars{width:100%;max-width:480px;margin:20px 0}
+.loss-row{margin-bottom:18px}
+.loss-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.loss-name{font-size:13px;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif}
+.loss-amt{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:#f5c842}
+.loss-track{height:10px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden}
+.loss-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#c79c25,#f5c842);width:0;transition:width 1s var(--expo)}
+#c7 .total{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(48px,11vw,90px);color:#f5c842;line-height:1}
+#c7 .note{font-style:italic;color:rgba(255,255,255,.6);font-size:15px;margin-top:8px}
+#c7 .fix{color:#f5c842;font-weight:600;font-size:16px;margin-top:6px}
+
+/* ── C8 biggest win ── */
+#c8{background:linear-gradient(145deg,#001400 0%,#003300 50%,#006600 100%)}
+#c8 .ring-wrap{position:relative;width:min(260px,60vw);height:min(260px,60vw);margin:0 auto}
+#c8 .ring-wrap svg{width:100%;height:100%}
+#c8 .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#c8 .rc-num{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,6vw,48px);color:#b5e853;line-height:1}
+#c8 .rc-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;text-align:center;font-family:'DM Sans',sans-serif}
+#c8 .win{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,5vw,44px);color:#b5e853;margin-top:10px;text-align:center}
+#c8 .winsub{font-size:clamp(15px,2.2vw,18px);color:rgba(255,255,255,.8);margin-top:6px}
+#confetti-8{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+/* ── C9 poster ── */
+#c9{background:#06060a;align-items:flex-start;justify-content:center;padding:48px 40px}
+.poster{max-width:500px;width:100%}
+.poster-h{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,8vw,72px);color:#fff;line-height:.88;letter-spacing:-.02em;margin-bottom:28px}
+.poster-h span{color:#f5c842}
+.prow{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(255,255,255,.08);padding:11px 0;gap:12px}
+.prow:last-of-type{border-bottom:1px solid rgba(255,255,255,.08)}
+.pk{font-size:clamp(9px,1.4vw,12px);color:rgba(255,255,255,.38);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.pm{font-size:clamp(11px,1.5vw,14px);color:#fff;flex:1;text-align:center}
+.pv{font-size:clamp(12px,1.6vw,15px);color:#f5c842;font-weight:700;white-space:nowrap;text-align:right}
+.ptype{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(14px,2.6vw,22px);color:#fff;margin:20px 0 4px;letter-spacing:.04em}
+.pbrand{font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.18em;text-transform:uppercase;margin-top:14px}
+.dlbtn{margin-top:20px;font-family:'DM Sans',sans-serif;font-size:12px;color:#fff;background:none;border:1.5px solid rgba(255,255,255,.35);border-radius:22px;padding:9px 22px;cursor:pointer;letter-spacing:.06em;transition:background .2s,border-color .2s}
+.dlbtn:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.7)}
+.sparkline{width:100%;height:32px;margin-top:18px}
+.sparkline svg{width:100%;height:100%;overflow:visible}
+</style>
+</head>
+<body>
+<div id="slideshow">
+
+<!-- ═══ CARD 1 — OPENING ═══ -->
+<div class="card" id="c1">
+  <span class="card-num">1 / 9</span>
+  <canvas id="stars"></canvas>
+  <p class="lbl fade-up">your year in money</p>
+  <div class="yr fade-up" style="transition-delay:.15s">2025</div>
+  <p class="sub fade-up" style="transition-delay:.3s">Here's what your money did.</p>
+  <div class="shimmer fade-up" style="transition-delay:.5s"></div>
+</div>
+
+<!-- ═══ CARD 2 — TOP SPEND ═══ -->
+<div class="card" id="c2">
+  <span class="card-num">2 / 9</span>
+  <p class="lbl fade-up">your #1 category</p>
+  <div class="donut-wrap fade-up" style="transition-delay:.1s">
+    <svg id="donut-svg" viewBox="0 0 200 200">
+      <defs>
+        <filter id="glow2"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- segments drawn by JS -->
+      <g id="donut-segs" transform="translate(100,100) rotate(-90)"></g>
+    </svg>
+    <div class="donut-center">
+      <div class="dn" id="num2">$0</div>
+      <div class="dc">food & dining</div>
+    </div>
+  </div>
+  <div class="legend fade-up" id="donut-legend" style="transition-delay:.2s"></div>
+  <div class="cat fade-up" style="transition-delay:.35s">Food &amp; Dining</div>
+  <div class="tag fade-up" style="transition-delay:.5s">owned your 2025.</div>
+</div>
+
+<!-- ═══ CARD 3 — BEST MONTH ═══ -->
+<div class="card" id="c3">
+  <span class="card-num">3 / 9</span>
+  <div class="mname fade-up">March</div>
+  <p class="lbl fade-up" style="transition-delay:.1s">your best savings month</p>
+  <div class="chart-area fade-up" style="transition-delay:.2s;width:100%;max-width:480px">
+    <div class="bars-wrap" id="bars">
+      <div class="b" style="--pct:.30;height:30%"></div>
+      <div class="b" style="--pct:.25;height:25%"></div>
+      <div class="b hi" style="--pct:1;height:100%"></div>
+      <div class="b" style="--pct:.45;height:45%"></div>
+      <div class="b" style="--pct:.38;height:38%"></div>
+      <div class="b" style="--pct:.55;height:55%"></div>
+      <div class="b" style="--pct:.42;height:42%"></div>
+      <div class="b" style="--pct:.35;height:35%"></div>
+      <div class="b" style="--pct:.60;height:60%"></div>
+      <div class="b" style="--pct:.48;height:48%"></div>
+      <div class="b" style="--pct:.40;height:40%"></div>
+      <div class="b" style="--pct:.52;height:52%"></div>
+    </div>
+    <div class="month-labels">
+      <div class="ml">J</div><div class="ml">F</div><div class="ml hi">M</div>
+      <div class="ml">A</div><div class="ml">M</div><div class="ml">J</div>
+      <div class="ml">J</div><div class="ml">A</div><div class="ml">S</div>
+      <div class="ml">O</div><div class="ml">N</div><div class="ml">D</div>
+    </div>
+  </div>
+  <div class="msaved fade-up" style="transition-delay:.4s">You saved $4,200. More than any other month.</div>
+  <div class="mclick fade-up" style="transition-delay:.55s">Something clicked.</div>
+</div>
+
+<!-- ═══ CARD 4 — NET WORTH ═══ -->
+<div class="card" id="c4">
+  <span class="card-num">4 / 9</span>
+  <p class="lbl fade-up">net worth growth</p>
+  <div class="bign fade-up" id="num4" style="transition-delay:.1s">+$0</div>
+  <div class="chart-box fade-up" style="transition-delay:.25s">
+    <svg id="nw-svg" viewBox="0 0 520 200" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#df80ff" stop-opacity=".45"/>
+          <stop offset="100%" stop-color="#df80ff" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path class="line-fill" id="nw-fill" d=""/>
+      <path class="line-path" id="nw-line" d=""/>
+      <circle class="glow-dot" id="nw-dot" r="5" cx="0" cy="0" opacity="0"/>
+    </svg>
+  </div>
+  <div class="taco fade-up" style="transition-delay:.4s">That's 4,280 really good tacos.</div>
+  <div class="closer fade-up" style="transition-delay:.55s">Or one step closer to everything.</div>
+</div>
+
+<!-- ═══ CARD 5 — PERSONALITY ═══ -->
+<div class="card" id="c5">
+  <span class="card-num">5 / 9</span>
+  <p class="lbl fade-up">your financial personality</p>
+  <div class="radar-wrap fade-up" style="transition-delay:.1s">
+    <svg id="radar-svg" viewBox="0 0 320 320">
+      <defs>
+        <radialGradient id="radarGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00c9ff" stop-opacity=".7"/>
+          <stop offset="100%" stop-color="#ff6e7f" stop-opacity=".3"/>
+        </radialGradient>
+        <filter id="rglow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g id="radar-grid"></g>
+      <polygon id="radar-fill" points="" style="fill:url(#radarGrad);stroke:#00c9ff;stroke-width:1.5;filter:url(#rglow);opacity:0;transition:opacity .8s ease"/>
+      <g id="radar-labels"></g>
+      <g id="radar-dots"></g>
+    </svg>
+  </div>
+  <div class="p-name fade-up" style="transition-delay:.3s">Experience<br>Collector</div>
+  <div class="p-desc fade-up" style="transition-delay:.45s">68% of your spending went toward things you did, not things you owned.</div>
+  <div class="p-tag fade-up" style="transition-delay:.6s">You choose moments over stuff.</div>
+</div>
+
+<!-- ═══ CARD 6 — POINTS ═══ -->
+<div class="card" id="c6">
+  <span class="card-num">6 / 9</span>
+  <p class="lbl fade-up">rewards earned</p>
+  <div class="map-wrap fade-up" style="transition-delay:.1s">
+    <svg id="map-svg" viewBox="0 0 540 220" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="mglow"><feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- Simplified world land masses as dots -->
+      <g id="world-dots" opacity=".35"></g>
+      <!-- Flight arc -->
+      <path id="arc-path" d="" fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="400" stroke-dashoffset="400" opacity=".8" style="transition:stroke-dashoffset 2s ease-out .6s"/>
+      <!-- City dots -->
+      <circle id="dot-nyc" cx="0" cy="0" r="4" fill="#f5c842" opacity="0" filter="url(#mglow)"/>
+      <circle id="dot-tky" cx="0" cy="0" r="4" fill="#00d4ff" opacity="0" filter="url(#mglow)"/>
+      <text id="lbl-nyc" x="0" y="0" font-size="9" fill="#f5c842" font-family="DM Sans" opacity="0">NYC</text>
+      <text id="lbl-tky" x="0" y="0" font-size="9" fill="#00d4ff" font-family="DM Sans" opacity="0">TYO</text>
+      <!-- Plane -->
+      <text id="plane" x="-20" y="0" font-size="14" opacity="0">✈</text>
+    </svg>
+  </div>
+  <div class="bign fade-up" id="num6" style="transition-delay:.15s">0 pts</div>
+  <div class="tk fade-up" style="transition-delay:.3s">That's a round-trip to Tokyo.</div>
+  <div class="poke fade-up" style="transition-delay:.45s">Did you use them?</div>
+</div>
+
+<!-- ═══ CARD 7 — LEFT ON TABLE ═══ -->
+<div class="card" id="c7">
+  <span class="card-num">7 / 9</span>
+  <p class="lbl fade-up">left on the table</p>
+  <div class="total fade-up" id="num7" style="transition-delay:.1s">$0</div>
+  <div class="loss-bars fade-up" style="transition-delay:.25s">
+    <div class="loss-row">
+      <div class="loss-top"><span class="loss-name">Low-yield savings</span><span class="loss-amt">$1,116</span></div>
+      <div class="loss-track"><div class="loss-fill" data-w="61"></div></div>
+    </div>
+    <div class="loss-row">
+      <div class="loss-top"><span class="loss-name">Unused subscriptions</span><span class="loss-amt">$594</span></div>
+      <div class="loss-track"><div class="loss-fill" data-w="32"></div></div>
+    </div>
+    <div class="loss-row">
+      <div class="loss-top"><span class="loss-name">Dining on 1x card</span><span class="loss-amt">$770 in pts</span></div>
+      <div class="loss-track"><div class="loss-fill" data-w="42"></div></div>
+    </div>
+  </div>
+  <div class="note fade-up" style="transition-delay:.45s">You didn't fail. You just didn't optimize.</div>
+  <div class="fix fade-up" style="transition-delay:.6s">Next year, let's fix that.</div>
+</div>
+
+<!-- ═══ CARD 8 — BIGGEST WIN ═══ -->
+<div class="card" id="c8">
+  <span class="card-num">8 / 9</span>
+  <div id="confetti-8"></div>
+  <p class="lbl fade-up">your biggest win</p>
+  <div class="ring-wrap fade-up" style="transition-delay:.1s">
+    <svg id="ring-svg" viewBox="0 0 260 260">
+      <defs>
+        <filter id="rglow8"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- BG ring -->
+      <circle cx="130" cy="130" r="100" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="18"/>
+      <!-- Progress ring: circumference = 2*pi*100 ≈ 628 -->
+      <circle id="ring-prog" cx="130" cy="130" r="100" fill="none" stroke="#b5e853" stroke-width="18"
+        stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="628"
+        transform="rotate(-90 130 130)" filter="url(#rglow8)"
+        style="transition:stroke-dashoffset 1.8s var(--expo) .3s"/>
+      <!-- Tick marks -->
+      <g id="ring-ticks" opacity=".3"></g>
+    </svg>
+    <div class="ring-center">
+      <div class="rc-num" id="num8">$0</div>
+      <div class="rc-sub">loans paid<br>off in 2025</div>
+    </div>
+  </div>
+  <div class="win fade-up" style="transition-delay:.3s">That's a year closer to done.</div>
+  <div class="winsub fade-up" style="transition-delay:.45s">Keep going. The math is on your side.</div>
+</div>
+
+<!-- ═══ CARD 9 — POSTER ═══ -->
+<div class="card" id="c9">
+  <span class="card-num">9 / 9</span>
+  <div class="poster">
+    <div class="poster-h fade-up">YOUR<br><span>2025</span><br>IN MONEY</div>
+    <div class="prow fade-up" style="transition-delay:.08s"><span class="pk">#1 Spend</span><span class="pm">Food &amp; Dining</span><span class="pv">$4,800</span></div>
+    <div class="prow fade-up" style="transition-delay:.16s"><span class="pk">Best Month</span><span class="pm">March</span><span class="pv">$4,200 saved</span></div>
+    <div class="prow fade-up" style="transition-delay:.24s"><span class="pk">Net Worth Grew</span><span class="pm"></span><span class="pv">+$42,800</span></div>
+    <div class="prow fade-up" style="transition-delay:.32s"><span class="pk">Loans Paid</span><span class="pm"></span><span class="pv">$12,400</span></div>
+    <div class="prow fade-up" style="transition-delay:.4s"><span class="pk">Rewards Earned</span><span class="pm"></span><span class="pv">94,000 pts</span></div>
+    <div class="sparkline fade-up" style="transition-delay:.5s">
+      <svg id="spark-svg" viewBox="0 0 500 32" preserveAspectRatio="none">
+        <defs><linearGradient id="spGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#4a0060"/><stop offset="100%" stop-color="#f5c842"/>
+        </linearGradient></defs>
+        <path id="spark-line" d="" fill="none" stroke="url(#spGrad)" stroke-width="2" stroke-linecap="round" stroke-dasharray="600" stroke-dashoffset="600" style="transition:stroke-dashoffset 1.4s ease .6s"/>
+      </svg>
+    </div>
+    <div class="ptype fade-up" style="transition-delay:.58s">YOU'RE AN EXPERIENCE COLLECTOR.</div>
+    <div class="pbrand fade-up" style="transition-delay:.66s">Compound · Earnest · 2025</div>
+    <button class="dlbtn fade-up" style="transition-delay:.74s" onclick="window.print()">↓ Download poster</button>
+  </div>
+</div>
+
+</div><!-- /slideshow -->
+
+<button class="arr" id="prev" onclick="go(-1)">&#8592;</button>
+<button class="arr" id="next" onclick="go(1)">&#8594;</button>
+<div id="dots"></div>
+<button id="abtn" onclick="toggleAuto()">Auto</button>
+
+<script>
+const TOTAL = 9;
+let cur = 0, autoOn = false, autoT = null;
+const ss = document.getElementById('slideshow');
+const dotsEl = document.getElementById('dots');
+
+// dots
+for(let i=0;i<TOTAL;i++){
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function goTo(n){
+  cur=Math.max(0,Math.min(TOTAL-1,n));
+  ss.style.transform=`translateX(-${cur*100}vw)`;
+  dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  activate(cur);
+}
+function go(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
+let tx=null;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
+document.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)go(dx<0?1:-1);tx=null;});
+function toggleAuto(){autoOn=!autoOn;document.getElementById('abtn').classList.toggle('on',autoOn);if(autoOn)autoT=setInterval(()=>go(1),3000);else clearInterval(autoT);}
+
+function easeOut(t){return t===1?1:1-Math.pow(2,-10*t);}
+function countUp(el,target,pre,suf,dur){
+  const s=performance.now();
+  (function step(now){
+    const t=Math.min((now-s)/dur,1),v=Math.round(easeOut(t)*target);
+    el.textContent=pre+v.toLocaleString()+suf;
+    if(t<1)requestAnimationFrame(step);
+  })(s);
+}
+
+// ── CARD 1: starfield ──
+(function(){
+  const cv=document.getElementById('stars');
+  const ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;pts=[];for(let i=0;i<140;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,s:Math.random()*.4+.1,o:Math.random()});}
+  resize();
+  window.addEventListener('resize',resize);
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.y-=p.s;p.o+=.008;
+      if(p.y<-2){p.y=H+2;p.x=Math.random()*W;}
+      const pulse=0.4+0.4*Math.abs(Math.sin(p.o));
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${pulse})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── CARD 2: donut chart ──
+(function(){
+  const cats=[
+    {name:'Food & Dining',val:4800,color:'#ff6b35'},
+    {name:'Travel',val:3200,color:'#f5c842'},
+    {name:'Entertainment',val:1900,color:'#ff6e7f'},
+    {name:'Shopping',val:2100,color:'#b5e853'},
+    {name:'Other',val:1600,color:'rgba(255,255,255,.4)'},
+  ];
+  const total=cats.reduce((s,c)=>s+c.val,0);
+  const R=78,cx=100,cy=100,sw=22;
+  const seg=document.getElementById('donut-segs');
+  const leg=document.getElementById('donut-legend');
+  cats.forEach(c=>{
+    const pct=c.val/total;
+    const el=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    const circ=2*Math.PI*R;
+    el.setAttribute('cx','0');el.setAttribute('cy','0');el.setAttribute('r',R+'');
+    el.setAttribute('fill','none');el.setAttribute('stroke',c.color);
+    el.setAttribute('stroke-width',sw+'');
+    el.setAttribute('stroke-dasharray',`${pct*circ} ${circ}`);
+    el.dataset.circ=circ;el.dataset.dash=pct*circ;
+    el.style.strokeDashoffset=circ+'';
+    el.style.transition='stroke-dashoffset .8s var(--expo)';
+    seg.appendChild(el);
+    const li=document.createElement('div');li.className='leg-item';
+    li.innerHTML=`<div class="leg-dot" style="background:${c.color}"></div>${c.name}`;
+    leg.appendChild(li);
+  });
+  window._donutCats=cats;window._donutR=R;window._donutTotal=total;
+})();
+
+function animateDonut(){
+  const cats=window._donutCats,R=window._donutR,total=window._donutTotal;
+  const segs=document.querySelectorAll('#donut-segs circle');
+  const circ=2*Math.PI*R;
+  let offset=0;
+  cats.forEach((c,i)=>{
+    const pct=c.val/total;
+    const dash=pct*circ;
+    segs[i].style.strokeDashoffset=(circ-dash+offset)+'';
+    offset+=(1-pct)*circ;
+    setTimeout(()=>{segs[i].style.strokeDashoffset=offset+'';},i*120);
+  });
+  countUp(document.getElementById('num2'),4800,'$','',1500);
+}
+
+// ── CARD 4: line chart ──
+(function(){
+  const pts=[444000,450000,458000,452000,467000,471000,465000,478000,482000,476000,487000,487200];
+  const W=520,H=200,pad=20;
+  const minV=Math.min(...pts)-5000,maxV=Math.max(...pts)+2000;
+  function px(i){return pad+(i/(pts.length-1))*(W-pad*2);}
+  function py(v){return H-pad-((v-minV)/(maxV-minV))*(H-pad*2);}
+  const d=pts.map((v,i)=>(i===0?'M':'L')+px(i).toFixed(1)+','+py(v).toFixed(1)).join(' ');
+  const fill=d+` L${px(pts.length-1)},${H} L${px(0)},${H} Z`;
+  document.getElementById('nw-line').setAttribute('d',d);
+  document.getElementById('nw-fill').setAttribute('d',fill);
+  const last=pts.length-1;
+  document.getElementById('nw-dot').setAttribute('cx',px(last).toFixed(1));
+  document.getElementById('nw-dot').setAttribute('cy',py(pts[last]).toFixed(1));
+  window._nwPath=document.getElementById('nw-line');
+  window._nwDot=document.getElementById('nw-dot');
+})();
+
+function animateLineChart(){
+  const line=window._nwPath;
+  const len=line.getTotalLength()||320;
+  line.style.strokeDasharray=len;
+  line.style.strokeDashoffset=len;
+  line.style.transition='stroke-dashoffset 1.6s ease-out .2s';
+  setTimeout(()=>{line.style.strokeDashoffset='0';},50);
+  setTimeout(()=>{window._nwDot.setAttribute('opacity','1');},1800);
+  countUp(document.getElementById('num4'),42800,'+$','',1600);
+  // add confetti
+  burst('c4conf',32);
+}
+
+// ── CARD 5: radar chart ──
+(function(){
+  const dims=[
+    {name:'Experiences',val:.85},
+    {name:'Savings',val:.72},
+    {name:'Efficiency',val:.60},
+    {name:'Investing',val:.68},
+    {name:'Generosity',val:.55},
+  ];
+  const cx=160,cy=160,maxR=110,levels=4;
+  const svg=document.getElementById('radar-svg');
+  const grid=document.getElementById('radar-grid');
+  const labG=document.getElementById('radar-labels');
+  const dotG=document.getElementById('radar-dots');
+  function angle(i){return(i/dims.length)*Math.PI*2-Math.PI/2;}
+  // grid rings
+  for(let l=1;l<=levels;l++){
+    const r=maxR*(l/levels);
+    const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    const pts=dims.map((_,i)=>{const a=angle(i);return`${cx+r*Math.cos(a)},${cy+r*Math.sin(a)}`;}).join(' ');
+    poly.setAttribute('points',pts);poly.setAttribute('fill','none');poly.setAttribute('stroke','rgba(255,255,255,.12)');poly.setAttribute('stroke-width','1');
+    grid.appendChild(poly);
+  }
+  // spokes
+  dims.forEach((_,i)=>{
+    const a=angle(i);const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',cx);line.setAttribute('y1',cy);
+    line.setAttribute('x2',cx+maxR*Math.cos(a));line.setAttribute('y2',cy+maxR*Math.sin(a));
+    line.setAttribute('stroke','rgba(255,255,255,.12)');line.setAttribute('stroke-width','1');
+    grid.appendChild(line);
+  });
+  // labels
+  dims.forEach((d,i)=>{
+    const a=angle(i);const r=maxR+22;
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',(cx+r*Math.cos(a)).toFixed(1));t.setAttribute('y',(cy+r*Math.sin(a)+4).toFixed(1));
+    t.setAttribute('text-anchor','middle');t.setAttribute('font-size','11');t.setAttribute('fill','rgba(255,255,255,.55)');t.setAttribute('font-family','DM Sans');
+    t.textContent=d.name;labG.appendChild(t);
+  });
+  // store dims for animation
+  window._radarDims=dims;window._radarCx=cx;window._radarCy=cy;window._radarMaxR=maxR;window._radarAngle=angle;window._radarDotG=dotG;
+})();
+
+function animateRadar(){
+  const dims=window._radarDims,cx=window._radarCx,cy=window._radarCy,maxR=window._radarMaxR,angle=window._radarAngle;
+  const fill=document.getElementById('radar-fill');
+  const dots=window._radarDotG;
+  dots.innerHTML='';
+  const pts=dims.map((d,i)=>{const a=angle(i),r=d.val*maxR;return`${cx+r*Math.cos(a)},${cy+r*Math.sin(a)}`;});
+  fill.setAttribute('points',pts.join(' '));
+  setTimeout(()=>{fill.style.opacity='1';},50);
+  dims.forEach((d,i)=>{
+    const a=angle(i),r=d.val*maxR;
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',(cx+r*Math.cos(a)).toFixed(1));c.setAttribute('cy',(cy+r*Math.sin(a)).toFixed(1));
+    c.setAttribute('r','5');c.setAttribute('fill','#00c9ff');c.setAttribute('opacity','0');
+    c.style.transition=`opacity .4s ease ${.3+i*.1}s`;
+    dots.appendChild(c);
+    setTimeout(()=>{c.setAttribute('opacity','1');},100);
+  });
+}
+
+// ── CARD 6: map + flight arc ──
+(function(){
+  // Simplified world dot grid — just paint a rough land-mass dot matrix
+  const svg=document.getElementById('world-dots');
+  // rough land mask: row of dots, sparse
+  const landRows=[
+    {y:40,xs:[[60,120],[140,200],[230,340],[360,420],[450,530]]},
+    {y:55,xs:[[50,130],[148,210],[220,350],[358,430],[448,535]]},
+    {y:70,xs:[[45,140],[148,220],[215,360],[355,440],[445,538]]},
+    {y:85,xs:[[55,150],[150,225],[218,365],[352,445]]},
+    {y:100,xs:[[60,155],[155,228],[220,368],[350,300]]},
+    {y:115,xs:[[70,160],[158,230],[222,260],[328,380]]},
+    {y:130,xs:[[80,162],[162,235],[230,255]]},
+    {y:145,xs:[[88,165],[165,190],[200,250]]},
+    {y:160,xs:[[92,170],[155,175]]},
+    {y:175,xs:[[95,130]]},
+  ];
+  landRows.forEach(row=>{
+    row.xs.forEach(([x1,x2])=>{
+      for(let x=x1;x<=x2;x+=7){
+        const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c.setAttribute('cx',x);c.setAttribute('cy',row.y);c.setAttribute('r','1.5');
+        c.setAttribute('fill','rgba(100,160,255,.5)');
+        svg.appendChild(c);
+      }
+    });
+  });
+
+  // NYC ~ x:115, y:80  /  Tokyo ~ x:430, y:78
+  const NYC={x:115,y:80},TKY={x:430,y:78};
+  const ctrl={x:(NYC.x+TKY.x)/2,y:20};
+  const arcD=`M${NYC.x},${NYC.y} Q${ctrl.x},${ctrl.y} ${TKY.x},${TKY.y}`;
+  document.getElementById('arc-path').setAttribute('d',arcD);
+  document.getElementById('dot-nyc').setAttribute('cx',NYC.x);document.getElementById('dot-nyc').setAttribute('cy',NYC.y);
+  document.getElementById('dot-tky').setAttribute('cx',TKY.x);document.getElementById('dot-tky').setAttribute('cy',TKY.y);
+  document.getElementById('lbl-nyc').setAttribute('x',NYC.x-6);document.getElementById('lbl-nyc').setAttribute('y',NYC.y+16);
+  document.getElementById('lbl-tky').setAttribute('x',TKY.x-8);document.getElementById('lbl-tky').setAttribute('y',TKY.y+16);
+  window._arcPath=document.getElementById('arc-path');
+  window._arcNYC=NYC;window._arcTKY=TKY;window._arcCtrl=ctrl;
+})();
+
+function animateMap(){
+  const arc=window._arcPath;
+  arc.style.strokeDashoffset='0';
+  ['dot-nyc','dot-tky','lbl-nyc','lbl-tky'].forEach(id=>{
+    setTimeout(()=>{document.getElementById(id).setAttribute('opacity','1');},400);
+  });
+  // animate plane along path
+  const plane=document.getElementById('plane');
+  const NYC=window._arcNYC,TKY=window._arcTKY,ctrl=window._arcCtrl;
+  let t=0;
+  function bezier(t){
+    const x=(1-t)*(1-t)*NYC.x+2*(1-t)*t*ctrl.x+t*t*TKY.x;
+    const y=(1-t)*(1-t)*NYC.y+2*(1-t)*t*ctrl.y+t*t*TKY.y;
+    return{x,y};
+  }
+  plane.setAttribute('opacity','1');
+  function stepPlane(){
+    t+=0.008;if(t>1)return;
+    const p=bezier(t);
+    plane.setAttribute('x',p.x-8);plane.setAttribute('y',p.y+5);
+    requestAnimationFrame(stepPlane);
+  }
+  setTimeout(stepPlane,300);
+  countUp(document.getElementById('num6'),94000,'','  pts',1500);
+}
+
+// ── CARD 7: loss bars ──
+function animateLoss(){
+  countUp(document.getElementById('num7'),1840,'$','',1200);
+  document.querySelectorAll('.loss-fill').forEach((f,i)=>{
+    setTimeout(()=>{f.style.width=f.dataset.w+'%';},200+i*200);
+  });
+}
+
+// ── CARD 8: ring + confetti ──
+function animateRing(){
+  const ring=document.getElementById('ring-prog');
+  const target=12400,total=16700;
+  const pct=target/total;
+  const circ=628;
+  ring.style.strokeDashoffset=((1-pct)*circ).toFixed(1);
+  countUp(document.getElementById('num8'),12400,'$','',1800);
+  burst('confetti-8',65);
+}
+
+// ── CARD 9: sparkline ──
+function animateSpark(){
+  const vals=[444,450,458,452,467,471,465,478,482,476,487,488];
+  const W=500,H=32,min=Math.min(...vals)-5,max=Math.max(...vals)+2;
+  const px=(i)=>i/(vals.length-1)*W;
+  const py=(v)=>H-((v-min)/(max-min))*H;
+  const d=vals.map((v,i)=>(i===0?'M':'L')+px(i).toFixed(1)+','+py(v).toFixed(1)).join(' ');
+  const sp=document.getElementById('spark-line');
+  sp.setAttribute('d',d);
+  setTimeout(()=>{sp.style.strokeDashoffset='0';},100);
+}
+
+// ── Confetti ──
+function burst(id,n){
+  let c=document.getElementById(id);
+  if(!c){c=document.createElement('div');c.id=id;c.style.cssText='position:absolute;inset:0;pointer-events:none;overflow:hidden';document.querySelectorAll('.card')[7].appendChild(c);}
+  c.innerHTML='';
+  const cols=['#ff6eb4','#7fffd4','#f5c842','#b5e853','#00d4ff','#ff6b35','#df80ff'];
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');
+    const sz=5+Math.random()*8;
+    const col=cols[Math.floor(Math.random()*cols.length)];
+    const dx=((Math.random()-.5)*320)+'px';
+    const dy=(-80-Math.random()*260)+'px';
+    el.style.cssText=`position:absolute;width:${sz}px;height:${sz*.5}px;background:${col};left:${30+Math.random()*40}%;top:${40+Math.random()*25}%;border-radius:2px;--dx:${dx};--dy:${dy};animation:cfly ${.7+Math.random()*.9}s ease-out forwards`;
+    c.appendChild(el);
+  }
+}
+const st=document.createElement('style');
+st.textContent='@keyframes cfly{0%{transform:translate(0,0) rotate(0deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(720deg);opacity:0}}';
+document.head.appendChild(st);
+
+// ── Activate ──
+let activated=new Set();
+function activate(idx){
+  const card=document.querySelectorAll('.card')[idx];
+  card.querySelectorAll('.fade-up').forEach(el=>{
+    el.classList.remove('in');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('in')));
+  });
+  if(activated.has(idx))return;
+  activated.add(idx);
+  if(idx===1)animateDonut();
+  if(idx===2)setTimeout(()=>document.querySelectorAll('.b').forEach(b=>b.classList.add('go')),300);
+  if(idx===3)animateLineChart();
+  if(idx===4)animateRadar();
+  if(idx===5)animateMap();
+  if(idx===6)animateLoss();
+  if(idx===7)animateRing();
+  if(idx===8)animateSpark();
+}
+
+activate(0);
+</script>
+</body>
+</html>

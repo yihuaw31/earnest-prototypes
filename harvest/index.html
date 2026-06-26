@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Harvest — You've earned this.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:        #fffaf4;
+  --cream-mid:    #f7f0e4;
+  --cream-deep:   #ede4d4;
+  --amber:        #f5a623;
+  --amber-light:  #fcc566;
+  --amber-pale:   #fdf0d4;
+  --terra:        #e07b54;
+  --terra-light:  #f0a080;
+  --terra-pale:   #fce8e0;
+  --gold:         #c8880a;
+  --ink:          #2a1f14;
+  --ink-mid:      #5a4030;
+  --ink-light:    #8a6848;
+  --ink-faint:    #b89878;
+  --green-soft:   #4a8860;
+  --green-pale:   #d4eedd;
+  --blue-soft:    #4878a8;
+  --blue-pale:    #d4e8f8;
+
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+  --r-lg: 20px;
+  --r-xl: 28px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,250,244,.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(200,136,10,.12);
+}
+.nav-logo {
+  font-family: var(--font-serif); font-size: 1.25rem; font-weight: 400;
+  color: var(--ink); text-decoration: none; letter-spacing: -.01em;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo-mark {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--amber) 0%, var(--terra) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem;
+}
+nav a.nav-cta {
+  font-size: .85rem; font-weight: 500;
+  color: var(--ink-mid); text-decoration: none;
+  padding: 9px 22px; border: 1.5px solid var(--amber-light); border-radius: 40px;
+  transition: background .2s, color .2s, border-color .2s;
+}
+nav a.nav-cta:hover { background: var(--amber); color: white; border-color: var(--amber); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  padding: 130px 48px 80px;
+  display: flex; flex-direction: column; align-items: center;
+  background: linear-gradient(175deg, var(--cream) 0%, var(--amber-pale) 60%, var(--cream-mid) 100%);
+  position: relative; overflow: hidden;
+}
+#hero::before {
+  content: '';
+  position: absolute; top: -120px; right: -120px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,166,35,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+#hero::after {
+  content: '';
+  position: absolute; bottom: -80px; left: -80px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(224,123,84,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-copy { text-align: center; max-width: 640px; position: relative; z-index: 2; }
+.hero-eyebrow {
+  display: inline-block; margin-bottom: 20px;
+  font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--terra); background: var(--terra-pale); border-radius: 30px;
+  padding: 5px 14px;
+}
+.hero-h1 {
+  font-family: var(--font-serif); font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 400; line-height: 1.0; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 24px;
+}
+.hero-sub {
+  font-size: 1.1rem; line-height: 1.8; color: var(--ink-mid);
+  font-weight: 300; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--font-sans); font-size: 1rem; font-weight: 600;
+  padding: 17px 38px; border-radius: 50px;
+  background: linear-gradient(135deg, var(--amber) 0%, var(--terra) 100%);
+  color: white; text-decoration: none; border: none; cursor: pointer;
+  box-shadow: 0 6px 28px rgba(224,123,84,.38);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(224,123,84,.45); }
+
+/* hero card */
+.hero-card-wrap {
+  margin-top: 64px; position: relative; z-index: 2;
+  width: 100%; max-width: 780px;
+}
+.hero-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 24px 80px rgba(42,31,20,.13), 0 4px 16px rgba(42,31,20,.07);
+  transform: rotate(1.5deg);
+}
+.hc-greeting {
+  font-size: .78rem; font-weight: 600; color: var(--ink-faint);
+  letter-spacing: .04em; text-transform: uppercase; margin-bottom: 6px;
+}
+.hc-headline {
+  font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink);
+  margin-bottom: 22px; line-height: 1.35;
+}
+.hc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* left col — small joys */
+.hc-left-label {
+  font-size: .7rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--amber); margin-bottom: 12px;
+}
+.hc-joy-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--cream-deep);
+}
+.hc-joy-item:last-child { border-bottom: none; }
+.hc-joy-icon { font-size: 1.1rem; width: 28px; flex-shrink: 0; }
+.hc-joy-name { font-size: .85rem; font-weight: 500; color: var(--ink); flex: 1; }
+.hc-joy-price { font-size: .8rem; color: var(--ink-light); }
+.hc-joy-check {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--cream-deep);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.hc-joy-check.done { background: var(--green-soft); border-color: var(--green-soft); }
+.hc-joy-check.done::after { content: '✓'; font-size: .65rem; color: white; font-weight: 700; }
+
+/* right col — trip */
+.hc-right-label {
+  font-size: .7rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--terra); margin-bottom: 12px;
+}
+.hc-trip-card {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--cream-deep);
+}
+.hc-trip-illustration { width: 100%; height: 110px; display: block; }
+.hc-trip-info { padding: 12px 14px; }
+.hc-trip-dest { font-family: var(--font-serif); font-size: 1.05rem; color: var(--ink); margin-bottom: 4px; }
+.hc-trip-meta { font-size: .78rem; color: var(--ink-light); margin-bottom: 10px; }
+.hc-trip-btn {
+  display: inline-block; font-size: .75rem; font-weight: 600;
+  padding: 6px 14px; border-radius: 30px;
+  background: var(--amber-pale); color: var(--gold); border: 1px solid var(--amber-light);
+  cursor: pointer; transition: background .15s;
+}
+.hc-trip-btn:hover { background: var(--amber-light); }
+
+.hc-tagline {
+  text-align: center; margin-top: 18px; padding-top: 18px;
+  border-top: 1px solid var(--cream-deep);
+  font-size: .82rem; color: var(--ink-light);
+}
+.hc-tagline strong { color: var(--terra); font-weight: 600; }
+
+.hero-caption {
+  margin-top: 20px; text-align: center;
+  font-size: .82rem; color: var(--ink-faint); font-style: italic;
+}
+
+/* ── PROBLEM ── */
+#problem {
+  padding: 130px 48px;
+  background: var(--ink);
+  text-align: center;
+}
+.problem-inner { max-width: 700px; margin: 0 auto; }
+.prob-line {
+  font-family: var(--font-serif); font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  font-weight: 400; line-height: 1.2; margin-bottom: 20px;
+  color: rgba(255,255,255,.42);
+}
+.prob-line.warm { color: rgba(255,255,255,.75); }
+.prob-divider { width: 40px; height: 2px; background: var(--terra); margin: 40px auto; border-radius: 2px; }
+.prob-reframe {
+  font-family: var(--font-serif); font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+  font-weight: 400; line-height: 1.5; color: var(--amber-light);
+  font-style: italic;
+}
+
+/* ── HOW IT WORKS ── */
+#how {
+  padding: 120px 48px;
+  background: var(--cream-mid);
+}
+.how-inner { max-width: 900px; margin: 0 auto; }
+.section-eyebrow {
+  font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--terra); display: block; margin-bottom: 16px;
+}
+.section-h2 {
+  font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 400; line-height: 1.2; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 72px;
+}
+.how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.how-step {
+  background: white; border-radius: var(--r-lg); padding: 28px 24px 32px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 2px 16px rgba(42,31,20,.06);
+  transition: transform .25s, box-shadow .25s;
+}
+.how-step:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(42,31,20,.10); }
+.how-step-num {
+  font-family: var(--font-serif); font-size: 2.4rem; font-weight: 400;
+  color: var(--cream-deep); line-height: 1; margin-bottom: 16px;
+}
+.how-step-icon { font-size: 1.6rem; margin-bottom: 14px; display: block; }
+.how-step h3 {
+  font-family: var(--font-serif); font-size: 1.05rem; color: var(--ink);
+  margin-bottom: 10px; line-height: 1.3;
+}
+.how-step p { font-size: .85rem; line-height: 1.7; color: var(--ink-light); font-weight: 300; }
+
+/* ── SHOWCASE ── */
+#showcase {
+  padding: 120px 48px;
+  background: var(--cream);
+}
+.showcase-inner { max-width: 1060px; margin: 0 auto; }
+.showcase-h2 {
+  font-family: var(--font-serif); font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 400; line-height: 1.3; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 56px; max-width: 560px;
+}
+.showcase-panels {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start;
+}
+
+/* left: small joys list */
+.showcase-joys {
+  background: white; border-radius: var(--r-xl); padding: 32px 28px;
+  box-shadow: 0 4px 24px rgba(42,31,20,.07);
+}
+.sj-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+}
+.sj-title { font-family: var(--font-serif); font-size: 1.1rem; color: var(--ink); }
+.sj-budget {
+  font-size: .75rem; font-weight: 600; color: var(--amber);
+  background: var(--amber-pale); padding: 4px 10px; border-radius: 20px;
+}
+.sj-row {
+  display: flex; align-items: center; gap: 12px; padding: 13px 0;
+  border-bottom: 1px solid var(--cream-deep);
+  transition: background .15s; border-radius: 10px;
+}
+.sj-row:last-child { border-bottom: none; }
+.sj-row.checked { opacity: .65; }
+.sj-icon-wrap {
+  width: 38px; height: 38px; border-radius: 12px;
+  background: var(--amber-pale);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.sj-row.checked .sj-icon-wrap { background: var(--green-pale); }
+.sj-text { flex: 1; }
+.sj-name { font-size: .9rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.sj-amt  { font-size: .78rem; color: var(--ink-light); }
+.sj-add  {
+  font-size: .75rem; font-weight: 600;
+  padding: 6px 12px; border-radius: 20px;
+  background: var(--amber-pale); color: var(--gold);
+  border: 1px solid var(--amber-light); cursor: pointer;
+  white-space: nowrap; transition: background .15s;
+}
+.sj-add:hover { background: var(--amber-light); }
+.sj-check-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .75rem; font-weight: 600; color: var(--green-soft);
+}
+.sj-check-badge::before { content: '✓'; }
+
+/* right: trip cards */
+.showcase-trips { display: flex; flex-direction: column; gap: 0; }
+.trip-tabs {
+  display: flex; gap: 0; margin-bottom: 18px;
+  background: var(--cream-mid); border-radius: 40px; padding: 4px;
+  width: fit-content;
+}
+.trip-tab {
+  font-size: .8rem; font-weight: 500; padding: 8px 18px; border-radius: 30px;
+  cursor: pointer; transition: background .15s, color .15s; color: var(--ink-light);
+  border: none; background: none;
+}
+.trip-tab.active { background: white; color: var(--ink); box-shadow: 0 1px 6px rgba(42,31,20,.08); }
+.trip-card {
+  border-radius: var(--r-xl); overflow: hidden;
+  box-shadow: 0 4px 24px rgba(42,31,20,.09);
+  background: white;
+}
+.trip-illo { width: 100%; height: 180px; display: block; }
+.trip-body { padding: 20px 22px; }
+.trip-dest { font-family: var(--font-serif); font-size: 1.4rem; color: var(--ink); margin-bottom: 6px; }
+.trip-meta { font-size: .83rem; color: var(--ink-light); margin-bottom: 16px; line-height: 1.6; }
+.trip-add-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: .85rem; font-weight: 600; padding: 10px 20px; border-radius: 30px;
+  background: linear-gradient(135deg, var(--amber) 0%, var(--terra) 100%);
+  color: white; border: none; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(224,123,84,.3);
+  transition: transform .15s, box-shadow .15s;
+}
+.trip-add-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(224,123,84,.38); }
+.trip-disclaimer { font-size: .72rem; color: var(--ink-faint); margin-top: 14px; font-style: italic; }
+
+/* ── WISHLIST ── */
+#wishlist {
+  padding: 120px 48px;
+  background: var(--cream-mid);
+}
+.wishlist-inner { max-width: 680px; margin: 0 auto; }
+.wishlist-items { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+
+/* confetti for unlocked state */
+@keyframes confetti-fall {
+  0%   { transform: translateY(-12px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(24px)  rotate(360deg); opacity: 0; }
+}
+.confetti-burst { position: relative; pointer-events: none; }
+.confetti-piece {
+  position: absolute; width: 6px; height: 6px; border-radius: 1px;
+  animation: confetti-fall .9s ease-out forwards;
+}
+
+.wl-item {
+  background: white; border-radius: var(--r-lg); padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 2px 12px rgba(42,31,20,.06);
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .5s, transform .5s;
+}
+.wl-item.visible { opacity: 1; transform: translateY(0); }
+.wl-status-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.wl-status-icon.unlocked { background: var(--green-pale); }
+.wl-status-icon.progress { background: var(--blue-pale); }
+.wl-status-icon.coming   { background: var(--cream-deep); }
+.wl-info { flex: 1; }
+.wl-name { font-weight: 600; font-size: .95rem; color: var(--ink); margin-bottom: 4px; }
+.wl-sub  { font-size: .8rem; color: var(--ink-light); }
+.wl-badge {
+  font-size: .72rem; font-weight: 600; padding: 5px 12px; border-radius: 20px;
+  white-space: nowrap;
+}
+.wl-badge.unlocked { background: var(--green-pale); color: var(--green-soft); }
+.wl-badge.coming   { background: var(--cream-deep); color: var(--ink-faint); }
+
+/* progress bar */
+.wl-progress-wrap { margin-top: 8px; }
+.wl-progress-track {
+  height: 5px; background: var(--cream-deep); border-radius: 3px; overflow: hidden; margin-bottom: 5px;
+}
+.wl-progress-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--amber) 0%, var(--terra) 100%);
+  transition: width 1.2s cubic-bezier(.16,1,.3,1);
+  width: 0%;
+}
+.wl-progress-label { font-size: .72rem; color: var(--ink-light); }
+
+/* unlocked glow */
+.wl-item.unlocked-state {
+  border: 1.5px solid rgba(74,136,96,.25);
+  background: linear-gradient(135deg, #f0faf4 0%, white 100%);
+}
+
+/* toast notification */
+.wl-toast {
+  background: white; border-radius: 14px; padding: 16px 18px;
+  display: flex; align-items: flex-start; gap: 12px;
+  box-shadow: 0 4px 24px rgba(42,31,20,.10);
+  border-left: 3px solid var(--amber);
+  margin-bottom: 32px;
+}
+.wl-toast-icon { font-size: 1.1rem; margin-top: 1px; flex-shrink: 0; }
+.wl-toast-text { font-size: .83rem; line-height: 1.6; color: var(--ink-mid); flex: 1; }
+.wl-toast-text strong { color: var(--ink); }
+.wl-toast-actions { display: flex; gap: 8px; margin-top: 8px; }
+.wl-toast-btn {
+  font-size: .75rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; cursor: pointer;
+  border: 1.5px solid; transition: background .15s;
+}
+.wl-toast-btn.primary { background: var(--amber); color: white; border-color: var(--amber); }
+.wl-toast-btn.primary:hover { background: var(--gold); border-color: var(--gold); }
+.wl-toast-btn.secondary { background: transparent; color: var(--ink-light); border-color: var(--cream-deep); }
+.wl-toast-btn.secondary:hover { background: var(--cream-deep); }
+.wishlist-tagline {
+  text-align: center; font-size: .9rem; color: var(--ink-faint); font-style: italic; margin-top: 8px;
+}
+
+/* ── PHILOSOPHY ── */
+#philosophy {
+  padding: 120px 48px;
+  background: linear-gradient(135deg, var(--amber) 0%, var(--terra) 100%);
+  text-align: center;
+}
+.phil-line {
+  font-family: var(--font-serif); font-size: clamp(1.6rem, 4vw, 3.2rem);
+  font-weight: 400; line-height: 1.35; color: white; letter-spacing: -.02em;
+}
+.phil-line em { font-style: italic; color: rgba(255,255,255,.7); }
+
+/* ── WAITLIST ── */
+#waitlist {
+  padding: 140px 48px;
+  background: var(--cream);
+  text-align: center;
+}
+.waitlist-inner { max-width: 500px; margin: 0 auto; }
+.waitlist-h2 {
+  font-family: var(--font-serif); font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 400; letter-spacing: -.02em; color: var(--ink); margin-bottom: 14px; line-height: 1.2;
+}
+.waitlist-sub { font-size: .95rem; line-height: 1.8; color: var(--ink-mid); font-weight: 300; margin-bottom: 40px; }
+.wl-form { display: flex; gap: 10px; }
+.wl-input {
+  flex: 1; font-family: var(--font-sans); font-size: .95rem;
+  padding: 16px 22px; border-radius: 50px;
+  border: 1.5px solid var(--cream-deep); background: white;
+  color: var(--ink); outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.wl-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,166,35,.15); }
+.wl-input::placeholder { color: var(--ink-faint); }
+.wl-btn {
+  font-family: var(--font-sans); font-size: .9rem; font-weight: 600;
+  padding: 16px 28px; border-radius: 50px;
+  background: linear-gradient(135deg, var(--amber) 0%, var(--terra) 100%);
+  color: white; border: none; cursor: pointer; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(224,123,84,.35);
+  transition: transform .15s, box-shadow .15s;
+}
+.wl-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(224,123,84,.42); }
+.wl-fine { font-size: .8rem; color: var(--ink-faint); margin-top: 16px; }
+.wl-confirm { display: none; flex-direction: column; align-items: center; gap: 10px; }
+.wl-confirm strong { font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink); }
+.wl-confirm p { font-size: .9rem; color: var(--ink-light); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 36px 48px; background: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { font-family: var(--font-serif); font-size: 1rem; color: rgba(255,255,255,.4); }
+footer small { font-size: .78rem; color: rgba(255,255,255,.2); }
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.d1 { transition-delay: .08s; }
+.reveal.d2 { transition-delay: .16s; }
+.reveal.d3 { transition-delay: .24s; }
+.reveal.d4 { transition-delay: .32s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  nav { padding: 16px 20px; }
+  #hero, #problem, #how, #showcase, #wishlist, #philosophy, #waitlist { padding-left: 20px; padding-right: 20px; }
+  .hero-card { transform: none; }
+  .hc-cols { grid-template-columns: 1fr; }
+  .how-steps { grid-template-columns: 1fr 1fr; }
+  .showcase-panels { grid-template-columns: 1fr; }
+  .wl-form { flex-direction: column; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (max-width: 540px) {
+  .how-steps { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">🌾</div>
+    Harvest
+  </a>
+  <a href="#waitlist" class="nav-cta">Join Harvest</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-copy">
+    <span class="hero-eyebrow">Introducing Harvest</span>
+    <h1 class="hero-h1">You've earned this.</h1>
+    <p class="hero-sub">Harvest looks at your finances and tells you exactly how to enjoy your life this year — guilt-free, goal-intact.</p>
+    <a href="#waitlist" class="btn-primary">
+      See what you've earned
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- HERO PRODUCT CARD -->
+  <div class="hero-card-wrap">
+    <div class="hero-card">
+      <p class="hc-greeting">Your 2026 plan</p>
+      <p class="hc-headline">This year, based on your finances,<br/>here's your life plan:</p>
+
+      <div class="hc-cols">
+        <!-- left: small joys -->
+        <div>
+          <div class="hc-left-label">5 things to enjoy</div>
+          <div class="hc-joy-item">
+            <span class="hc-joy-icon">🍽️</span>
+            <span class="hc-joy-name">A nice dinner out</span>
+            <span class="hc-joy-price">$120</span>
+            <div class="hc-joy-check done"></div>
+          </div>
+          <div class="hc-joy-item">
+            <span class="hc-joy-icon">👟</span>
+            <span class="hc-joy-name">New sneakers</span>
+            <span class="hc-joy-price">$200</span>
+            <div class="hc-joy-check"></div>
+          </div>
+          <div class="hc-joy-item">
+            <span class="hc-joy-icon">📚</span>
+            <span class="hc-joy-name">Books or courses</span>
+            <span class="hc-joy-price">$80</span>
+            <div class="hc-joy-check done"></div>
+          </div>
+          <div class="hc-joy-item">
+            <span class="hc-joy-icon">💆</span>
+            <span class="hc-joy-name">A spa day</span>
+            <span class="hc-joy-price">$100</span>
+            <div class="hc-joy-check"></div>
+          </div>
+          <div class="hc-joy-item">
+            <span class="hc-joy-icon">🎁</span>
+            <span class="hc-joy-name">Something just for you</span>
+            <span class="hc-joy-price">$500</span>
+            <div class="hc-joy-check"></div>
+          </div>
+        </div>
+
+        <!-- right: trip -->
+        <div>
+          <div class="hc-right-label">1 trip you can take</div>
+          <div class="hc-trip-card">
+            <!-- Lisbon inline SVG illustration -->
+            <svg class="hc-trip-illustration" viewBox="0 0 340 110" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="lis-sky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7ab8e8"/>
+                  <stop offset="100%" stop-color="#c8e4f8"/>
+                </linearGradient>
+              </defs>
+              <!-- sky -->
+              <rect width="340" height="110" fill="url(#lis-sky)"/>
+              <!-- sun -->
+              <circle cx="290" cy="28" r="18" fill="#fde68a" opacity=".85"/>
+              <!-- sea/river at horizon -->
+              <rect x="0" y="72" width="340" height="38" fill="#5898d0" opacity=".5"/>
+              <!-- hills background -->
+              <path d="M0,75 C40,58 80,50 130,55 C170,59 210,52 260,48 C290,45 320,50 340,55 L340,75Z" fill="#d4884a" opacity=".6"/>
+              <!-- buildings layer 3 (back) -->
+              <rect x="30"  y="52" width="14" height="24" rx="1" fill="#c07040" opacity=".6"/>
+              <rect x="48"  y="46" width="18" height="30" rx="1" fill="#d08050" opacity=".6"/>
+              <rect x="68"  y="55" width="12" height="21" rx="1" fill="#c07040" opacity=".55"/>
+              <rect x="140" y="48" width="16" height="28" rx="1" fill="#b86030" opacity=".6"/>
+              <rect x="160" y="44" width="22" height="32" rx="1" fill="#c87040" opacity=".6"/>
+              <rect x="185" y="50" width="14" height="26" rx="1" fill="#b86030" opacity=".55"/>
+              <!-- buildings layer 2 -->
+              <rect x="10"  y="58" width="18" height="18" rx="1" fill="#e09060"/>
+              <rect x="32"  y="56" width="24" height="20" rx="1" fill="#d88048"/>
+              <rect x="58"  y="60" width="16" height="16" rx="1" fill="#e89860"/>
+              <rect x="80"  y="54" width="20" height="22" rx="1" fill="#d07838"/>
+              <rect x="104" y="58" width="14" height="18" rx="1" fill="#e89060"/>
+              <rect x="150" y="56" width="20" height="20" rx="1" fill="#d88048"/>
+              <rect x="174" y="54" width="26" height="22" rx="1" fill="#e09060"/>
+              <rect x="204" y="58" width="16" height="18" rx="1" fill="#d07838"/>
+              <rect x="240" y="52" width="22" height="24" rx="1" fill="#e09060"/>
+              <rect x="265" y="56" width="18" height="20" rx="1" fill="#d88048"/>
+              <rect x="286" y="58" width="14" height="18" rx="1" fill="#e89060"/>
+              <!-- rooftop details / windows -->
+              <rect x="14"  y="62" width="4" height="5" rx=".5" fill="rgba(255,255,255,.5)"/>
+              <rect x="20"  y="62" width="4" height="5" rx=".5" fill="rgba(255,255,255,.5)"/>
+              <rect x="36"  y="60" width="4" height="5" rx=".5" fill="rgba(255,255,255,.45)"/>
+              <rect x="44"  y="60" width="4" height="5" rx=".5" fill="rgba(255,255,255,.45)"/>
+              <rect x="155" y="60" width="4" height="5" rx=".5" fill="rgba(255,255,255,.5)"/>
+              <rect x="163" y="60" width="4" height="5" rx=".5" fill="rgba(255,255,255,.5)"/>
+              <rect x="178" y="58" width="4" height="5" rx=".5" fill="rgba(255,255,255,.45)"/>
+              <rect x="186" y="58" width="4" height="5" rx=".5" fill="rgba(255,255,255,.45)"/>
+              <!-- foreground street/ground -->
+              <rect x="0" y="74" width="340" height="36" fill="#c87848" opacity=".45"/>
+              <path d="M0,76 C60,73 130,75 200,73 C260,71 300,74 340,75" stroke="#b86030" stroke-width="1" fill="none" opacity=".4"/>
+              <!-- tram line hint -->
+              <line x1="0" y1="78" x2="340" y2="78" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+              <!-- small tram -->
+              <rect x="80" y="72" width="28" height="10" rx="2" fill="#f0e0c0" opacity=".8"/>
+              <rect x="82" y="74" width="5"  height="5"  rx=".5" fill="#7ab8e8" opacity=".7"/>
+              <rect x="90" y="74" width="5"  height="5"  rx=".5" fill="#7ab8e8" opacity=".7"/>
+              <rect x="98" y="74" width="5"  height="5"  rx=".5" fill="#7ab8e8" opacity=".7"/>
+              <!-- foreground bottom fade -->
+              <rect x="0" y="90" width="340" height="20" fill="white" opacity=".15"/>
+            </svg>
+            <div class="hc-trip-info">
+              <div class="hc-trip-dest">Lisbon, Portugal</div>
+              <div class="hc-trip-meta">5 days · ~$2,400 · flights included</div>
+              <span class="hc-trip-btn">Add to wishlist +</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hc-tagline">
+        <strong>$1,000 for small joys + one trip.</strong> All within your Safe to Spend range.
+      </div>
+    </div>
+    <p class="hero-caption">Your personalized joy plan, generated from your real finances.</p>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM / REFRAME ═══ -->
+<section id="problem">
+  <div class="problem-inner">
+    <p class="prob-line">"The debt is real."</p>
+    <p class="prob-line">"The stress is real."</p>
+    <p class="prob-line warm">"And you also only live once."</p>
+    <div class="prob-divider"></div>
+    <p class="prob-reframe">Harvest helps you hold both truths.<br/>Your goals are real. So is your one life.</p>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section id="how">
+  <div class="how-inner">
+    <span class="section-eyebrow reveal">How it works</span>
+    <h2 class="section-h2 reveal d1">Four steps to your<br/>joy plan.</h2>
+    <div class="how-steps">
+      <div class="how-step reveal d1">
+        <div class="how-step-num">01</div>
+        <span class="how-step-icon">🔗</span>
+        <h3>Connect your finances</h3>
+        <p>Harvest reads your income, expenses, debt, and savings goals. It builds your real financial picture — automatically.</p>
+      </div>
+      <div class="how-step reveal d2">
+        <div class="how-step-num">02</div>
+        <span class="how-step-icon">✨</span>
+        <h3>Get your joy plan</h3>
+        <p>Harvest tells you what you can comfortably enjoy this year — small treats and one bigger experience that fits your real numbers.</p>
+      </div>
+      <div class="how-step reveal d3">
+        <div class="how-step-num">03</div>
+        <span class="how-step-icon">🌟</span>
+        <h3>Build your wishlist</h3>
+        <p>Add things you want. Harvest shows you exactly when your Safe to Spend number will unlock each one — and celebrates when it does.</p>
+      </div>
+      <div class="how-step reveal d4">
+        <div class="how-step-num">04</div>
+        <span class="how-step-icon">💳</span>
+        <h3>Connect your card</h3>
+        <p>When you make a purchase that matches your wishlist, Harvest records it automatically. No logging. Just a quiet: "you earned it."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUCT SHOWCASE ═══ -->
+<section id="showcase">
+  <div class="showcase-inner">
+    <h2 class="showcase-h2 reveal">Here's what your finances say<br/>you can enjoy this year.</h2>
+
+    <div class="showcase-panels">
+      <!-- LEFT: small joys list -->
+      <div class="showcase-joys reveal d1">
+        <div class="sj-header">
+          <span class="sj-title">Small joys</span>
+          <span class="sj-budget">$1,000 / year</span>
+        </div>
+        <!-- checked off -->
+        <div class="sj-row checked">
+          <div class="sj-icon-wrap">🍽️</div>
+          <div class="sj-text">
+            <div class="sj-name">A nice dinner out</div>
+            <div class="sj-amt">up to $120</div>
+          </div>
+          <div class="sj-check-badge">Done</div>
+        </div>
+        <!-- normal -->
+        <div class="sj-row">
+          <div class="sj-icon-wrap">👟</div>
+          <div class="sj-text">
+            <div class="sj-name">New sneakers</div>
+            <div class="sj-amt">up to $200</div>
+          </div>
+          <button class="sj-add">Add to wishlist</button>
+        </div>
+        <!-- checked off -->
+        <div class="sj-row checked">
+          <div class="sj-icon-wrap">📚</div>
+          <div class="sj-text">
+            <div class="sj-name">Books or courses</div>
+            <div class="sj-amt">up to $80</div>
+          </div>
+          <div class="sj-check-badge">Done</div>
+        </div>
+        <div class="sj-row">
+          <div class="sj-icon-wrap">💆</div>
+          <div class="sj-text">
+            <div class="sj-name">A spa or massage</div>
+            <div class="sj-amt">up to $100</div>
+          </div>
+          <button class="sj-add">Add to wishlist</button>
+        </div>
+        <div class="sj-row">
+          <div class="sj-icon-wrap">🎁</div>
+          <div class="sj-text">
+            <div class="sj-name">Something just for you</div>
+            <div class="sj-amt">up to $500</div>
+          </div>
+          <button class="sj-add">Add to wishlist</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: trip cards -->
+      <div class="reveal d2">
+        <div class="trip-tabs">
+          <button class="trip-tab active" onclick="switchTrip(0, this)">Lisbon</button>
+          <button class="trip-tab" onclick="switchTrip(1, this)">Mexico City</button>
+          <button class="trip-tab" onclick="switchTrip(2, this)">Medellín</button>
+        </div>
+
+        <!-- Lisbon card -->
+        <div class="trip-card" id="trip-0">
+          <svg class="trip-illo" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="lis2-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#5898d0"/>
+                <stop offset="100%" stop-color="#a8d0f0"/>
+              </linearGradient>
+            </defs>
+            <rect width="560" height="180" fill="url(#lis2-sky)"/>
+            <circle cx="480" cy="40" r="26" fill="#fde68a" opacity=".8"/>
+            <rect x="0" y="118" width="560" height="62" fill="#5898d0" opacity=".38"/>
+            <path d="M0,122 C80,108 160,100 240,106 C320,112 400,104 480,98 C520,95 545,100 560,104 L560,122Z" fill="#d4884a" opacity=".55"/>
+            <!-- buildings back -->
+            <rect x="20"  y="85"  width="22" height="40" rx="1" fill="#c07040" opacity=".55"/>
+            <rect x="45"  y="78"  width="28" height="48" rx="1" fill="#d08050" opacity=".55"/>
+            <rect x="76"  y="88"  width="18" height="38" rx="1" fill="#c07040" opacity=".5"/>
+            <rect x="200" y="82"  width="24" height="44" rx="1" fill="#b86030" opacity=".55"/>
+            <rect x="228" y="74"  width="30" height="52" rx="1" fill="#c87040" opacity=".55"/>
+            <rect x="262" y="84"  width="20" height="42" rx="1" fill="#b86030" opacity=".5"/>
+            <rect x="380" y="78"  width="26" height="48" rx="1" fill="#c07040" opacity=".52"/>
+            <rect x="410" y="82"  width="22" height="44" rx="1" fill="#d08050" opacity=".52"/>
+            <!-- buildings front -->
+            <rect x="0"   y="95"  width="28" height="28" rx="1" fill="#e09060"/>
+            <rect x="30"  y="90"  width="36" height="34" rx="1" fill="#d88048"/>
+            <rect x="68"  y="96"  width="24" height="28" rx="1" fill="#e89860"/>
+            <rect x="96"  y="88"  width="30" height="36" rx="1" fill="#d07838"/>
+            <rect x="130" y="94"  width="22" height="30" rx="1" fill="#e89060"/>
+            <rect x="156" y="90"  width="32" height="34" rx="1" fill="#d88048"/>
+            <rect x="192" y="92"  width="26" height="32" rx="1" fill="#e09060"/>
+            <rect x="222" y="86"  width="38" height="38" rx="1" fill="#d07838"/>
+            <rect x="264" y="94"  width="22" height="30" rx="1" fill="#e09060"/>
+            <rect x="290" y="88"  width="28" height="36" rx="1" fill="#d88048"/>
+            <rect x="322" y="92"  width="24" height="32" rx="1" fill="#e89060"/>
+            <rect x="350" y="86"  width="30" height="38" rx="1" fill="#d07838"/>
+            <rect x="384" y="90"  width="26" height="34" rx="1" fill="#e09060"/>
+            <rect x="414" y="94"  width="22" height="30" rx="1" fill="#d88048"/>
+            <rect x="440" y="88"  width="30" height="36" rx="1" fill="#e89860"/>
+            <rect x="474" y="92"  width="24" height="32" rx="1" fill="#e09060"/>
+            <rect x="502" y="86"  width="28" height="38" rx="1" fill="#d07838"/>
+            <rect x="532" y="90"  width="28" height="34" rx="1" fill="#d88048"/>
+            <!-- windows -->
+            <rect x="4"   y="100" width="6" height="7" rx="1" fill="rgba(255,255,255,.55)"/>
+            <rect x="13"  y="100" width="6" height="7" rx="1" fill="rgba(255,255,255,.55)"/>
+            <rect x="34"  y="95"  width="6" height="7" rx="1" fill="rgba(255,255,255,.5)"/>
+            <rect x="44"  y="95"  width="6" height="7" rx="1" fill="rgba(255,255,255,.5)"/>
+            <rect x="228" y="90"  width="6" height="7" rx="1" fill="rgba(255,255,255,.55)"/>
+            <rect x="238" y="90"  width="6" height="7" rx="1" fill="rgba(255,255,255,.55)"/>
+            <rect x="248" y="90"  width="6" height="7" rx="1" fill="rgba(255,255,255,.5)"/>
+            <!-- street -->
+            <rect x="0" y="122" width="560" height="58" fill="#c87848" opacity=".35"/>
+            <line x1="0" y1="128" x2="560" y2="126" stroke="rgba(255,255,255,.18)" stroke-width="1"/>
+            <line x1="0" y1="135" x2="560" y2="133" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+            <!-- tram -->
+            <rect x="130" y="118" width="46" height="16" rx="3" fill="#f0e0c0" opacity=".85"/>
+            <rect x="133" y="121" width="8"  height="7"  rx="1" fill="#7ab8e8" opacity=".75"/>
+            <rect x="144" y="121" width="8"  height="7"  rx="1" fill="#7ab8e8" opacity=".75"/>
+            <rect x="155" y="121" width="8"  height="7"  rx="1" fill="#7ab8e8" opacity=".75"/>
+            <rect x="166" y="121" width="8"  height="7"  rx="1" fill="#7ab8e8" opacity=".75"/>
+          </svg>
+          <div class="trip-body">
+            <div class="trip-dest">Lisbon, Portugal</div>
+            <div class="trip-meta">5 days · Estimated $2,200–$2,800 · Best time: April–June<br/>Warm terracotta streets, pastéis de nata, tram rides, sunsets over the Tagus.</div>
+            <button class="trip-add-btn">Add to wishlist ✦</button>
+          </div>
+        </div>
+
+        <!-- Mexico City card (hidden initially) -->
+        <div class="trip-card" id="trip-1" style="display:none;">
+          <svg class="trip-illo" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="mex-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7bc8a4"/>
+                <stop offset="100%" stop-color="#c8e8d8"/>
+              </linearGradient>
+              <linearGradient id="mex-hill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#5a9a6a"/>
+                <stop offset="100%" stop-color="#3a7a4a"/>
+              </linearGradient>
+            </defs>
+            <rect width="560" height="180" fill="url(#mex-sky)"/>
+            <circle cx="80" cy="35" r="22" fill="#fde68a" opacity=".75"/>
+            <!-- mountains/volcanoes -->
+            <path d="M180,140 L260,60 L340,140Z" fill="#5a8870" opacity=".7"/>
+            <path d="M260,60 L280,80 L300,60 L320,80 L340,140 L260,140Z" fill="white" opacity=".15"/>
+            <path d="M300,140 L380,72 L460,140Z" fill="#4a7860" opacity=".65"/>
+            <!-- lush hills -->
+            <path d="M0,145 C60,120 130,112 200,118 C270,124 330,115 400,110 C460,106 510,112 560,116 L560,145Z" fill="url(#mex-hill)"/>
+            <!-- tree clusters on hills -->
+            <ellipse cx="70"  cy="118" rx="18" ry="12" fill="#3a6840" opacity=".8"/>
+            <ellipse cx="90"  cy="115" rx="14" ry="9"  fill="#4a7850" opacity=".7"/>
+            <ellipse cx="130" cy="112" rx="20" ry="13" fill="#3a6840" opacity=".8"/>
+            <ellipse cx="155" cy="115" rx="16" ry="10" fill="#4a7850" opacity=".75"/>
+            <ellipse cx="430" cy="108" rx="22" ry="14" fill="#3a6840" opacity=".8"/>
+            <ellipse cx="460" cy="111" rx="18" ry="11" fill="#4a7850" opacity=".75"/>
+            <ellipse cx="500" cy="106" rx="20" ry="13" fill="#3a6840" opacity=".8"/>
+            <!-- buildings (colorful facades) -->
+            <rect x="0"   y="125" width="26" height="20" rx="1" fill="#e87050"/>
+            <rect x="28"  y="120" width="30" height="25" rx="1" fill="#f0a830"/>
+            <rect x="60"  y="124" width="22" height="21" rx="1" fill="#e87050"/>
+            <rect x="84"  y="118" width="28" height="27" rx="1" fill="#d85828"/>
+            <rect x="200" y="122" width="28" height="23" rx="1" fill="#e07040"/>
+            <rect x="230" y="116" width="34" height="29" rx="1" fill="#f0a030"/>
+            <rect x="266" y="120" width="26" height="25" rx="1" fill="#e07040"/>
+            <rect x="380" y="120" width="30" height="25" rx="1" fill="#e87050"/>
+            <rect x="412" y="115" width="26" height="30" rx="1" fill="#d85828"/>
+            <rect x="440" y="122" width="22" height="23" rx="1" fill="#f0a830"/>
+            <!-- cactus shapes -->
+            <rect x="155" y="128" width="5"  height="16" rx="2" fill="#3a7040"/>
+            <rect x="150" y="134" width="10" height="4"  rx="2" fill="#3a7040"/>
+            <rect x="350" y="126" width="5"  height="18" rx="2" fill="#3a7040"/>
+            <rect x="345" y="133" width="10" height="4"  rx="2" fill="#3a7040"/>
+            <rect x="355" y="131" width="10" height="4"  rx="2" fill="#3a7040"/>
+            <!-- ground -->
+            <rect x="0" y="145" width="560" height="35" fill="#c8a058" opacity=".5"/>
+            <path d="M0,148 C80,145 160,147 240,145 C320,143 400,146 480,144 C520,143 545,145 560,146" stroke="rgba(255,255,255,.15)" stroke-width="1" fill="none"/>
+          </svg>
+          <div class="trip-body">
+            <div class="trip-dest">Mexico City, Mexico</div>
+            <div class="trip-meta">5 days · Estimated $1,800–$2,400 · Best time: Oct–Feb<br/>Lush parks, incredible food, Frida Kahlo, rooftop mezcal at golden hour.</div>
+            <button class="trip-add-btn">Add to wishlist ✦</button>
+          </div>
+        </div>
+
+        <!-- Medellín card (hidden initially) -->
+        <div class="trip-card" id="trip-2" style="display:none;">
+          <svg class="trip-illo" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="med-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f0b860"/>
+                <stop offset="100%" stop-color="#f8d88a"/>
+              </linearGradient>
+              <linearGradient id="med-hill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#78b858"/>
+                <stop offset="100%" stop-color="#508838"/>
+              </linearGradient>
+            </defs>
+            <rect width="560" height="180" fill="url(#med-sky)"/>
+            <circle cx="460" cy="30" r="30" fill="#fde68a" opacity=".9"/>
+            <circle cx="460" cy="30" r="44" fill="#fde68a" opacity=".15"/>
+            <!-- rolling green hills — the Andes valley -->
+            <path d="M0,160 C60,120 140,108 220,115 C300,122 360,108 440,100 C490,95 530,102 560,108 L560,160Z" fill="url(#med-hill)"/>
+            <path d="M0,175 C80,148 180,138 280,143 C380,148 460,138 560,132 L560,175Z" fill="#60a040" opacity=".85"/>
+            <!-- dense tree cover on hills -->
+            <ellipse cx="30"  cy="150" rx="22" ry="15" fill="#488030" opacity=".9"/>
+            <ellipse cx="60"  cy="145" rx="18" ry="12" fill="#5a9040" opacity=".85"/>
+            <ellipse cx="90"  cy="142" rx="20" ry="13" fill="#488030" opacity=".9"/>
+            <ellipse cx="120" cy="145" rx="16" ry="10" fill="#5a9040" opacity=".85"/>
+            <ellipse cx="380" cy="138" rx="22" ry="14" fill="#488030" opacity=".9"/>
+            <ellipse cx="415" cy="135" rx="18" ry="12" fill="#5a9040" opacity=".85"/>
+            <ellipse cx="450" cy="132" rx="24" ry="15" fill="#488030" opacity=".9"/>
+            <ellipse cx="490" cy="136" rx="20" ry="13" fill="#5a9040" opacity=".85"/>
+            <!-- colourful buildings in valley -->
+            <rect x="160" y="130" width="24" height="32" rx="1" fill="#e87a40"/>
+            <rect x="186" y="126" width="28" height="36" rx="1" fill="#f0a828"/>
+            <rect x="216" y="130" width="22" height="32" rx="1" fill="#d85820"/>
+            <rect x="240" y="124" width="30" height="38" rx="1" fill="#e87a40"/>
+            <rect x="272" y="128" width="24" height="34" rx="1" fill="#f0a828"/>
+            <rect x="298" y="132" width="20" height="30" rx="1" fill="#e87a40"/>
+            <rect x="320" y="126" width="28" height="36" rx="1" fill="#d85820"/>
+            <rect x="350" y="130" width="24" height="32" rx="1" fill="#f0a828"/>
+            <!-- windows -->
+            <rect x="164" y="136" width="5" height="6" rx="1" fill="rgba(255,255,255,.5)"/>
+            <rect x="172" y="136" width="5" height="6" rx="1" fill="rgba(255,255,255,.5)"/>
+            <rect x="192" y="131" width="5" height="6" rx="1" fill="rgba(255,255,255,.5)"/>
+            <rect x="200" y="131" width="5" height="6" rx="1" fill="rgba(255,255,255,.5)"/>
+            <!-- cable car gondola -->
+            <line x1="60" y1="140" x2="300" y2="105" stroke="rgba(80,60,30,.35)" stroke-width="1.5"/>
+            <rect x="165" y="117" width="20" height="14" rx="3" fill="#e0d0b8" opacity=".9"/>
+            <line x1="175" y1="114" x2="175" y2="117" stroke="#888" stroke-width="1.2"/>
+            <!-- flower/bird of paradise detail -->
+            <circle cx="140" cy="155" r="5" fill="#e87a40" opacity=".8"/>
+            <circle cx="148" cy="152" r="4" fill="#f0a828" opacity=".8"/>
+            <!-- ground -->
+            <rect x="0" y="162" width="560" height="18" fill="#a8c870" opacity=".6"/>
+          </svg>
+          <div class="trip-body">
+            <div class="trip-dest">Medellín, Colombia</div>
+            <div class="trip-meta">5 days · Estimated $1,600–$2,200 · Best time: Mar–May<br/>Eternal spring, cable cars over emerald hillsides, the city of flowers.</div>
+            <button class="trip-add-btn">Add to wishlist ✦</button>
+          </div>
+        </div>
+
+        <p class="trip-disclaimer reveal d3">Prices estimated based on your departure city and travel style.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WISHLIST IN ACTION ═══ -->
+<section id="wishlist">
+  <div class="wishlist-inner">
+    <span class="section-eyebrow reveal">Your wishlist</span>
+    <h2 class="section-h2 reveal d1">Watch your joys unlock.</h2>
+
+    <div class="wishlist-items">
+      <!-- 1. Unlocked -->
+      <div class="wl-item unlocked-state" id="wl1">
+        <div class="wl-status-icon unlocked confetti-burst" id="confetti-anchor">🎉</div>
+        <div class="wl-info">
+          <div class="wl-name">Spa day</div>
+          <div class="wl-sub">Your Safe to Spend covered this. Enjoy it.</div>
+        </div>
+        <span class="wl-badge unlocked">Unlocked ✓</span>
+      </div>
+
+      <!-- 2. In progress -->
+      <div class="wl-item" id="wl2">
+        <div class="wl-status-icon progress">👟</div>
+        <div class="wl-info">
+          <div class="wl-name">New sneakers — $200</div>
+          <div class="wl-progress-wrap">
+            <div class="wl-progress-track">
+              <div class="wl-progress-fill" id="prog-bar" style="width:0%"></div>
+            </div>
+            <div class="wl-progress-label">$40 more in your Safe to Spend range. Est. 2 weeks.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Coming -->
+      <div class="wl-item" id="wl3">
+        <div class="wl-status-icon coming">🔒</div>
+        <div class="wl-info">
+          <div class="wl-name">Lisbon trip — $2,400</div>
+          <div class="wl-sub">On track. Est. ready by March.</div>
+        </div>
+        <span class="wl-badge coming">Coming</span>
+      </div>
+    </div>
+
+    <!-- auto-recorded toast -->
+    <div class="wl-toast reveal d2">
+      <span class="wl-toast-icon">💳</span>
+      <div>
+        <div class="wl-toast-text"><strong>We noticed a $187 charge at Nike.</strong> Was this your sneakers?</div>
+        <div class="wl-toast-actions">
+          <button class="wl-toast-btn primary" onclick="this.closest('.wl-toast').style.opacity='.5'">Yes, mark done</button>
+          <button class="wl-toast-btn secondary" onclick="this.closest('.wl-toast').style.opacity='.5'">Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="wishlist-tagline reveal d3">Harvest works toward your wishlist automatically. You just live your life.</p>
+  </div>
+</section>
+
+<!-- ═══ PHILOSOPHY ── -->
+<section id="philosophy">
+  <div style="max-width:800px;margin:0 auto;">
+    <p class="phil-line">
+      <em>The debt is real.</em> Your one life is too.<br/>
+      Harvest helps you live both.
+    </p>
+  </div>
+</section>
+
+<!-- ═══ WAITLIST ═══ -->
+<section id="waitlist">
+  <div class="waitlist-inner">
+    <h2 class="waitlist-h2">Start enjoying what<br/>you've already earned.</h2>
+    <p class="waitlist-sub">Harvest is in early access. Leave your email and we'll let you know when your joy plan is ready.</p>
+    <form class="wl-form" id="wlForm" novalidate>
+      <input type="email" class="wl-input" id="wlEmail" placeholder="your@email.com" autocomplete="email" required/>
+      <button type="submit" class="wl-btn">Join Harvest</button>
+    </form>
+    <p class="wl-fine">No spam. No pressure. Just a note when you're up.</p>
+    <div class="wl-confirm" id="wlConfirm">
+      <div style="font-size:2.5rem;margin-bottom:4px">🌾</div>
+      <strong>You're in the harvest.</strong>
+      <p>We'll reach out when your joy plan is ready.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">Harvest</div>
+  <small>© 2026 Harvest. You've earned this.</small>
+</footer>
+
+<script>
+// ── Trip switcher ──
+function switchTrip(idx, btn) {
+  [0,1,2].forEach(function(i) {
+    var card = document.getElementById('trip-'+i);
+    if (card) card.style.display = i === idx ? 'block' : 'none';
+  });
+  document.querySelectorAll('.trip-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+// ── Scroll reveal ──
+var revealEls = document.querySelectorAll('.reveal');
+var revealObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(function(el) { revealObs.observe(el); });
+
+// ── Wishlist scroll-in + progress bar ──
+var wlItems = document.querySelectorAll('.wl-item');
+var wlObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      var bar = e.target.querySelector('.wl-progress-fill');
+      if (bar) { setTimeout(function(){ bar.style.width = '80%'; }, 300); }
+    }
+  });
+}, { threshold: 0.2 });
+wlItems.forEach(function(el, i) {
+  el.style.transitionDelay = (i * 0.12) + 's';
+  wlObs.observe(el);
+});
+
+// ── Confetti burst on unlocked item ──
+(function() {
+  var anchor = document.getElementById('confetti-anchor');
+  if (!anchor) return;
+  var colors = ['#f5a623','#e07b54','#fcc566','#4a8860','#7ab8e8','#e8d87a'];
+  var fired = false;
+  var wl1Obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !fired) {
+        fired = true;
+        for (var i = 0; i < 18; i++) {
+          (function(i) {
+            setTimeout(function() {
+              var piece = document.createElement('div');
+              piece.className = 'confetti-piece';
+              var angle = (i / 18) * 360;
+              var dist  = 28 + Math.random() * 32;
+              var x = Math.cos(angle * Math.PI/180) * dist;
+              var y = Math.sin(angle * Math.PI/180) * dist - 20;
+              piece.style.cssText = [
+                'left:' + (19 + x) + 'px',
+                'top:'  + (19 + y) + 'px',
+                'background:' + colors[i % colors.length],
+                'animation-delay:' + (Math.random() * 0.25) + 's',
+                'transform:rotate(' + (Math.random()*360) + 'deg)',
+                'border-radius:' + (Math.random() > 0.5 ? '50%' : '1px')
+              ].join(';');
+              anchor.appendChild(piece);
+              setTimeout(function() { if (piece.parentNode) piece.parentNode.removeChild(piece); }, 1200);
+            }, i * 30);
+          })(i);
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+  wl1Obs.observe(document.getElementById('wl1'));
+})();
+
+// ── Waitlist form ──
+(function() {
+  var form = document.getElementById('wlForm');
+  var conf = document.getElementById('wlConfirm');
+  var inp  = document.getElementById('wlEmail');
+  var fine = document.querySelector('.wl-fine');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var v = inp.value.trim();
+    if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      inp.style.borderColor = 'rgba(224,123,84,.7)'; inp.focus(); return;
+    }
+    form.style.display = 'none'; fine.style.display = 'none';
+    conf.style.display = 'flex';
+  });
+  inp.addEventListener('input', function() { inp.style.borderColor = ''; });
+})();
+
+// ── Smooth scroll ──
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var t = document.querySelector(this.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>

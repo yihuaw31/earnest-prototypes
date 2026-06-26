@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Grove — Your money, growing.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --mist:        #8abcb8;
+    --mist-mid:    #aed0cc;
+    --mist-pale:   #e0f0ee;
+    --mint:        #7aaa90;
+    --mint-pale:   #d8f0e4;
+    --crystal-a:   #8ec0d8;
+    --crystal-b:   #a898cc;
+    --crystal-c:   #d8a8b8;
+    --crystal-d:   #b4d878;
+    --cream:       #f6f3e8;
+    --sand:        #f0ece0;
+    --ground:      #eeeae0;
+    --ink:         #243020;
+    --ink-mid:     #425040;
+    --ink-light:   #788870;
+    --ink-faint:   #a4b09c;
+    --accent:      #4a8878;
+    --accent-mid:  #3a7068;
+
+    --font-serif: 'Lora', Georgia, serif;
+    --font-sans:  'Inter', system-ui, sans-serif;
+    --radius:     16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(246,243,232,.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(138,188,184,.15);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 9px;
+    font-family: var(--font-serif); font-weight: 600; font-size: 1.15rem;
+    color: var(--ink); text-decoration: none; letter-spacing: -.01em;
+  }
+  nav a.nav-cta {
+    font-family: var(--font-sans); font-size: .85rem; font-weight: 500;
+    color: var(--ink-mid); text-decoration: none;
+    padding: 8px 20px; border: 1px solid var(--mist-mid); border-radius: 30px;
+    transition: background .2s, color .2s;
+  }
+  nav a.nav-cta:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    padding: 120px 48px 0;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center;
+    position: relative; overflow: hidden;
+    background: var(--cream);
+  }
+  .hero-copy {
+    text-align: center; position: relative; z-index: 2; max-width: 580px;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-sans); font-size: .78rem; font-weight: 500;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--mist); margin-bottom: 22px; display: block;
+  }
+  .hero-h1 {
+    font-family: var(--font-serif); font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 600; line-height: 1.1; letter-spacing: -.03em;
+    color: var(--ink); margin-bottom: 22px;
+  }
+  .hero-h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem; line-height: 1.8; color: var(--ink-mid);
+    font-weight: 300; margin-bottom: 40px; max-width: 460px; margin-left: auto; margin-right: auto;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: .95rem; font-weight: 500;
+    padding: 16px 36px; border-radius: 40px;
+    background: var(--accent); color: white; text-decoration: none;
+    border: none; cursor: pointer;
+    transition: background .25s, transform .2s;
+    box-shadow: 0 4px 24px rgba(74,136,120,.28);
+  }
+  .btn-primary:hover { background: var(--accent-mid); transform: translateY(-2px); }
+
+  .hero-garden-wrap {
+    width: 100%; max-width: 1100px;
+    margin-top: 48px; position: relative; z-index: 2;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%),
+                        linear-gradient(to bottom, black 55%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%),
+                linear-gradient(to bottom, black 55%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  /* ── GARDEN ANIMATIONS ── */
+  @keyframes bonsaiSway {
+    0%   { transform: rotate(-0.8deg); }
+    100% { transform: rotate(1deg); }
+  }
+  @keyframes reedSway {
+    0%   { transform: rotate(-2deg); }
+    100% { transform: rotate(2.5deg); }
+  }
+  @keyframes gentleBob {
+    0%   { transform: translateY(1.5px); }
+    100% { transform: translateY(-1.5px); }
+  }
+  @keyframes rayPulse {
+    0%   { opacity: .03; }
+    100% { opacity: .07; }
+  }
+
+  #bonsai-canopy   { transform-origin: 668px 488px; animation: bonsaiSway 7s ease-in-out infinite alternate; }
+  #reeds-left      { transform-origin: 148px 488px; animation: reedSway 4s ease-in-out infinite alternate; }
+  #reeds-right     { transform-origin: 978px 482px; animation: reedSway 4.5s ease-in-out infinite alternate .6s; }
+  #small-tree-l    { transform-origin: 216px 480px; animation: bonsaiSway 8s ease-in-out infinite alternate .3s; }
+  #rock-group      { animation: gentleBob 9s ease-in-out infinite alternate; }
+  #light-rays      { animation: rayPulse 8s ease-in-out infinite alternate; }
+
+  /* ── REFRAME ── */
+  #reframe { padding: 120px 48px; background: var(--cream); }
+  .reframe-inner {
+    max-width: 1000px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+  .reframe-item { padding: 56px 40px; display: flex; align-items: flex-start; }
+  .reframe-item:nth-child(2) {
+    border-left: 1px solid rgba(174,208,204,.4);
+    border-right: 1px solid rgba(174,208,204,.4);
+  }
+  .reframe-text {
+    font-family: var(--font-serif); font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+    font-weight: 500; line-height: 1.45; color: var(--ink); letter-spacing: -.02em;
+  }
+  .reframe-item:nth-child(1) .reframe-text { color: var(--ink-light); }
+  .reframe-item:nth-child(2) .reframe-text { color: var(--accent); font-style: italic; }
+  .reframe-item:nth-child(3) .reframe-text { color: var(--ink-faint); }
+
+  /* ── HOW IT WORKS ── */
+  #how { padding: 120px 48px; background: var(--mist-pale); }
+  .how-inner { max-width: 860px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: .75rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--mist); display: block; margin-bottom: 18px;
+  }
+  .section-h2 {
+    font-family: var(--font-serif); font-size: clamp(2rem, 3.8vw, 3rem);
+    font-weight: 600; line-height: 1.2; letter-spacing: -.03em;
+    color: var(--ink); margin-bottom: 64px;
+  }
+  .how-steps { display: flex; flex-direction: column; }
+  .how-step {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 32px; padding: 48px 0;
+    border-bottom: 1px solid rgba(138,188,184,.2);
+  }
+  .how-step:last-child { border-bottom: none; }
+  .how-step-num {
+    font-family: var(--font-serif); font-size: 2.8rem; font-weight: 400;
+    color: var(--mist-mid); line-height: 1; padding-top: 6px;
+  }
+  .how-step h3 {
+    font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600;
+    color: var(--ink); margin-bottom: 12px; letter-spacing: -.02em;
+  }
+  .how-step p { font-size: .95rem; line-height: 1.85; color: var(--ink-mid); font-weight: 300; }
+
+  /* ── GARDEN KEY ── */
+  #key { padding: 120px 48px; background: var(--cream); }
+  .key-inner { max-width: 1060px; margin: 0 auto; }
+  .key-garden-wrap {
+    margin: 56px 0 72px;
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 8px 60px rgba(36,48,32,.06);
+  }
+  .key-callouts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-bottom: 48px; }
+  .callout-item { display: flex; flex-direction: column; gap: 10px; }
+  .callout-icon { font-size: 1.8rem; line-height: 1; }
+  .callout-title {
+    font-family: var(--font-serif); font-size: 1rem; font-weight: 600;
+    color: var(--ink); letter-spacing: -.01em;
+  }
+  .callout-body { font-size: .85rem; line-height: 1.75; color: var(--ink-light); font-weight: 300; }
+  .key-footer {
+    text-align: center; padding-top: 32px;
+    border-top: 1px solid rgba(174,208,204,.3);
+    font-family: var(--font-serif); font-size: 1.1rem; font-style: italic;
+    color: var(--ink-mid); line-height: 1.6;
+  }
+
+  /* ── SEASONS ── */
+  #seasons { padding: 120px 48px; background: var(--sand); }
+  .seasons-inner { max-width: 1060px; margin: 0 auto; }
+  .seasons-h2 {
+    font-family: var(--font-serif); font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 600; line-height: 1.3; letter-spacing: -.03em;
+    color: var(--ink); margin-bottom: 64px; max-width: 540px;
+  }
+  .seasons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .season-card {
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(174,208,204,.3);
+    border-radius: 20px; padding: 28px 24px 32px; text-align: center;
+  }
+  .season-svg-wrap { margin-bottom: 20px; }
+  .season-name {
+    font-family: var(--font-serif); font-size: .85rem; font-weight: 600;
+    color: var(--ink-faint); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .season-caption { font-family: var(--font-serif); font-size: .95rem; font-style: italic; color: var(--ink-mid); line-height: 1.6; }
+
+  /* ── NOT ── */
+  #not { padding: 120px 48px; background: #1c2820; }
+  .not-inner { max-width: 700px; margin: 0 auto; }
+  .not-eyebrow {
+    font-size: .75rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--mist); display: block; margin-bottom: 20px;
+  }
+  .not-lines { display: flex; flex-direction: column; }
+  .not-line {
+    font-family: var(--font-serif); font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 400; line-height: 1.5; color: rgba(255,255,255,.5);
+    padding: 30px 0; border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+  .not-line:last-child { border-bottom: none; }
+  .not-line em { color: rgba(255,255,255,.22); font-style: normal; }
+
+  /* ── WAITLIST ── */
+  #waitlist {
+    padding: 140px 48px;
+    background: linear-gradient(175deg, var(--mist-pale) 0%, var(--cream) 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .waitlist-inner { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; }
+  .waitlist-h2 {
+    font-family: var(--font-serif); font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-weight: 600; letter-spacing: -.035em; color: var(--ink);
+    margin-bottom: 16px; line-height: 1.2;
+  }
+  .waitlist-sub { font-size: .95rem; line-height: 1.85; color: var(--ink-mid); font-weight: 300; margin-bottom: 44px; }
+  .wl-form { display: flex; gap: 10px; justify-content: center; }
+  .wl-input {
+    flex: 1; font-family: var(--font-sans); font-size: .95rem;
+    padding: 16px 22px; border-radius: 40px;
+    border: 1.5px solid var(--mist-mid);
+    background: rgba(255,255,255,.7); color: var(--ink); outline: none; max-width: 280px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .wl-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(74,136,120,.14); }
+  .wl-input::placeholder { color: var(--ink-faint); }
+  .wl-btn {
+    font-family: var(--font-sans); font-size: .9rem; font-weight: 500;
+    padding: 16px 28px; border-radius: 40px;
+    background: var(--accent); color: white; border: none; cursor: pointer;
+    transition: background .2s, transform .15s; white-space: nowrap;
+  }
+  .wl-btn:hover { background: var(--accent-mid); transform: translateY(-1px); }
+  .wl-fine { font-size: .8rem; color: var(--ink-faint); margin-top: 18px; font-weight: 300; }
+  .wl-confirm {
+    display: none; flex-direction: column; align-items: center; gap: 10px; color: var(--ink-mid);
+  }
+  .wl-confirm strong { font-family: var(--font-serif); font-size: 1.1rem; color: var(--ink); }
+  .wl-confirm p { font-size: .9rem; line-height: 1.7; font-weight: 300; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 48px; background: #1c2820;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo { font-family: var(--font-serif); font-size: 1rem; font-weight: 600; color: rgba(255,255,255,.4); }
+  footer small { font-size: .8rem; color: rgba(255,255,255,.22); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    nav { padding: 18px 24px; }
+    #hero, #reframe, #how, #key, #seasons, #not, #waitlist { padding-left: 24px; padding-right: 24px; }
+    .reframe-inner { grid-template-columns: 1fr; }
+    .reframe-item:nth-child(2) { border-left: none; border-right: none; border-top: 1px solid rgba(174,208,204,.3); border-bottom: 1px solid rgba(174,208,204,.3); }
+    .how-step { grid-template-columns: 1fr; gap: 8px; }
+    .how-step-num { font-size: 2rem; padding-top: 0; }
+    .key-callouts { grid-template-columns: repeat(2, 1fr); }
+    .seasons-grid { grid-template-columns: repeat(2, 1fr); }
+    .wl-form { flex-direction: column; align-items: stretch; }
+    .wl-input { max-width: 100%; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <ellipse cx="13" cy="15" rx="7" ry="9" fill="#aed0cc" opacity=".5"/>
+      <path d="M13 24 C13 17 8 11 13 4 C18 11 13 17 13 24Z" fill="#4a8878"/>
+      <path d="M13 13 C10 10 7 9 5 11" stroke="#3a7068" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+      <path d="M13 17 C16 14 19 14 20 16" stroke="#3a7068" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+    </svg>
+    Grove
+  </a>
+  <a href="#waitlist" class="nav-cta">Join waitlist</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-copy">
+    <span class="hero-eyebrow">Introducing Grove</span>
+    <h1 class="hero-h1">Your money,<br/><em>growing.</em></h1>
+    <p class="hero-sub">A living garden that reflects your financial health — calmly, honestly, without judgment.</p>
+    <a href="#waitlist" class="btn-primary">
+      Join the waitlist
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- HERO GARDEN SVG -->
+  <div class="hero-garden-wrap">
+    <svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+      <defs>
+        <!-- sky gradient: matches page cream at top → pale teal-blue at horizon -->
+        <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#f6f3e8"/>
+          <stop offset="40%"  stop-color="#dceee8"/>
+          <stop offset="100%" stop-color="#c8e0da"/>
+        </linearGradient>
+        <!-- rock gradients -->
+        <linearGradient id="r1-grad" x1="0.2" y1="0" x2="0.8" y2="1">
+          <stop offset="0%"   stop-color="#c8eea0"/>
+          <stop offset="55%"  stop-color="#90c8e0"/>
+          <stop offset="100%" stop-color="#a0b8e8"/>
+        </linearGradient>
+        <linearGradient id="r2-grad" x1="0.1" y1="0" x2="0.9" y2="1">
+          <stop offset="0%"   stop-color="#90c0e8"/>
+          <stop offset="100%" stop-color="#b8a8d8"/>
+        </linearGradient>
+        <linearGradient id="r3-grad" x1="0.1" y1="0" x2="0.9" y2="1">
+          <stop offset="0%"   stop-color="#80c8c0"/>
+          <stop offset="100%" stop-color="#e8b0bc"/>
+        </linearGradient>
+        <linearGradient id="r4-grad" x1="0.2" y1="0" x2="0.8" y2="1">
+          <stop offset="0%"   stop-color="#a8d8e8"/>
+          <stop offset="100%" stop-color="#c4dca8"/>
+        </linearGradient>
+        <linearGradient id="r5-grad" x1="0.1" y1="0" x2="0.9" y2="1">
+          <stop offset="0%"   stop-color="#c0e880"/>
+          <stop offset="100%" stop-color="#c8e8d8"/>
+        </linearGradient>
+        <!-- glow circle -->
+        <radialGradient id="h-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ffffff" stop-opacity=".72"/>
+          <stop offset="70%"  stop-color="#ffffff" stop-opacity=".38"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <!-- bonsai trunk gradient -->
+        <linearGradient id="bonsai-trunk" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="#5c3820"/>
+          <stop offset="100%" stop-color="#8a5c30"/>
+        </linearGradient>
+        <filter id="f-blur8">
+          <feGaussianBlur stdDeviation="8"/>
+        </filter>
+        <filter id="f-blur4">
+          <feGaussianBlur stdDeviation="4"/>
+        </filter>
+      </defs>
+
+      <!-- sky -->
+      <rect width="1200" height="600" fill="url(#h-sky)"/>
+
+      <!-- light rays -->
+      <g id="light-rays">
+        <polygon points="100,0 220,0 560,600 440,600" fill="#fffbe0" opacity=".05"/>
+        <polygon points="280,0 340,0 660,600 600,600" fill="#fffbe0" opacity=".04"/>
+        <polygon points="0,80 80,0 380,600 300,600"  fill="#fffbe0" opacity=".04"/>
+      </g>
+
+      <!-- large soft glow circle (the moon/sun disc from reference) -->
+      <circle cx="590" cy="280" r="290" fill="url(#h-glow)"/>
+      <circle cx="590" cy="280" r="240" fill="white" opacity=".22"/>
+
+      <!-- distant horizon hills — very pale -->
+      <path d="M0,440 C150,400 300,385 450,395 C600,405 700,388 850,382 C1000,376 1100,395 1200,405 L1200,600 L0,600Z" fill="#b8d8d0" opacity=".22"/>
+
+      <!-- ground oval — near white, soft -->
+      <ellipse cx="595" cy="540" rx="510" ry="68" fill="#eeeae0" opacity=".85"/>
+      <ellipse cx="595" cy="548" rx="430" ry="44" fill="#f2eee4" opacity=".7"/>
+
+      <!-- ── CRYSTAL ROCKS ── -->
+      <g id="rock-group">
+
+        <!-- ROCK 1 — large mountain crystal (center, tallest) -->
+        <!-- shadow on ground -->
+        <ellipse cx="445" cy="505" rx="105" ry="16" fill="#8abcb0" opacity=".18" filter="url(#f-blur8)"/>
+        <!-- main shape -->
+        <path d="M365,498 L312,348 L358,215 L418,142 L476,198 L524,318 L548,498Z" fill="url(#r1-grad)"/>
+        <!-- darker left face -->
+        <path d="M365,498 L312,348 L358,215 L418,142 L408,150 L360,228 L318,360 L342,498Z" fill="rgba(80,140,160,0.18)"/>
+        <!-- lighter right highlight -->
+        <path d="M418,142 L476,198 L524,318 L548,498 L530,498 L500,312 L456,192 L425,148Z" fill="rgba(255,255,255,0.28)"/>
+        <!-- white facet lines -->
+        <path d="M418,142 L365,498" stroke="rgba(255,255,255,0.65)" stroke-width="1.5" fill="none"/>
+        <path d="M418,142 L476,198" stroke="rgba(255,255,255,0.55)" stroke-width="1.2" fill="none"/>
+        <path d="M358,215 L312,348" stroke="rgba(255,255,255,0.4)"  stroke-width="1"   fill="none"/>
+        <path d="M358,215 L418,142" stroke="rgba(255,255,255,0.5)"  stroke-width="1.2" fill="none"/>
+        <!-- outer glow outline -->
+        <path d="M365,498 L312,348 L358,215 L418,142 L476,198 L524,318 L548,498" stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+
+        <!-- ROCK 2 — medium left cube -->
+        <ellipse cx="255" cy="494" rx="78" ry="12" fill="#8abcb0" opacity=".15" filter="url(#f-blur4)"/>
+        <path d="M174,490 L200,395 L330,388 L358,490Z" fill="url(#r2-grad)"/>
+        <!-- top face (lighter) -->
+        <path d="M200,395 L330,388 L318,375 L192,382Z" fill="rgba(255,255,255,0.32)"/>
+        <!-- left dark face -->
+        <path d="M174,490 L200,395 L192,382 L168,478Z" fill="rgba(60,60,120,0.10)"/>
+        <!-- white facet lines -->
+        <path d="M200,395 L174,490"   stroke="rgba(255,255,255,0.6)"  stroke-width="1.5" fill="none"/>
+        <path d="M200,395 L330,388"   stroke="rgba(255,255,255,0.55)" stroke-width="1.2" fill="none"/>
+        <path d="M240,390 L228,468"   stroke="rgba(255,255,255,0.35)" stroke-width="1"   fill="none"/>
+        <path d="M174,490 L200,395 L330,388 L358,490" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+        <!-- top outline -->
+        <path d="M200,395 L318,375 L330,388" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none"/>
+
+        <!-- ROCK 3 — medium right -->
+        <ellipse cx="775" cy="494" rx="84" ry="12" fill="#8abcb0" opacity=".14" filter="url(#f-blur4)"/>
+        <path d="M694,490 L718,395 L828,400 L858,490Z" fill="url(#r3-grad)"/>
+        <path d="M718,395 L828,400 L818,386 L708,382Z" fill="rgba(255,255,255,0.3)"/>
+        <path d="M694,490 L718,395 L708,382 L682,478Z" fill="rgba(60,80,80,0.10)"/>
+        <path d="M718,395 L694,490"  stroke="rgba(255,255,255,0.58)" stroke-width="1.5" fill="none"/>
+        <path d="M718,395 L828,400" stroke="rgba(255,255,255,0.5)"  stroke-width="1.2" fill="none"/>
+        <path d="M768,398 L755,465"  stroke="rgba(255,255,255,0.32)" stroke-width="1"   fill="none"/>
+        <path d="M694,490 L718,395 L828,400 L858,490" stroke="rgba(255,255,255,0.48)" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+        <path d="M718,395 L818,386 L828,400" stroke="rgba(255,255,255,0.38)" stroke-width="1.2" fill="none"/>
+
+        <!-- ROCK 4 — small center-bottom -->
+        <path d="M428,490 L448,448 L538,452 L552,490Z" fill="url(#r4-grad)"/>
+        <path d="M448,448 L538,452 L528,440 L440,436Z" fill="rgba(255,255,255,0.28)"/>
+        <path d="M448,448 L428,490" stroke="rgba(255,255,255,0.55)" stroke-width="1.3" fill="none"/>
+        <path d="M448,448 L538,452" stroke="rgba(255,255,255,0.5)"  stroke-width="1.1" fill="none"/>
+        <path d="M428,490 L448,448 L538,452 L552,490" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+        <path d="M448,448 L528,440 L538,452" stroke="rgba(255,255,255,0.35)" stroke-width="1" fill="none"/>
+
+        <!-- ROCK 5 — small right-center -->
+        <path d="M618,490 L638,450 L728,454 L742,490Z" fill="url(#r5-grad)"/>
+        <path d="M638,450 L728,454 L718,441 L630,437Z" fill="rgba(255,255,255,0.26)"/>
+        <path d="M638,450 L618,490" stroke="rgba(255,255,255,0.52)" stroke-width="1.3" fill="none"/>
+        <path d="M638,450 L728,454" stroke="rgba(255,255,255,0.48)" stroke-width="1.1" fill="none"/>
+        <path d="M618,490 L638,450 L728,454 L742,490" stroke="rgba(255,255,255,0.43)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+
+      </g><!-- /rock-group -->
+
+      <!-- ── BONSAI TREE (savings — center right of rocks) ── -->
+      <!-- shadow -->
+      <ellipse cx="668" cy="492" rx="40" ry="8" fill="#3a6050" opacity=".12" filter="url(#f-blur4)"/>
+      <!-- trunk: twisted organic path -->
+      <path d="M665,490 C664,472 660,455 658,438 C655,420 652,406 656,392 C660,378 666,368 662,355 C658,342 652,335 655,322" stroke="url(#bonsai-trunk)" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <!-- main branch left -->
+      <path d="M658,370 C645,358 630,348 615,340" stroke="#7a5030" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <!-- main branch right -->
+      <path d="M660,355 C672,342 685,332 698,326" stroke="#7a5030" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <!-- sub-branch right-up -->
+      <path d="M662,340 C670,328 680,318 688,312" stroke="#8a5830" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- sub-branch left -->
+      <path d="M655,355 C642,344 628,336 614,332" stroke="#8a5830" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+      <!-- bonsai canopy pads (animated group) -->
+      <g id="bonsai-canopy">
+        <!-- pad 1 — upper right -->
+        <ellipse cx="696" cy="318" rx="34" ry="20" fill="#2e5028" opacity=".9"/>
+        <ellipse cx="700" cy="314" rx="22" ry="13" fill="#3e6838" opacity=".7"/>
+        <!-- pad 2 — upper left -->
+        <ellipse cx="618" cy="332" rx="30" ry="18" fill="#2e5028" opacity=".9"/>
+        <ellipse cx="614" cy="328" rx="20" ry="12" fill="#3e6838" opacity=".65"/>
+        <!-- pad 3 — center (main) -->
+        <ellipse cx="660" cy="308" rx="42" ry="26" fill="#345830" opacity=".9"/>
+        <ellipse cx="656" cy="302" rx="28" ry="17" fill="#4a7038" opacity=".7"/>
+        <!-- pad 4 — bottom secondary -->
+        <ellipse cx="648" cy="335" rx="32" ry="18" fill="#2e5028" opacity=".85"/>
+        <ellipse cx="652" cy="330" rx="20" ry="11" fill="#3e6838" opacity=".6"/>
+        <!-- highlight dots -->
+        <ellipse cx="652" cy="298" rx="12" ry="7"  fill="#5e8848" opacity=".4"/>
+        <ellipse cx="694" cy="312" rx="9"  ry="5"  fill="#5e8848" opacity=".35"/>
+      </g>
+
+      <!-- ── SMALL TREES ── -->
+      <!-- small tree left (beside rock 2) -->
+      <g id="small-tree-l">
+        <ellipse cx="216" cy="484" rx="18" ry="5" fill="#3a6050" opacity=".10" filter="url(#f-blur4)"/>
+        <line x1="216" y1="484" x2="216" y2="444" stroke="#8a5c30" stroke-width="5" stroke-linecap="round"/>
+        <ellipse cx="216" cy="434" rx="22" ry="16" fill="#2e5028" opacity=".88"/>
+        <ellipse cx="213" cy="428" rx="14" ry="9"  fill="#4a7038" opacity=".65"/>
+      </g>
+      <!-- small tree on/near center rocks -->
+      <g>
+        <line x1="446" y1="448" x2="446" y2="424" stroke="#7a5030" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="446" cy="416" rx="18" ry="13" fill="#2e5028" opacity=".85"/>
+        <ellipse cx="443" cy="411" rx="11" ry="7"  fill="#4a7038" opacity=".6"/>
+      </g>
+
+      <!-- ── REED CLUSTERS ── -->
+      <!-- reeds left -->
+      <g id="reeds-left">
+        <path d="M128,490 C126,468 124,450 125,432" stroke="#5a7840" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M138,490 C140,464 136,444 140,420" stroke="#6a8850" stroke-width="2"   fill="none" stroke-linecap="round"/>
+        <path d="M148,490 C146,470 150,452 147,435" stroke="#5a7840" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M158,490 C160,468 156,450 160,430" stroke="#6a8850" stroke-width="2"   fill="none" stroke-linecap="round"/>
+        <!-- leaf blades -->
+        <path d="M125,432 C115,425 108,418 112,424" stroke="#5a7840" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M140,420 C150,412 156,406 152,413" stroke="#6a8850" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M147,435 C137,428 130,422 134,428" stroke="#5a7840" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M160,430 C170,422 176,416 172,423" stroke="#6a8850" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- reeds right -->
+      <g id="reeds-right">
+        <path d="M958,490 C956,466 954,446 955,428" stroke="#5a7840" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M970,490 C972,462 968,442 972,420" stroke="#6a8850" stroke-width="2"   fill="none" stroke-linecap="round"/>
+        <path d="M982,490 C980,468 984,448 981,430" stroke="#5a7840" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M994,490 C996,465 992,446 996,426" stroke="#6a8850" stroke-width="2"   fill="none" stroke-linecap="round"/>
+        <path d="M955,428 C945,420 938,413 942,420" stroke="#5a7840" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M972,420 C982,412 988,406 984,413" stroke="#6a8850" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M981,430 C971,422 964,416 968,423" stroke="#5a7840" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M996,426 C1006,418 1012,411 1008,419" stroke="#6a8850" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- low ground cover / moss near rocks -->
+      <ellipse cx="390" cy="500" rx="48" ry="9"  fill="#90b878" opacity=".3"/>
+      <ellipse cx="555" cy="500" rx="38" ry="7"  fill="#90b878" opacity=".25"/>
+      <ellipse cx="760" cy="500" rx="44" ry="8"  fill="#90b878" opacity=".28"/>
+
+      <!-- dragonfly (right) -->
+      <g opacity=".7">
+        <line x1="1060" y1="305" x2="1092" y2="308" stroke="#7ab8c8" stroke-width="1.5" stroke-linecap="round"/>
+        <ellipse cx="1056" cy="305" rx="6" ry="3" fill="#90c8d8" transform="rotate(-8 1056 305)"/>
+        <path d="M1058,302 C1064,296 1072,294 1074,300" stroke="#a8d8e8" stroke-width="1.2" fill="rgba(168,216,232,.3)" stroke-linecap="round"/>
+        <path d="M1058,308 C1064,314 1072,316 1074,310" stroke="#a8d8e8" stroke-width="1.2" fill="rgba(168,216,232,.3)" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ REFRAME ═══ -->
+<section id="reframe">
+  <div class="reframe-inner">
+    <div class="reframe-item">
+      <p class="reframe-text">"Other apps show you what's wrong."</p>
+    </div>
+    <div class="reframe-item">
+      <p class="reframe-text">"Grove shows you what's growing."</p>
+    </div>
+    <div class="reframe-item">
+      <p class="reframe-text">"There's a difference."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section id="how">
+  <div class="how-inner">
+    <span class="section-eyebrow">How it works</span>
+    <h2 class="section-h2">Tend your finances the way<br/>you'd tend a garden.</h2>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-num">01</div>
+        <div>
+          <h3>Connect your accounts.</h3>
+          <p>Grove reads your financial picture — savings, debt, spending, income. No manual entry. No spreadsheets. Just a quiet, honest look at where things stand.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">02</div>
+        <div>
+          <h3>Meet your garden.</h3>
+          <p>Every part of your finances becomes part of the landscape. You see your financial health the way you'd look out a window — at a glance, without anxiety. No scores. No red numbers.</p>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">03</div>
+        <div>
+          <h3>Watch it grow.</h3>
+          <p>Every extra dollar saved, every debt payment made, every steady week — the garden responds. Slowly, honestly, beautifully. The garden is always yours. It just grows at different speeds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GARDEN KEY ═══ -->
+<section id="key">
+  <div class="key-inner">
+    <span class="section-eyebrow">The garden, explained</span>
+    <h2 class="section-h2">Every corner has meaning.</h2>
+
+    <div class="key-garden-wrap">
+      <svg viewBox="0 0 1060 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs>
+          <linearGradient id="k-bg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#e4f2ee"/>
+            <stop offset="100%" stop-color="#f0ece0"/>
+          </linearGradient>
+          <linearGradient id="k-r1" x1=".2" y1="0" x2=".8" y2="1">
+            <stop offset="0%"   stop-color="#c0ee98"/>
+            <stop offset="100%" stop-color="#88c4e0"/>
+          </linearGradient>
+          <linearGradient id="k-r2" x1=".1" y1="0" x2=".9" y2="1">
+            <stop offset="0%"   stop-color="#88bce8"/>
+            <stop offset="100%" stop-color="#b4a4d4"/>
+          </linearGradient>
+          <linearGradient id="k-r3" x1=".1" y1="0" x2=".9" y2="1">
+            <stop offset="0%"   stop-color="#78c4be"/>
+            <stop offset="100%" stop-color="#e4acb8"/>
+          </linearGradient>
+          <linearGradient id="k-r4" x1=".2" y1="0" x2=".8" y2="1">
+            <stop offset="0%"   stop-color="#bce080"/>
+            <stop offset="100%" stop-color="#c8e4d0"/>
+          </linearGradient>
+        </defs>
+        <rect width="1060" height="300" fill="url(#k-bg)"/>
+        <circle cx="530" cy="90" r="200" fill="white" opacity=".35"/>
+        <ellipse cx="530" cy="268" rx="500" ry="45" fill="#eeeae0" opacity=".8"/>
+
+        <!-- Rock cluster -->
+        <path d="M330,258 L288,168 L320,102 L370,68 L415,110 L450,185 L468,258Z" fill="url(#k-r1)"/>
+        <path d="M330,258 L288,168 L320,102 L370,68 L362,74 L316,115 L278,180 L302,258Z" fill="rgba(80,140,160,.14)"/>
+        <path d="M370,68 L415,110 L450,185 L468,258 L452,258 L432,180 L396,104 L378,72Z" fill="rgba(255,255,255,.25)"/>
+        <path d="M370,68 L330,258M370,68 L415,110M320,102 L288,168" stroke="rgba(255,255,255,.6)" stroke-width="1.4" fill="none"/>
+        <path d="M330,258 L288,168 L320,102 L370,68 L415,110 L450,185 L468,258" stroke="rgba(255,255,255,.5)" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+
+        <path d="M148,254 L168,192 L262,188 L280,254Z" fill="url(#k-r2)"/>
+        <path d="M168,192 L262,188 L254,180 L162,184Z" fill="rgba(255,255,255,.28)"/>
+        <path d="M168,192 L148,254M168,192 L262,188" stroke="rgba(255,255,255,.55)" stroke-width="1.3" fill="none"/>
+        <path d="M148,254 L168,192 L262,188 L280,254" stroke="rgba(255,255,255,.45)" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+
+        <path d="M648,254 L668,192 L762,196 L782,254Z" fill="url(#k-r3)"/>
+        <path d="M668,192 L762,196 L752,184 L660,180Z" fill="rgba(255,255,255,.26)"/>
+        <path d="M668,192 L648,254M668,192 L762,196" stroke="rgba(255,255,255,.52)" stroke-width="1.3" fill="none"/>
+        <path d="M648,254 L668,192 L762,196 L782,254" stroke="rgba(255,255,255,.43)" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+
+        <path d="M820,256 L835,220 L900,222 L912,256Z" fill="url(#k-r4)"/>
+        <path d="M835,220 L900,222 L894,214 L830,212Z" fill="rgba(255,255,255,.24)"/>
+        <path d="M835,220 L820,256M835,220 L900,222" stroke="rgba(255,255,255,.5)" stroke-width="1.2" fill="none"/>
+        <path d="M820,256 L835,220 L900,222 L912,256" stroke="rgba(255,255,255,.4)" stroke-width="1.4" fill="none" stroke-linejoin="round"/>
+
+        <!-- Bonsai (savings) -->
+        <path d="M538,255 C537,240 534,225 532,212 C530,198 527,186 530,175 C533,164 537,156 534,146" stroke="url(#k-r2)" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M533,190 C524,182 514,176 504,171" stroke="#7a5030" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M534,175 C542,167 551,160 560,155" stroke="#7a5030" stroke-width="4"   fill="none" stroke-linecap="round"/>
+        <ellipse cx="558" cy="148" rx="26" ry="16" fill="#2e5028" opacity=".9"/>
+        <ellipse cx="508" cy="163" rx="24" ry="14" fill="#2e5028" opacity=".85"/>
+        <ellipse cx="534" cy="138" rx="32" ry="20" fill="#3a6030" opacity=".85"/>
+        <ellipse cx="530" cy="130" rx="20" ry="12" fill="#4e7840" opacity=".6"/>
+
+        <!-- Small tree (emergency fund — ground cover) -->
+        <line x1="206" y1="256" x2="206" y2="228" stroke="#8a5c30" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="206" cy="220" rx="18" ry="12" fill="#2e5028" opacity=".85"/>
+        <ellipse cx="204" cy="215" rx="11" ry="7"  fill="#4a7038" opacity=".6"/>
+
+        <!-- Reeds (spending/weeds) -->
+        <path d="M855,256 C853,236 852,220 853,206" stroke="#5a7840" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M865,256 C867,232 863,215 867,200" stroke="#6a8850" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M875,256 C873,238 877,222 874,207" stroke="#5a7840" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M853,206 C845,200 840,194 843,200" stroke="#5a7840" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <path d="M867,200 C875,194 880,188 876,195" stroke="#6a8850" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+
+        <!-- Small blossoms (spending health) -->
+        <circle cx="308" cy="246" r="7" fill="#e8b0c0" opacity=".8"/>
+        <circle cx="308" cy="246" r="3" fill="#f0d068"/>
+        <circle cx="324" cy="250" r="6" fill="#c8a8d8" opacity=".8"/>
+        <circle cx="324" cy="250" r="2.5" fill="#f0d068"/>
+        <circle cx="295" cy="250" r="5.5" fill="#e8b0c0" opacity=".75"/>
+        <circle cx="295" cy="250" r="2.2" fill="#f0d068"/>
+
+        <!-- callout lines & labels -->
+        <line x1="395" y1="65" x2="395" y2="30"  stroke="#a4b09c" stroke-width="1" stroke-dasharray="3,3"/>
+        <circle cx="395" cy="28" r="2.5" fill="#4a8878"/>
+        <text x="402" y="26" font-family="'Lora',serif" font-size="11" fill="#425040" font-style="italic">🌳 savings</text>
+
+        <line x1="206" y1="215" x2="206" y2="175" stroke="#a4b09c" stroke-width="1" stroke-dasharray="3,3"/>
+        <circle cx="206" cy="173" r="2.5" fill="#4a8878"/>
+        <text x="213" y="171" font-family="'Lora',serif" font-size="11" fill="#425040" font-style="italic">🌱 emergency fund</text>
+
+        <line x1="310" y1="244" x2="310" y2="200" stroke="#a4b09c" stroke-width="1" stroke-dasharray="3,3"/>
+        <circle cx="310" cy="198" r="2.5" fill="#4a8878"/>
+        <text x="317" y="196" font-family="'Lora',serif" font-size="11" fill="#425040" font-style="italic">🌸 spending</text>
+
+        <line x1="865" y1="200" x2="865" y2="165" stroke="#a4b09c" stroke-width="1" stroke-dasharray="3,3"/>
+        <circle cx="865" cy="163" r="2.5" fill="#4a8878"/>
+        <text x="872" y="161" font-family="'Lora',serif" font-size="11" fill="#425040" font-style="italic">🌿 debt (clearing)</text>
+      </svg>
+    </div>
+
+    <div class="key-callouts">
+      <div class="callout-item">
+        <div class="callout-icon">🌳</div>
+        <div class="callout-title">The tree</div>
+        <div class="callout-body">Your long-term savings. Grows slowly and steadily. The older it gets, the harder it is to uproot.</div>
+      </div>
+      <div class="callout-item">
+        <div class="callout-icon">🌱</div>
+        <div class="callout-title">The ground cover</div>
+        <div class="callout-body">Your emergency fund. How protected the soil is. Thicker coverage means you can weather anything.</div>
+      </div>
+      <div class="callout-item">
+        <div class="callout-icon">🌸</div>
+        <div class="callout-title">The flowers</div>
+        <div class="callout-body">Your spending health. Blooming when you're within your means, quietly fading when things get tight.</div>
+      </div>
+      <div class="callout-item">
+        <div class="callout-icon">🌿</div>
+        <div class="callout-title">The weeds</div>
+        <div class="callout-body">High-interest debt. Still there, visible, honest — but visibly smaller every time you pay something down.</div>
+      </div>
+    </div>
+
+    <p class="key-footer">"The garden never dies. It just grows at different speeds."</p>
+  </div>
+</section>
+
+<!-- ═══ SEASONS ═══ -->
+<section id="seasons">
+  <div class="seasons-inner">
+    <h2 class="seasons-h2">Money has seasons.<br/>Grove doesn't pretend otherwise.</h2>
+    <div class="seasons-grid">
+
+      <!-- Spring -->
+      <div class="season-card">
+        <div class="season-svg-wrap">
+          <svg viewBox="0 0 120 100" style="width:100%;max-width:120px;height:auto">
+            <defs>
+              <linearGradient id="sp-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#d8f0ec"/>
+                <stop offset="100%" stop-color="#f0ece0"/>
+              </linearGradient>
+              <linearGradient id="sp-r1" x1=".2" y1="0" x2=".8" y2="1">
+                <stop offset="0%" stop-color="#c0f0a0"/>
+                <stop offset="100%" stop-color="#90d0e8"/>
+              </linearGradient>
+            </defs>
+            <rect width="120" height="100" rx="12" fill="url(#sp-bg)"/>
+            <circle cx="60" cy="45" r="42" fill="white" opacity=".4"/>
+            <ellipse cx="60" cy="86" rx="52" ry="16" fill="#eeeae0" opacity=".7"/>
+            <!-- crystal rock -->
+            <path d="M38,82 L24,44 L42,22 L60,30 L72,50 L78,82Z" fill="url(#sp-r1)"/>
+            <path d="M42,22 L38,82M42,22 L60,30" stroke="rgba(255,255,255,.65)" stroke-width="1.2" fill="none"/>
+            <path d="M38,82 L24,44 L42,22 L60,30 L72,50 L78,82" stroke="rgba(255,255,255,.5)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+            <!-- small tree -->
+            <line x1="90" y1="82" x2="90" y2="58" stroke="#8a5c30" stroke-width="3" stroke-linecap="round"/>
+            <ellipse cx="90" cy="51" rx="14" ry="10" fill="#2e5028" opacity=".85"/>
+            <!-- blossoms -->
+            <circle cx="28" cy="74" r="5" fill="#e8b0c0" opacity=".85"/>
+            <circle cx="28" cy="74" r="2" fill="#f0d068"/>
+            <circle cx="38" cy="78" r="4" fill="#c8a8d8" opacity=".8"/>
+            <circle cx="38" cy="78" r="1.8" fill="#f0d068"/>
+          </svg>
+        </div>
+        <div class="season-name">Spring</div>
+        <div class="season-caption">"A raise. A bonus. A good month."</div>
+      </div>
+
+      <!-- Summer -->
+      <div class="season-card">
+        <div class="season-svg-wrap">
+          <svg viewBox="0 0 120 100" style="width:100%;max-width:120px;height:auto">
+            <defs>
+              <linearGradient id="su-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#c8e8e4"/>
+                <stop offset="100%" stop-color="#ece8d8"/>
+              </linearGradient>
+              <linearGradient id="su-r1" x1=".2" y1="0" x2=".8" y2="1">
+                <stop offset="0%" stop-color="#a8e8c0"/>
+                <stop offset="100%" stop-color="#80c8e0"/>
+              </linearGradient>
+            </defs>
+            <rect width="120" height="100" rx="12" fill="url(#su-bg)"/>
+            <circle cx="60" cy="45" r="42" fill="white" opacity=".38"/>
+            <ellipse cx="60" cy="86" rx="52" ry="16" fill="#eeeae0" opacity=".7"/>
+            <!-- larger crystal rock -->
+            <path d="M32,82 L18,38 L38,16 L62,24 L76,46 L82,82Z" fill="url(#su-r1)"/>
+            <path d="M38,16 L32,82M38,16 L62,24" stroke="rgba(255,255,255,.6)" stroke-width="1.2" fill="none"/>
+            <path d="M32,82 L18,38 L38,16 L62,24 L76,46 L82,82" stroke="rgba(255,255,255,.48)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+            <!-- fuller bonsai -->
+            <path d="M94,82 C93,70 91,60 90,52 C89,44 88,37 90,31" stroke="#7a5030" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M90,50 C83,44 76,40 70,37" stroke="#7a5030" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="90" cy="25" rx="20" ry="13" fill="#2e5028" opacity=".9"/>
+            <ellipse cx="74" cy="31" rx="16" ry="10" fill="#2e5028" opacity=".85"/>
+            <ellipse cx="89" cy="18" rx="14" ry="9"  fill="#4a7038" opacity=".65"/>
+          </svg>
+        </div>
+        <div class="season-name">Summer</div>
+        <div class="season-caption">"Steady. Consistent. Calm."</div>
+      </div>
+
+      <!-- Autumn -->
+      <div class="season-card">
+        <div class="season-svg-wrap">
+          <svg viewBox="0 0 120 100" style="width:100%;max-width:120px;height:auto">
+            <defs>
+              <linearGradient id="au-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#e8e0c8"/>
+                <stop offset="100%" stop-color="#f0e8d0"/>
+              </linearGradient>
+              <linearGradient id="au-r1" x1=".2" y1="0" x2=".8" y2="1">
+                <stop offset="0%" stop-color="#e8d080"/>
+                <stop offset="100%" stop-color="#e0a888"/>
+              </linearGradient>
+            </defs>
+            <rect width="120" height="100" rx="12" fill="url(#au-bg)"/>
+            <circle cx="60" cy="45" r="42" fill="white" opacity=".3"/>
+            <ellipse cx="60" cy="86" rx="52" ry="16" fill="#eeeae0" opacity=".7"/>
+            <!-- amber-toned crystal rock -->
+            <path d="M35,82 L22,40 L40,18 L60,26 L73,48 L80,82Z" fill="url(#au-r1)"/>
+            <path d="M40,18 L35,82M40,18 L60,26" stroke="rgba(255,255,255,.55)" stroke-width="1.2" fill="none"/>
+            <path d="M35,82 L22,40 L40,18 L60,26 L73,48 L80,82" stroke="rgba(255,255,255,.42)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+            <!-- bonsai with amber tone -->
+            <path d="M95,82 C94,68 92,56 91,46 C90,36 91,28 93,22" stroke="#7a5030" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M92,48 C84,42 76,38 69,35" stroke="#7a5030" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="93" cy="16" rx="18" ry="12" fill="#4a4820" opacity=".85"/>
+            <ellipse cx="73" cy="29" rx="15" ry="9"  fill="#4a4820" opacity=".8"/>
+            <ellipse cx="91" cy="10" rx="11" ry="7"  fill="#6a6030" opacity=".6"/>
+          </svg>
+        </div>
+        <div class="season-name">Autumn</div>
+        <div class="season-caption">"Slowing down. Preparing."</div>
+      </div>
+
+      <!-- Winter -->
+      <div class="season-card">
+        <div class="season-svg-wrap">
+          <svg viewBox="0 0 120 100" style="width:100%;max-width:120px;height:auto">
+            <defs>
+              <linearGradient id="wi-bg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#d8eaf0"/>
+                <stop offset="100%" stop-color="#eeece8"/>
+              </linearGradient>
+              <linearGradient id="wi-r1" x1=".2" y1="0" x2=".8" y2="1">
+                <stop offset="0%" stop-color="#c0e0f0"/>
+                <stop offset="100%" stop-color="#d0d8f0"/>
+              </linearGradient>
+            </defs>
+            <rect width="120" height="100" rx="12" fill="url(#wi-bg)"/>
+            <circle cx="60" cy="45" r="42" fill="white" opacity=".45"/>
+            <ellipse cx="60" cy="86" rx="52" ry="16" fill="#eeeae0" opacity=".7"/>
+            <!-- ice-blue crystal rock -->
+            <path d="M35,82 L22,40 L40,18 L60,26 L73,48 L80,82Z" fill="url(#wi-r1)"/>
+            <path d="M40,18 L35,82M40,18 L60,26" stroke="rgba(255,255,255,.72)" stroke-width="1.4" fill="none"/>
+            <path d="M35,82 L22,40 L40,18 L60,26 L73,48 L80,82" stroke="rgba(255,255,255,.6)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+            <!-- snow caps on facets -->
+            <path d="M22,40 L40,18 L50,22 L36,44Z" fill="rgba(255,255,255,.45)"/>
+            <!-- bare bonsai, still strong -->
+            <path d="M95,82 C94,66 92,52 91,40 C90,28 91,20 93,14" stroke="#7a5030" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M92,44 C83,36 74,30 66,26" stroke="#8a5830" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M92,32 C100,24 108,18 114,14" stroke="#8a5830" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- tiny snow on branches -->
+            <ellipse cx="67" cy="25" rx="6" ry="2.5" fill="white" opacity=".7"/>
+            <ellipse cx="113" cy="13" rx="5" ry="2" fill="white" opacity=".65"/>
+          </svg>
+        </div>
+        <div class="season-name">Winter</div>
+        <div class="season-caption">"A harder month. The garden rests. Spring comes."</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NOT ═══ -->
+<section id="not">
+  <div class="not-inner">
+    <span class="not-eyebrow">What Grove is not</span>
+    <div class="not-lines">
+      <p class="not-line"><em>Not</em> a budgeting app that tells you what you did wrong.</p>
+      <p class="not-line"><em>Not</em> a game with streaks to maintain.</p>
+      <p class="not-line"><em>Not</em> another dashboard full of red numbers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WAITLIST ═══ -->
+<section id="waitlist">
+  <div class="waitlist-inner">
+    <!-- small crystal garden illustration -->
+    <svg viewBox="0 0 180 80" style="width:130px;height:auto;margin:0 auto 40px;display:block;">
+      <defs>
+        <linearGradient id="wl-r1" x1=".2" y1="0" x2=".8" y2="1">
+          <stop offset="0%" stop-color="#c0ee98"/>
+          <stop offset="100%" stop-color="#90c8e0"/>
+        </linearGradient>
+        <linearGradient id="wl-r2" x1=".1" y1="0" x2=".9" y2="1">
+          <stop offset="0%" stop-color="#90bce8"/>
+          <stop offset="100%" stop-color="#b4a4d4"/>
+        </linearGradient>
+        <linearGradient id="wl-r3" x1=".1" y1="0" x2=".9" y2="1">
+          <stop offset="0%" stop-color="#78c4be"/>
+          <stop offset="100%" stop-color="#e4acb8"/>
+        </linearGradient>
+      </defs>
+      <circle cx="90" cy="30" r="50" fill="white" opacity=".5"/>
+      <ellipse cx="90" cy="70" rx="84" ry="14" fill="#eeeae0" opacity=".7"/>
+      <!-- rocks -->
+      <path d="M56,68 L42,28 L60,10 L78,18 L88,40 L92,68Z" fill="url(#wl-r1)"/>
+      <path d="M60,10 L56,68M60,10 L78,18" stroke="rgba(255,255,255,.65)" stroke-width="1" fill="none"/>
+      <path d="M56,68 L42,28 L60,10 L78,18 L88,40 L92,68" stroke="rgba(255,255,255,.5)" stroke-width="1.4" fill="none" stroke-linejoin="round"/>
+      <path d="M96,68 L108,34 L152,36 L164,68Z" fill="url(#wl-r3)"/>
+      <path d="M108,34 L96,68M108,34 L152,36" stroke="rgba(255,255,255,.52)" stroke-width="1" fill="none"/>
+      <path d="M96,68 L108,34 L152,36 L164,68" stroke="rgba(255,255,255,.42)" stroke-width="1.4" fill="none" stroke-linejoin="round"/>
+      <!-- bonsai -->
+      <path d="M88,68 C87,58 85,50 84,43 C83,36 84,29 86,23" stroke="#7a5030" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M85,46 C79,40 73,36 67,33" stroke="#7a5030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="86" cy="18" rx="16" ry="10" fill="#2e5028" opacity=".88"/>
+      <ellipse cx="70" cy="27" rx="13" ry="8"  fill="#2e5028" opacity=".82"/>
+      <ellipse cx="85" cy="12" rx="10" ry="6"  fill="#4a7038" opacity=".6"/>
+    </svg>
+
+    <h2 class="waitlist-h2">A calmer way to grow.</h2>
+    <p class="waitlist-sub">We're tending Grove carefully before we open the gates. Leave your email and we'll reach out when your garden is ready.</p>
+
+    <form class="wl-form" id="wlForm" novalidate>
+      <input type="email" class="wl-input" id="wlEmail" placeholder="your@email.com" autocomplete="email" required/>
+      <button type="submit" class="wl-btn">Join the waitlist</button>
+    </form>
+    <p class="wl-fine">No urgency. No spam. Just a note when it's ready.</p>
+
+    <div class="wl-confirm" id="wlConfirm">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin-bottom:4px">
+        <circle cx="24" cy="24" r="22" stroke="#4a8878" stroke-width="1.5" opacity=".5"/>
+        <path d="M14 24.5L20 30.5L34 16" stroke="#4a8878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <strong>You're in the garden.</strong>
+      <p>We'll be in touch when your spot is ready to tend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">Grove</div>
+  <small>© 2026 Grove. A calmer kind of financial app.</small>
+</footer>
+
+<script>
+(function(){
+  var form = document.getElementById('wlForm');
+  var conf = document.getElementById('wlConfirm');
+  var inp  = document.getElementById('wlEmail');
+  var fine = document.querySelector('.wl-fine');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var v = inp.value.trim();
+    if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      inp.style.borderColor = 'rgba(168,100,100,.6)'; inp.focus(); return;
+    }
+    form.style.display = 'none'; fine.style.display = 'none';
+    conf.style.display = 'flex';
+  });
+  inp.addEventListener('input', function() { inp.style.borderColor = ''; });
+})();
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var t = document.querySelector(this.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
