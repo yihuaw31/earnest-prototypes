@@ -7,25 +7,82 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--expo:cubic-bezier(0.16,1,0.3,1)}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#000;touch-action:pan-y}
+:root{--expo:cubic-bezier(0.16,1,0.3,1);--phone-w:390px;--phone-h:844px;--phone-r:44px}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#111;touch-action:pan-y}
+
+/* ── Phone shell (desktop only) ── */
+#phone-shell{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;z-index:400
+}
+#phone-frame{
+  width:var(--phone-w);height:var(--phone-h);
+  border-radius:var(--phone-r);
+  border:8px solid #2a2a2a;
+  box-shadow:0 0 0 1px #444,0 40px 100px rgba(0,0,0,.7),inset 0 0 0 1px #111;
+  pointer-events:none;position:relative;overflow:hidden
+}
+/* notch */
+#phone-frame::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:120px;height:32px;background:#111;border-radius:0 0 20px 20px;z-index:600
+}
+
+/* ── Viewport ── */
+#viewport{
+  position:fixed;
+  top:50%;left:50%;
+  width:var(--phone-w);height:var(--phone-h);
+  transform:translate(-50%,-50%);
+  border-radius:calc(var(--phone-r) - 8px);
+  overflow:hidden;
+  z-index:200
+}
 #ss{display:flex;width:100%;height:100%;transition:transform 420ms var(--expo);will-change:transform}
-.card{min-width:100vw;height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:56px 40px 72px}
+.card{min-width:100%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:64px 28px 60px}
 #c9{overflow-y:auto}
-.cn{position:absolute;top:20px;right:20px;font-size:11px;color:rgba(255,255,255,.35);z-index:20;font-family:'DM Sans',sans-serif}
+
+/* ── Story progress bars ── */
+#story-bars{
+  position:absolute;top:14px;left:14px;right:14px;
+  display:flex;gap:4px;z-index:500;pointer-events:none
+}
+.sbar{flex:1;height:3px;background:rgba(255,255,255,.3);border-radius:2px;overflow:hidden}
+.sbar-fill{height:100%;background:#fff;width:0;border-radius:2px;transition:none}
+.sbar-fill.done{width:100%}
+.sbar-fill.active{animation:story-prog var(--dur,5s) linear forwards}
+@keyframes story-prog{from{width:0}to{width:100%}}
+
+/* ── Tap zones ── */
+#tap-prev,#tap-next{
+  position:absolute;top:0;bottom:0;width:35%;z-index:300;cursor:pointer;background:none;border:none;
+}
+#tap-prev{left:0}
+#tap-next{right:0}
+
+/* ── Card counter (hidden — replaced by bars) ── */
+.cn{display:none}
+
 .lbl{font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:12px;font-family:'DM Sans',sans-serif;position:relative;z-index:2}
 .fu{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
 .fu.in{opacity:1;transform:translateY(0)}
 
-/* nav */
-.arr{position:fixed;top:50%;transform:translateY(-50%);background:none;border:1.5px solid rgba(255,255,255,.22);border-radius:50%;width:40px;height:40px;color:#fff;font-size:16px;cursor:pointer;z-index:300;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.arr:hover{background:rgba(255,255,255,.1)}
-#prev{left:12px}#next{right:12px}
-#dots{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:300}
-.dot{width:7px;height:7px;border-radius:50%;background:none;border:1.5px solid rgba(255,255,255,.45);cursor:pointer;transition:background .2s,transform .2s}
-.dot.on{background:#fff;border-color:#fff;transform:scale(1.25)}
-#abtn{position:fixed;bottom:18px;right:16px;font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,.38);background:none;border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:4px 10px;cursor:pointer;z-index:300;letter-spacing:.07em;text-transform:uppercase;transition:color .2s,border-color .2s}
-#abtn.on{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.55)}
+/* hide old nav entirely */
+.arr,#dots,#abtn{display:none}
+
+/* ── Desktop bg ── */
+@media(min-width:521px){
+  body{background:radial-gradient(ellipse at 60% 40%,#1a0a2e 0%,#0a0a0a 70%)}
+}
+
+/* ── True mobile: full screen, no shell ── */
+@media(max-width:520px){
+  :root{--phone-w:100vw;--phone-h:100vh;--phone-r:0px}
+  #phone-shell,#phone-frame{display:none}
+  #viewport{width:100%;height:100%;border-radius:0}
+  .card{padding:60px 20px 54px}
+  #story-bars{top:10px;left:10px;right:10px}
+}
 
 /* ── C1: Opening ── */
 #c1{background:#09011e}
@@ -127,10 +184,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 
 /* ── Mobile ── */
 @media(max-width:520px){
-  .card{padding:36px 20px 54px}
-  .arr{width:34px;height:34px;font-size:13px}
-  #prev{left:5px}#next{right:5px}
-  #abtn{display:none}
+  .card{padding:60px 20px 54px}
 
   /* C1 */
   #c1 .yr{font-size:clamp(72px,20vw,140px)}
@@ -204,6 +258,20 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
 </style>
 </head>
 <body>
+
+<!-- Desktop phone shell -->
+<div id="phone-shell"><div id="phone-frame"></div></div>
+
+<!-- The actual viewport -->
+<div id="viewport">
+
+<!-- Story progress bars -->
+<div id="story-bars"></div>
+
+<!-- Tap zones -->
+<button id="tap-prev" onclick="go(-1)" aria-label="Previous"></button>
+<button id="tap-next" onclick="go(1)" aria-label="Next"></button>
+
 <div id="ss">
 
 <!-- ═══ C1: OPENING ═══ -->
@@ -351,26 +419,48 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-seri
   </div>
 </div>
 
-</div>
-
-<button class="arr" id="prev" onclick="go(-1)">&#8592;</button>
-<button class="arr" id="next" onclick="go(1)">&#8594;</button>
-<div id="dots"></div>
-<button id="abtn" onclick="toggleAuto()">Auto</button>
+</div><!-- /ss -->
+</div><!-- /viewport -->
 
 <script>
 const TOTAL=9;
-let cur=0,autoOn=false,autoT=null;
+let cur=0;
 const ss=document.getElementById('ss');
-const dotsEl=document.getElementById('dots');
-for(let i=0;i<TOTAL;i++){const d=document.createElement('button');d.className='dot'+(i===0?' on':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
-function goTo(n){cur=Math.max(0,Math.min(TOTAL-1,n));ss.style.transform=`translateX(-${cur*100}vw)`;dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));activate(cur);}
+
+// ── Story bars ──
+const barsEl=document.getElementById('story-bars');
+const fills=[];
+for(let i=0;i<TOTAL;i++){
+  const wrap=document.createElement('div');wrap.className='sbar';
+  const fill=document.createElement('div');fill.className='sbar-fill';
+  wrap.appendChild(fill);barsEl.appendChild(wrap);fills.push(fill);
+}
+
+function updateBars(idx){
+  fills.forEach((f,i)=>{
+    f.className='sbar-fill';
+    f.style.animation='none';
+    if(i<idx){f.classList.add('done');}
+    else if(i===idx){
+      void f.offsetWidth;// reflow to restart animation
+      f.style.setProperty('--dur','8s');
+      f.classList.add('active');
+    }
+  });
+}
+
+function goTo(n){
+  cur=Math.max(0,Math.min(TOTAL-1,n));
+  ss.style.transform=`translateX(-${cur*100}%)`;
+  updateBars(cur);
+  activate(cur);
+}
 function go(d){goTo(cur+d);}
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);});
 let tx=null;
-document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
-document.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)go(dx<0?1:-1);tx=null;});
-function toggleAuto(){autoOn=!autoOn;document.getElementById('abtn').classList.toggle('on',autoOn);if(autoOn)autoT=setInterval(()=>go(1),3000);else clearInterval(autoT);}
+const vp=document.getElementById('viewport');
+vp.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+vp.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>30)go(dx<0?1:-1);tx=null;});
 
 function easeOut(t){return t===1?1:1-Math.pow(2,-10*t);}
 function countUp(el,target,pre,suf,dur){
